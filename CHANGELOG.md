@@ -28,4 +28,6 @@
 - Include the signature in SignedCert
 - cache: do not forget to include the server PK in the hash computation
 - Implement a simple cache for shared keys
-- Add support for stamps (dnscrypt-proxy 2.x), and update the documen
+- Add support for stamps (dnscrypt-proxy 2.x), and update the documentation
+- In key rotation, old certs should be provided too, see #109.
+- fixes #111, cert/key e
