@@ -12,4 +12,9 @@
 
 ## v0.4.2
 
-- Log level of "suspicio
+- Log level of "suspicious query" changed to debug
+
+## v0.4.1
+
+- find_cert() should search in all certs, fixes #139.
+- filter_sign
