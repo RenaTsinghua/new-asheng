@@ -18,4 +18,9 @@
 
 - find_cert() should search in all certs, fixes #139.
 - filter_signed_certs() should converts serial to uint32_t before comparison.
-- --cert-file-expire-days supports 'd
+- --cert-file-expire-days supports 'd', 'h', 'm', 's' suffixes
+
+## v0.4.0
+
+- Use sodium_malloc() for the DNS query/response buffers
+-
