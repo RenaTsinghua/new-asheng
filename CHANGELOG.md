@@ -23,4 +23,6 @@
 ## v0.4.0
 
 - Use sodium_malloc() for the DNS query/response buffers
--
+- Fix stamp properties; add --nofilter
+- Only publish the most recent certificates
+- Include the signa
