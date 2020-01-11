@@ -17,4 +17,5 @@
 ## v0.4.1
 
 - find_cert() should search in all certs, fixes #139.
-- filter_sign
+- filter_signed_certs() should converts serial to uint32_t before comparison.
+- --cert-file-expire-days supports 'd
