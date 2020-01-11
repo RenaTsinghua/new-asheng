@@ -27,4 +27,5 @@
 - Only publish the most recent certificates
 - Include the signature in SignedCert
 - cache: do not forget to include the server PK in the hash computation
-- Impleme
+- Implement a simple cache for shared keys
+- Add support for stamps (dnscrypt-proxy 2.x), and update the documen
