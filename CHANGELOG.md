@@ -25,4 +25,6 @@
 - Use sodium_malloc() for the DNS query/response buffers
 - Fix stamp properties; add --nofilter
 - Only publish the most recent certificates
-- Include the signa
+- Include the signature in SignedCert
+- cache: do not forget to include the server PK in the hash computation
+- Impleme
