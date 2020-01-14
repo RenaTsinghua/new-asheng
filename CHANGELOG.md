@@ -30,4 +30,5 @@
 - Implement a simple cache for shared keys
 - Add support for stamps (dnscrypt-proxy 2.x), and update the documentation
 - In key rotation, old certs should be provided too, see #109.
-- fixes #111, cert/key expires in 24 hours by default for safety see discussion: https://github.com/jedisct1/dnscrypt-proxy/issues
+- fixes #111, cert/key expires in 24 hours by default for safety see discussion: https://github.com/jedisct1/dnscrypt-proxy/issues/520
+- docs: suggest user to generate short-term key pairs and use key-rotation mechanism See 
