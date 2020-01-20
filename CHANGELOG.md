@@ -41,3 +41,6 @@
 
 ## v0.2.2
 
+- remove GPLv2, release under the ISC license
+- update example secret key / cert, etc
+- fix compiler
