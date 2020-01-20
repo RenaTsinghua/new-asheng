@@ -43,4 +43,8 @@
 
 - remove GPLv2, release under the ISC license
 - update example secret key / cert, etc
-- fix compiler
+- fix compiler/linker flags handling
+
+## v0.2.1
+
+- Rename --provider-publickey-fingerprint to --show-provider-publickey-fingerprin
