@@ -47,4 +47,5 @@
 
 ## v0.2.1
 
-- Rename --provider-publickey-fingerprint to --show-provider-publickey-fingerprin
+- Rename --provider-publickey-fingerprint to --show-provider-publickey-fingerprint. It's more conventional to use a verb if you want to do some action, like gen-provider-keypair.
+- Use TC
