@@ -49,3 +49,5 @@
 
 - Rename --provider-publickey-fingerprint to --show-provider-publickey-fingerprint. It's more conventional to use a verb if you want to do some action, like gen-provider-keypair.
 - Use TCP_QUICKACK instead of TCP_NODELAY if available (Linux 2.4.4+) See https://news.ycombinator.com/item?id=10608356
+- Send a short packet with TC set if the query_len < response_len
+- Support sending server cert o
