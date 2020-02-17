@@ -52,4 +52,8 @@
 - Send a short packet with TC set if the query_len < response_len
 - Support sending server cert over tcp
 - Use the certificate timestamp as a serial number instead of a fixed serial.
-- And some ot
+- And some other minor fixes.
+
+## v0.2.0
+
+- Import argparse sources files directly.
