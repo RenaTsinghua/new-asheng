@@ -27,3 +27,5 @@ The externally maintained libraries used by dnscrypt-wrapper are:
 
   - argparse, See argparse/LICENSE.
 
+  - dns-protocol.h, rfc1035.c, rfc1035.h reuses code from dnsmasq by
+    Simon Kelley.
