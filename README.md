@@ -182,3 +182,86 @@ not going to expire soon:
 $ dnscrypt-proxy --resolver-address=127.0.0.1:443 \
                  --provider-name=2.dnscrypt-cert.<yourdomain> \
                  --provider-key=<provider_public_key> \
+                 --test=10080
+```
+
+The `--test` option is followed by a "grace margin".
+
+The command will immediately exit after verifying the certificate validity.
+
+The exit code is `0` if a valid certificate can be used, `2` if no valid
+certificates can be used, `3` if a timeout occurred, and `4` if a currently
+valid certificate is going to expire before the margin.
+
+The margin is always specified in minutes.
+
+This can be used in a cron tab to trigger an alert before a key is
+going to expire.
+
+In order to switch to a fresh new key:
+
+First, create a new time-limited key (do not change the provider key!) and
+its certificate:
+
+```sh
+$ dnscrypt-wrapper --gen-crypt-keypair --crypt-secretkey-file=2.key
+$ dnscrypt-wrapper --gen-cert-file --crypt-secretkey-file=2.key --provider-cert-file=2.cert \
+                   --provider-publickey-file=public.key --provider-secretkey-file=secret.key \
+                   --cert-file-expire-days=1
+```
+
+Second, Tell new users to use the new certificate but still accept the old
+key until all clients have loaded the new certificate:
+
+```sh
+$ dnscrypt-wrapper --resolver-address=8.8.8.8:53 --listen-address=0.0.0.0:443 \
+                   --provider-name=2.dnscrypt-cert.<yourdomain> \
+                   --crypt-secretkey-file=1.key,2.key --provider-cert-file=1.cert,2.cert
+```
+
+Note that both `1.key` and `2.key` have be specified, in order to
+accept both the previous and the current key.
+
+Third, Clients automatically check for new certificates every hour. So,
+after one hour, the old certificate can be refused, by leaving only
+the new one in the configuration:
+
+```sh
+$ dnscrypt-wrapper --resolver-address=8.8.8.8:53 --listen-address=0.0.0.0:443 \
+                   --provider-name=2.dnscrypt-cert.<yourdomain> \
+                   --crypt-secretkey-file=2.key --provider-cert-file=2.cert
+```
+
+Please note that on Linux systems (kernel >= 3.9), multiples instances of
+`dnscrypt-wrapper` can run at the same time. Therefore, in order to
+switch to a new configuration, one can start a new daemon without
+killing the previous instance, and only kill the previous instance
+after the new one started.
+
+This also allows upgrades with zero downtime.
+
+## Blocking
+
+For servers willing to block specific domain names (ads, malware), the
+`--blacklist-file` parameter can be added. That blacklist file accepts
+patterns such as:
+
+- `example.com`: blocks `example.com` as well as `www.example.com`
+- `*.example.com`: identical, just more explicit
+- `*example*`: blocks the `example` substring no matter where it appears
+- `ads.*`: blocks the `ads.` prefix
+
+Prefix and suffix lookups are fast and can scale to very large lists.
+
+## Chinese
+
+- CentOS/Debian/Ubuntu 下编译 dnscrypt-wrapper: http://03k.org/centos-make-dnscrypt-wrapper.html
+- dnscrypt-wrapper 使用方法: http://03k.org/dnscrypt-wrapper-usage.html
+
+注：第三方文档可能未及时与最新版本同步，以 README.md 为准。
+
+## See also
+
+- https://dnscrypt.info/
+- https://github.com/jedisct1/dnscrypt-proxy
+- https://github.com/cofyc/dnscrypt-wrapper
