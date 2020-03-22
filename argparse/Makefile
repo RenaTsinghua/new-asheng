@@ -31,4 +31,12 @@ OBJS += argparse.o
 OBJS += test_argparse.o
 
 $(OBJS): %.o: %.c
-	$(CC) -o $*.o -c $(ALL_CFLAGS)
+	$(CC) -o $*.o -c $(ALL_CFLAGS) $<
+
+$(DYLIBNAME): argparse.o
+	$(DYLIB_MAKE_CMD) $^
+
+$(STLIBNAME): argparse.o
+	$(STLIB_MAKE_CMD) $^
+
+tes
