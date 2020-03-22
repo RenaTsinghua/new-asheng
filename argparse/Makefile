@@ -39,4 +39,9 @@ $(DYLIBNAME): argparse.o
 $(STLIBNAME): argparse.o
 	$(STLIB_MAKE_CMD) $^
 
-tes
+test: test_argparse
+	@echo "###### Unit Test #####"
+	@./test.sh
+
+test_argparse: $(OBJS)
+	$(CC) $(ALL_CFLAGS) -o $@ $^ $(ALL_LDFLA
