@@ -44,4 +44,9 @@ test: test_argparse
 	@./test.sh
 
 test_argparse: $(OBJS)
-	$(CC) $(ALL_CFLAGS) -o $@ $^ $(ALL_LDFLA
+	$(CC) $(ALL_CFLAGS) -o $@ $^ $(ALL_LDFLAGS)
+
+clean:
+	rm -rf test_argparse
+	rm -rf *.[ao]
+	rm -rf *.dylib
