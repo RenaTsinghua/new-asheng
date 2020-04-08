@@ -34,4 +34,10 @@ argparse_error(struct argparse *self, const struct argparse_option *opt,
     if (flags & OPT_LONG) {
         fprintf(stderr, "error: option `--%s` %s\n", opt->long_name, reason);
     } else {
-        fprintf(stderr, "error: option `-%c` %s\n",
+        fprintf(stderr, "error: option `-%c` %s\n", opt->short_name, reason);
+    }
+    exit(1);
+}
+
+static int
+argparse_getvalue(struct argparse *self, const stru
