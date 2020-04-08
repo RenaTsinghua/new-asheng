@@ -24,4 +24,9 @@ prefix_cmp(const char *str, const char *prefix)
         if (!*prefix)
             return 0;
         else if (*str != *prefix)
-            return (unsigned char)*prefix - (unsigned char)*str
+            return (unsigned char)*prefix - (unsigned char)*str;
+}
+
+static void
+argparse_error(struct argparse *self, const struct argparse_option *opt,
+               co
