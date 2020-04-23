@@ -54,4 +54,8 @@ argparse_getvalue(struct argparse *self, const struct argparse_option *opt,
             *(int *)opt->value = *(int *)opt->value + 1;
         }
         if (*(int *)opt->value < 0) {
-   
+            *(int *)opt->value = 0;
+        }
+        break;
+    case ARGPARSE_OPT_BIT:
+        if (flags & OPT_
