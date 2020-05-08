@@ -86,4 +86,12 @@ argparse_getvalue(struct argparse *self, const struct argparse_option *opt,
             argparse_error(self, opt, "requires a value", flags);
         }
         if (s[0] != '\0')
-            argparse_error(self, opt, "expects a numerical value", f
+            argparse_error(self, opt, "expects a numerical value", flags);
+        break;
+    default:
+        assert(0);
+    }
+
+skipped:
+    if (opt->callback) {
+        retur
