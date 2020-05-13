@@ -104,4 +104,7 @@ static void
 argparse_options_check(const struct argparse_option *options)
 {
     for (; options->type != ARGPARSE_OPT_END; options++) {
-        switch (options-
+        switch (options->type) {
+        case ARGPARSE_OPT_END:
+        case ARGPARSE_OPT_BOOLEAN:
+        case
