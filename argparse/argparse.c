@@ -94,4 +94,11 @@ argparse_getvalue(struct argparse *self, const struct argparse_option *opt,
 
 skipped:
     if (opt->callback) {
-        retur
+        return opt->callback(self, opt);
+    }
+
+    return 0;
+}
+
+static void
+argparse_options_check(const struct argparse_
