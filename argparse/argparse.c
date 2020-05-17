@@ -110,4 +110,7 @@ argparse_options_check(const struct argparse_option *options)
         case ARGPARSE_OPT_BIT:
         case ARGPARSE_OPT_INTEGER:
         case ARGPARSE_OPT_STRING:
-        case ARGPARSE_OP
+        case ARGPARSE_OPT_GROUP:
+            continue;
+        default:
+            fprintf(stderr, "wrong option
