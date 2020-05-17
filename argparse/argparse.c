@@ -107,4 +107,7 @@ argparse_options_check(const struct argparse_option *options)
         switch (options->type) {
         case ARGPARSE_OPT_END:
         case ARGPARSE_OPT_BOOLEAN:
-        case
+        case ARGPARSE_OPT_BIT:
+        case ARGPARSE_OPT_INTEGER:
+        case ARGPARSE_OPT_STRING:
+        case ARGPARSE_OP
