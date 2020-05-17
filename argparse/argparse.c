@@ -113,4 +113,11 @@ argparse_options_check(const struct argparse_option *options)
         case ARGPARSE_OPT_GROUP:
             continue;
         default:
-            fprintf(stderr, "wrong option
+            fprintf(stderr, "wrong option type: %d", options->type);
+            break;
+        }
+    }
+}
+
+static int
+argparse_short_opt(
