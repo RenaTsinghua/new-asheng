@@ -125,4 +125,11 @@ argparse_short_opt(struct argparse *self, const struct argparse_option *options)
     for (; options->type != ARGPARSE_OPT_END; options++) {
         if (options->short_name == *self->optvalue) {
             self->optvalue = self->optvalue[1] ? self->optvalue + 1 : NULL;
-            return argparse_getvalue(self, opt
+            return argparse_getvalue(self, options, 0);
+        }
+    }
+    return -2;
+}
+
+static int
+argparse_long_opt(struct argparse *self, const struct ar
