@@ -135,4 +135,9 @@ static int
 argparse_long_opt(struct argparse *self, const struct argparse_option *options)
 {
     for (; options->type != ARGPARSE_OPT_END; options++) {
-        const ch
+        const char *rest;
+        int opt_flags = 0;
+        if (!options->long_name)
+            continue;
+
+        rest = 
