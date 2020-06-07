@@ -132,4 +132,7 @@ argparse_short_opt(struct argparse *self, const struct argparse_option *options)
 }
 
 static int
-argparse_long_opt(struct argparse *self, const struct ar
+argparse_long_opt(struct argparse *self, const struct argparse_option *options)
+{
+    for (; options->type != ARGPARSE_OPT_END; options++) {
+        const ch
