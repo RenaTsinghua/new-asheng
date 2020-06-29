@@ -158,4 +158,8 @@ argparse_long_opt(struct argparse *self, const struct argparse_option *options)
             rest = prefix_skip(self->argv[0] + 2 + 3, options->long_name);
             if (!rest)
                 continue;
-   
+            opt_flags |= OPT_UNSET;
+        }
+        if (*rest) {
+            if (*rest != '=')
+           
