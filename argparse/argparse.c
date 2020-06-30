@@ -162,4 +162,7 @@ argparse_long_opt(struct argparse *self, const struct argparse_option *options)
         }
         if (*rest) {
             if (*rest != '=')
-           
+                continue;
+            self->optvalue = rest + 1;
+        }
+        return argparse_getvalue(self,
