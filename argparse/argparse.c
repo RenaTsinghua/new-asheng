@@ -165,4 +165,10 @@ argparse_long_opt(struct argparse *self, const struct argparse_option *options)
                 continue;
             self->optvalue = rest + 1;
         }
-        return argparse_getvalue(self,
+        return argparse_getvalue(self, options, opt_flags | OPT_LONG);
+    }
+    return -2;
+}
+
+int
+argparse_init(struct argparse
