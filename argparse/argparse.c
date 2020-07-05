@@ -184,4 +184,7 @@ argparse_init(struct argparse *self, struct argparse_option *options,
 }
 
 void
-argparse_desc
+argparse_describe(struct argparse *self, const char *description,
+                  const char *epilog)
+{
+    self->description = 
