@@ -177,4 +177,11 @@ argparse_init(struct argparse *self, struct argparse_option *options,
     memset(self, 0, sizeof(*self));
     self->options = options;
     self->usages = usages;
-    self->fla
+    self->flags = flags;
+    self->description = NULL;
+    self->epilog = NULL;
+    return 0;
+}
+
+void
+argparse_desc
