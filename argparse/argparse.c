@@ -171,4 +171,7 @@ argparse_long_opt(struct argparse *self, const struct argparse_option *options)
 }
 
 int
-argparse_init(struct argparse
+argparse_init(struct argparse *self, struct argparse_option *options,
+              const char *const *usages, int flags)
+{
+    memset(
