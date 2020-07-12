@@ -201,4 +201,6 @@ argparse_parse(struct argparse *self, int argc, const char **argv)
     argparse_options_check(self->options);
 
     for (; self->argc; self->argc--, self->argv++) {
-        const char *arg =
+        const char *arg = self->argv[0];
+        if (arg[0] != '-' || !arg[1]) {
+            if (self->flags & ARGPARSE_STOP_AT_NON_OP
