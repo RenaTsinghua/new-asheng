@@ -206,4 +206,6 @@ argparse_parse(struct argparse *self, int argc, const char **argv)
             if (self->flags & ARGPARSE_STOP_AT_NON_OPTION) {
                 goto end;
             }
-            // if it's not option or is 
+            // if it's not option or is a single char '-', copy verbatim
+            self->out[self->cpidx++] = self->argv[0];
+            contin
