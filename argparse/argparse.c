@@ -208,4 +208,9 @@ argparse_parse(struct argparse *self, int argc, const char **argv)
             }
             // if it's not option or is a single char '-', copy verbatim
             self->out[self->cpidx++] = self->argv[0];
-            contin
+            continue;
+        }
+        // short option
+        if (arg[1] != '-') {
+            self->optvalue = arg + 1;
+            s
