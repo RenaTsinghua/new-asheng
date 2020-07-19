@@ -213,4 +213,7 @@ argparse_parse(struct argparse *self, int argc, const char **argv)
         // short option
         if (arg[1] != '-') {
             self->optvalue = arg + 1;
-            s
+            switch (argparse_short_opt(self, self->options)) {
+            case -1:
+                break;
+    
