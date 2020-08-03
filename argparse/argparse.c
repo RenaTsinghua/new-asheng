@@ -216,4 +216,7 @@ argparse_parse(struct argparse *self, int argc, const char **argv)
             switch (argparse_short_opt(self, self->options)) {
             case -1:
                 break;
-    
+            case -2:
+                goto unknown;
+            }
+            while (self->optvalue) 
