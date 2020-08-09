@@ -230,4 +230,10 @@ argparse_parse(struct argparse *self, int argc, const char **argv)
             continue;
         }
         // if '--' presents
-        if (!a
+        if (!arg[2]) {
+            self->argc--;
+            self->argv++;
+            break;
+        }
+        // long option
+        switc
