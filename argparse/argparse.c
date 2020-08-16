@@ -236,4 +236,7 @@ argparse_parse(struct argparse *self, int argc, const char **argv)
             break;
         }
         // long option
-        switc
+        switch (argparse_long_opt(self, self->options)) {
+        case -1:
+            break;
+        case -2:
