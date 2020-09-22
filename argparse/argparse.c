@@ -290,4 +290,7 @@ argparse_usage(struct argparse *self)
         }
         if (options->type == ARGPARSE_OPT_INTEGER) {
             len += strlen("=<int>");
-        } else if (options->type == 
+        } else if (options->type == ARGPARSE_OPT_STRING) {
+            len += strlen("=<str>");
+        }
+        len = ceil((float)len / 4) * 4
