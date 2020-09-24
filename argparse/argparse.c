@@ -293,4 +293,9 @@ argparse_usage(struct argparse *self)
         } else if (options->type == ARGPARSE_OPT_STRING) {
             len += strlen("=<str>");
         }
-        len = ceil((float)len / 4) * 4
+        len = ceil((float)len / 4) * 4;
+        if (usage_opts_width < len) {
+            usage_opts_width = len;
+        }
+    }
+    usag
