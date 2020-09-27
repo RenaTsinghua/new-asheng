@@ -304,4 +304,7 @@ argparse_usage(struct argparse *self)
     for (; options->type != ARGPARSE_OPT_END; options++) {
         size_t pos = 0;
         int pad = 0;
-        if (options->type == A
+        if (options->type == ARGPARSE_OPT_GROUP) {
+            fputc('\n', stdout);
+            fprintf(stdout, "%s", options->help);
+            
