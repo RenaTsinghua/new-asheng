@@ -323,4 +323,7 @@ argparse_usage(struct argparse *self)
         if (options->type == ARGPARSE_OPT_INTEGER) {
             pos += fprintf(stdout, "=<int>");
         } else if (options->type == ARGPARSE_OPT_STRING) {
-            pos += fprintf(stdout, "=<str>
+            pos += fprintf(stdout, "=<str>");
+        }
+        if (pos <= usage_opts_width) {
+            pad = usage_opts_width - p
