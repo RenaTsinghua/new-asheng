@@ -331,4 +331,9 @@ argparse_usage(struct argparse *self)
             fputc('\n', stdout);
             pad = usage_opts_width;
         }
-        fp
+        fprintf(stdout, "%*s%s\n", pad + 2, "", options->help);
+    }
+
+    // print epilog
+    if (self->epilog)
+       
