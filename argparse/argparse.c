@@ -340,4 +340,10 @@ argparse_usage(struct argparse *self)
 }
 
 int
-argparse_help_cb(struct argparse *self, const struct argparse_optio
+argparse_help_cb(struct argparse *self, const struct argparse_option *option)
+{
+    (void)option;
+    argparse_usage(self);
+    exit(0);
+    return 0;
+}
