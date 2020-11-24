@@ -1,0 +1,88 @@
+
+#!/bin/bash 
+
+
+_version='1.02'
+	
+_plan_set=0
+_no_plan=0
+_skip_all=0
+_test_died=0
+_expected_tests=0 
+_executed_tests=0 
+_failed_tests=0
+TODO=
+
+
+usage(){
+	cat <<'USAGE'
+tap-functions: A TAP-producing BASH library
+
+PLAN:
+  plan_no_plan
+  plan_skip_all [REASON]
+  plan_tests NB_TESTS
+
+TEST:
+  ok RESULT [NAME]
+  okx COMMAND
+  is RESULT EXPECTED [NAME]
+  isnt RESULT EXPECTED [NAME]
+  like RESULT PATTERN [NAME]
+  unlike RESULT PATTERN [NAME]
+  pass [NAME]
+  fail [NAME]
+
+SKIP:
+  skip [CONDITION] [REASON] [NB_TESTS=1]
+
+  skip $feature_not_present "feature not present" 2 || {
+      is $a "a"
+      is $b "b"
+  }
+
+TODO:
+  Specify TODO mode by setting $TODO:
+    TODO="not implemented yet"
+    ok $result "some not implemented test"
+    unset TODO
+
+OTHER:
+  diag MSG
+
+EXAMPLE:
+  #!/bin/bash
+
+  . tap-functions
+
+  plan_tests 7
+
+  me=$USER
+  is $USER $me "I am myself"
+  like $HOME $me "My home is mine"
+  like "`id`" $me "My id matches myself"
+
+  /bin/ls $HOME 1>&2
+  ok $? "/bin/ls $HOME"
+  # Same thing using okx shortcut
+  okx /bin/ls $HOME
+
+  [[ "`id -u`" != "0" ]]
+  i_am_not_root=$?
+  skip $i_am_not_root "Must be root" || {
+    okx ls /root
+  }
+
+  TODO="figure out how to become root..."
+  okx [ "$HOME" == "/root" ]
+  unset TODO
+USAGE
+	exit
+}
+
+opt=
+set_u=
+while getopts ":sx" opt ; do
+	case $_opt in
+        u) set_u=1 ;;
+        *) usage ;;
