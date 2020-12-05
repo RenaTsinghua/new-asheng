@@ -294,3 +294,94 @@ isnt(){
 	local result=${1:?}
 	local expected=${2:?}
 	local name=${3:-''}
+
+	_equals "$result" "$expected"
+	(( $? != 0 ))
+	ok $? "$name"
+	local r=$?
+	(( r != 0 )) && _is_diag "$result" "$expected"
+	return $r 
+}
+
+
+like(){
+	local result=${1:?}
+	local pattern=${2:?}
+	local name=${3:-''}
+
+	_matches "$result" "$pattern"
+	(( $? == 0 ))
+	ok $? "$name"
+	local r=$?
+	(( r != 0 )) && diag "    '$result' doesn't match '$pattern'"
+	return $r
+}
+
+
+unlike(){
+	local result=${1:?}
+	local pattern=${2:?}
+	local name=${3:-''}
+
+	_matches "$result" "$pattern"
+	(( $? != 0 ))
+	ok $? "$name"
+	local r=$?
+	(( r != 0 )) && diag "    '$result' matches '$pattern'"
+	return $r
+}
+
+
+skip(){
+	local condition=${1:?}
+	local reason=${2:-''}
+	local n=${3:-1}
+
+	if (( condition == 0 )) ; then
+		local i=
+		for (( i=0 ; i<$n ; i++ )) ; do
+			_executed_tests=$(( _executed_tests + 1 ))
+			echo "ok $_executed_tests # skip: $reason" 
+		done
+		return 0
+	else
+		return
+	fi
+}
+
+
+diag(){
+	local msg=${1:?}
+
+	if [[ -n "$msg" ]] ; then
+		echo "# $msg"
+	fi
+	
+	return 1
+}
+
+	
+_die(){
+	local reason=${1:-'<unspecified error>'}
+
+	echo "$reason" >&2
+	_test_died=1
+	_exit 255
+}
+
+
+BAIL_OUT(){
+	local reason=${1:-''}
+
+	echo "Bail out! $reason" >&2
+	_exit 255
+}
+
+
+_cleanup(){
+	local rc=0
+
+	if (( _plan_set == 0 )) ; then
+		diag "Looks like your test died before it could output anything."
+		return $rc
+	fi
