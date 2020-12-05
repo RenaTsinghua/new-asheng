@@ -385,3 +385,61 @@ _cleanup(){
 		diag "Looks like your test died before it could output anything."
 		return $rc
 	fi
+
+	if (( _test_died != 0 )) ; then
+		diag "Looks like your test died just after $_executed_tests."
+		return $rc
+	fi
+
+	if (( _skip_all == 0 && _no_plan != 0 )) ; then
+		_print_plan $_executed_tests
+	fi
+
+	local s=
+	if (( _no_plan == 0 && _expected_tests < _executed_tests )) ; then
+		s= ; (( _expected_tests > 1 )) && s=s
+		local extra=$(( _executed_tests - _expected_tests ))
+		diag "Looks like you planned $_expected_tests test$s but ran $extra extra."
+		rc=-1 ;
+	fi
+
+	if (( _no_plan == 0 && _expected_tests > _executed_tests )) ; then
+		s= ; (( _expected_tests > 1 )) && s=s
+		diag "Looks like you planned $_expected_tests test$s but only ran $_executed_tests."
+	fi
+
+	if (( _failed_tests > 0 )) ; then
+		s= ; (( _failed_tests > 1 )) && s=s
+		diag "Looks like you failed $_failed_tests test$s of $_executed_tests."
+	fi
+
+	return $rc
+}
+
+
+_exit_status(){
+	if (( _no_plan != 0 || _plan_set == 0 )) ; then
+		return $_failed_tests
+	fi
+
+	if (( _expected_tests < _executed_tests )) ; then
+		return $(( _executed_tests - _expected_tests  ))
+	fi
+
+	return $(( _failed_tests + ( _expected_tests - _executed_tests )))
+}
+
+
+_exit(){
+	local rc=${1:-''}
+	if [[ -z "$rc" ]] ; then
+		_exit_status
+		rc=$?
+	fi
+
+	_cleanup
+	local alt_rc=$?
+	(( alt_rc != 0 )) && rc=$alt_rc
+	trap - EXIT
+	exit $rc
+}
