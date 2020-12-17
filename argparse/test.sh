@@ -16,4 +16,6 @@ is "$(./test_argparse -n 2 2>&1)" 'num: 2'
 
 is "$(./test_argparse -n2 2>&1)" 'num: 2'
 
-is "$
+is "$(./test_argparse -na 2>&1)" 'error: option `-n` expects a numerical value'
+
+is "$(./test_argparse -f
