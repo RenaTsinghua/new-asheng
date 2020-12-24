@@ -29,4 +29,7 @@ test: 1'
 
 is "$(./test_argparse --read --write 2>&1)" 'perms: 3'
 
-is "$(./test_argparse
+is "$(./test_argparse -h)" 'Usage: test_argparse [options] [[--] args]
+   or: test_argparse [options]
+
+A brief description of w
