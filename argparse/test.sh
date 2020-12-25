@@ -32,4 +32,8 @@ is "$(./test_argparse --read --write 2>&1)" 'perms: 3'
 is "$(./test_argparse -h)" 'Usage: test_argparse [options] [[--] args]
    or: test_argparse [options]
 
-A brief description of w
+A brief description of what the program does and how it works.
+
+    -h, --help        show this help message and exit
+
+Basic o
