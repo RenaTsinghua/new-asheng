@@ -39,4 +39,9 @@ A brief description of what the program does and how it works.
 Basic options
     -f, --force       force to do
     -t, --test        test only
-    -p, --path=<str>  path to rea
+    -p, --path=<str>  path to read
+    -n, --num=<int>   selected num
+
+Bits options
+    --read            read perm
+    --write 
