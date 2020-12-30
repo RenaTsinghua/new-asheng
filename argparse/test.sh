@@ -47,4 +47,4 @@ Bits options
     --write           write perm
     --exec            exec perm
 
-Additional description of the program af
+Additional description of the program after the description of the arguments.'
