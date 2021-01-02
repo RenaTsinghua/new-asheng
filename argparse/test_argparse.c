@@ -6,4 +6,9 @@ static const char *const usages[] = {
     NULL,
 };
 
-#define PERM_RE
+#define PERM_READ  (1<<0)
+#define PERM_WRITE (1<<1)
+#define PERM_EXEC  (1<<2)
+
+int
+main(int argc, const char **ar
