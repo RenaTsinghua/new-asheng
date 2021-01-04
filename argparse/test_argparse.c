@@ -20,4 +20,6 @@ main(int argc, const char **argv)
     int perms = 0;
     struct argparse_option options[] = {
         OPT_HELP(),
-        OPT_G
+        OPT_GROUP("Basic options"),
+        OPT_BOOLEAN('f', "force", &force, "force to do"),
+        OPT_BOOLEAN('t', "test",
