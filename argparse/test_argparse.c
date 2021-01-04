@@ -11,4 +11,9 @@ static const char *const usages[] = {
 #define PERM_EXEC  (1<<2)
 
 int
-main(int argc, const char **ar
+main(int argc, const char **argv)
+{
+    int force = 0;
+    int test = 0;
+    int num = 0;
+    const char *path = 
