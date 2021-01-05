@@ -24,4 +24,6 @@ main(int argc, const char **argv)
         OPT_BOOLEAN('f', "force", &force, "force to do"),
         OPT_BOOLEAN('t', "test", &test, "test only"),
         OPT_STRING('p', "path", &path, "path to read"),
-        OPT_INTEGE
+        OPT_INTEGER('n', "num", &num, "selected num"),
+        OPT_GROUP("Bits options"),
+        OPT_BIT(0, "read", &perm
