@@ -22,4 +22,6 @@ main(int argc, const char **argv)
         OPT_HELP(),
         OPT_GROUP("Basic options"),
         OPT_BOOLEAN('f', "force", &force, "force to do"),
-        OPT_BOOLEAN('t', "test",
+        OPT_BOOLEAN('t', "test", &test, "test only"),
+        OPT_STRING('p', "path", &path, "path to read"),
+        OPT_INTEGE
