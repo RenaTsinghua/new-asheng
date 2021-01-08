@@ -32,4 +32,6 @@ main(int argc, const char **argv)
         OPT_END(),
     };
 
-    struct
+    struct argparse argparse;
+    argparse_init(&argparse, options, usages, 0);
+    argparse_describe(&a
