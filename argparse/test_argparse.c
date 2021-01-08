@@ -34,4 +34,4 @@ main(int argc, const char **argv)
 
     struct argparse argparse;
     argparse_init(&argparse, options, usages, 0);
-    argparse_describe(&a
+    argparse_describe(&argparse, "\nA brief description of what the program does and how it works.", "\nAdditional descripti
