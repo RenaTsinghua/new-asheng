@@ -27,4 +27,9 @@ main(int argc, const char **argv)
         OPT_INTEGER('n', "num", &num, "selected num"),
         OPT_GROUP("Bits options"),
         OPT_BIT(0, "read", &perms, "read perm", NULL, PERM_READ, OPT_NONEG),
-        OPT_BIT(0, "write", &perms, "write perm", NULL, PERM_WR
+        OPT_BIT(0, "write", &perms, "write perm", NULL, PERM_WRITE),
+        OPT_BIT(0, "exec", &perms, "exec perm", NULL, PERM_EXEC),
+        OPT_END(),
+    };
+
+    struct
