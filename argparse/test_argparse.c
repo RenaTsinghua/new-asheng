@@ -40,3 +40,8 @@ main(int argc, const char **argv)
         printf("force: %d\n", force);
     if (test != 0)
         printf("test: %d\n", test);
+    if (path != NULL)
+        printf("path: %s\n", path);
+    if (num != 0)
+        printf("num: %d\n", num);
+   
