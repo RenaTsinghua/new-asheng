@@ -52,4 +52,7 @@ main(int argc, const char **argv)
         }
     }
     if (perms) {
-        printf("perms: %
+        printf("perms: %d\n", perms);
+    }
+    return 0;
+}
