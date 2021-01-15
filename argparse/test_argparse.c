@@ -44,4 +44,7 @@ main(int argc, const char **argv)
         printf("path: %s\n", path);
     if (num != 0)
         printf("num: %d\n", num);
-   
+    if (argc != 0) {
+        printf("argc: %d\n", argc);
+        int i;
+        for (i = 0; i < argc; i++) {
