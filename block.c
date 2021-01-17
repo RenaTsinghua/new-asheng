@@ -142,3 +142,89 @@ parse_domain_list(FPST ** const domain_list_p,
     *domain_list_p = NULL;
     *domain_rev_list_p = NULL;
     *domain_substr_list_p = NULL;
+    domain_list = fpst_new();
+    domain_rev_list = fpst_new();
+    domain_substr_list = fpst_new();
+    if ((fp = fopen(file, "r")) == NULL) {
+        return -1;
+    }
+    while (fgets(buf, (int) sizeof buf, fp) != NULL) {
+        if ((line = trim_comments(untab(buf))) == NULL || *line == 0) {
+            continue;
+        }
+        line_len = strlen(line);
+        if (line[0] == '*' && line[line_len - 1] == '*') {
+            line[line_len - 1] = 0;
+            line++;
+            block_type = BLOCKTYPE_SUBSTRING;
+        } else if (line[line_len - 1] == '*') {
+            line[line_len - 1] = 0;
+            block_type = BLOCKTYPE_PREFIX;
+        } else {
+            if (line[0] == '*') {
+                line++;
+            }
+            if (line[0] == '.') {
+                line++;
+            }
+            str_reverse(line);
+            block_type = BLOCKTYPE_SUFFIX;
+        }
+        if (*line == 0) {
+            continue;
+        }
+        str_tolower(line);
+        if ((line = strdup(line)) == NULL) {
+            break;
+        }
+        if (block_type == BLOCKTYPE_SUFFIX) {
+            if ((domain_rev_list_tmp = fpst_insert_str(domain_rev_list, line,
+                                                       (uint32_t) block_type)) == NULL) {
+                free(line);
+                break;
+            }
+            domain_rev_list = domain_rev_list_tmp;
+        } else if (block_type == BLOCKTYPE_PREFIX) {
+            if ((domain_list_tmp = fpst_insert_str(domain_list, line,
+                                                   (uint32_t) block_type)) == NULL) {
+                free(line);
+                break;
+            }
+            domain_list = domain_list_tmp;
+        } else if (block_type == BLOCKTYPE_SUBSTRING) {
+            if ((domain_substr_list_tmp = fpst_insert_str(domain_substr_list, line,
+                                                          (uint32_t) block_type)) == NULL) {
+                free(line);
+                break;
+            }
+            domain_substr_list = domain_substr_list_tmp;
+        } else {
+            free(line);
+        }
+    }
+    if (!feof(fp)) {
+        fpst_free(domain_list, free_list);
+        fpst_free(domain_rev_list, free_list);
+        fpst_free(domain_substr_list, free_list);
+    } else {
+        *domain_list_p = domain_list;
+        *domain_rev_list_p = domain_rev_list;
+        *domain_substr_list_p = domain_substr_list;
+        ret = 0;
+    }
+    fclose(fp);
+    logger(LOG_INFO, "Blacklist [%s] loaded", file);
+
+    return ret;
+}
+
+static _Bool
+substr_match(FPST *list, const char *str,
+             const char **found_key_p, uint32_t *found_block_type_p)
+{
+    while (*str != 0) {
+        if (fpst_str_starts_with_existing_key(list, str, found_key_p,
+                                              found_block_type_p)) {
+            return 1;
+        }
+        str++;
