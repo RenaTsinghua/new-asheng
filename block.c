@@ -333,3 +333,50 @@ name_matches_blacklist(const Blocking * const blocking, char * const name)
                         (rev[found_key_len] == 0 || rev[found_key_len] == '.')) {
                         block = 1;
                         break;
+                    }
+                }
+            }
+        }
+        if (fpst_starts_with_existing_key(blocking->domains,
+                                          name, name_len,
+                                          &found_key, &found_block_type)) {
+            assert(found_block_type == BLOCKTYPE_PREFIX);
+            block = 1;
+            break;
+        }
+        if (blocking->domains_substr != NULL &&
+            substr_match(blocking->domains_substr, name,
+                         &found_key, &found_block_type)) {
+            assert(found_block_type == BLOCKTYPE_SUBSTRING);
+            block = 1;
+            break;
+        }
+    } while (0);
+
+    return (int) block;
+}
+
+int
+is_blocked(struct context *c, struct dns_header *header, size_t dns_query_len)
+{
+    unsigned char *ansp;
+    unsigned char *p;
+    char          *name;
+
+    if (c->blocking == NULL) {
+        return 0;
+    }
+    if (ntohs(header->qdcount) != 1) {
+        return -1;
+    }
+    if (!(ansp = skip_questions(header, dns_query_len))) {
+        return -1;
+    }
+    p = (unsigned char *)(header + 1);
+    if (!extract_name(header, dns_query_len, &p, c->namebuff, 1, 4)) {
+        return -1;
+    }
+    name = c->namebuff;
+
+    return name_matches_blacklist(c->blocking, name);
+}
