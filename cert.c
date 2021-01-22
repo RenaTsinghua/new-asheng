@@ -47,3 +47,47 @@ cert_sign(struct SignedCert *signed_cert, const uint8_t *provider_secretkey)
     unsigned long long signed_data_len =
         sizeof(struct SignedCert) - offsetof(struct SignedCert,
                                              server_publickey);
+
+    return crypto_sign_detached(signed_cert->signature, NULL,
+                                signed_cert->server_publickey, signed_data_len,
+                                provider_secretkey);
+}
+
+void
+cert_display_txt_record_tinydns(struct SignedCert *signed_cert)
+{
+    size_t i = (size_t) 0U;
+    int c;
+
+    fputs("'2.dnscrypt-cert:", stdout);
+    while (i < sizeof(struct SignedCert)) {
+        c = (int)*((const uint8_t *) signed_cert + i);
+        if (isprint(c) && c != ':' && c != '\\' && c != '&' && c != '<'
+            && c != '>') {
+            putchar(c);
+        } else {
+            printf("\\%03o", c);
+        }
+        i++;
+    }
+    puts(":86400");
+}
+
+void
+cert_display_txt_record(struct SignedCert *signed_cert)
+{
+    size_t i = (size_t) 0U;
+    int c;
+
+    fputs("2.dnscrypt-cert\t86400\tIN\tTXT\t\"", stdout);
+    while (i < sizeof(struct SignedCert)) {
+        c = (int)*((const uint8_t *) signed_cert + i);
+        if (isprint(c) && c != '"' && c != '\\') {
+            putchar(c);
+        } else {
+            printf("\\%03d", c);
+        }
+        i++;
+    }
+    puts("\"");
+}
