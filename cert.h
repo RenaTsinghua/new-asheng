@@ -11,4 +11,9 @@
 
 struct SignedCert {
     uint8_t magic_cert[4];
-    uint8
+    uint8_t version_major[2];
+    uint8_t version_minor[2];
+
+    uint8_t signature[crypto_sign_BYTES];
+    // Signed Content
+    
