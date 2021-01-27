@@ -16,4 +16,7 @@ struct SignedCert {
 
     uint8_t signature[crypto_sign_BYTES];
     // Signed Content
-    
+    uint8_t server_publickey[crypto_box_PUBLICKEYBYTES];
+    uint8_t magic_query[8];
+    uint8_t serial[4];
+ 
