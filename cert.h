@@ -19,4 +19,10 @@ struct SignedCert {
     uint8_t server_publickey[crypto_box_PUBLICKEYBYTES];
     uint8_t magic_query[8];
     uint8_t serial[4];
- 
+    uint8_t ts_begin[4];
+    uint8_t ts_end[4];
+};
+
+struct Cert {
+    uint8_t magic_cert[4];
+    uint8_t 
