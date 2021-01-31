@@ -29,4 +29,7 @@ struct Cert {
     uint8_t version_minor[2];
 
     // Signed Content
-    uint8_t signed_content[64]
+    uint8_t signed_content[64];
+    uint8_t server_publickey[crypto_box_PUBLICKEYBYTES];
+    uint8_t magic_query[8];
+ 
