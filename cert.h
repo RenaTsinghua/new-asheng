@@ -39,4 +39,6 @@ struct Cert {
 
 
 struct SignedCert *cert_build_cert(const uint8_t *crypt_publickey, int cert_file_expire_days, int use_xchacha20);
-int c
+int cert_sign(struct SignedCert *signed_cert,
+              const uint8_t *provider_secretkey);
+void cer
