@@ -2,4 +2,10 @@
 
 CC = @CC@
 CFLAGS = @CFLAGS@
-CPPFL
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+AR = @AR@
+TAR = @TAR@
+
+prefix = @prefix@
+exec_prefix = 
