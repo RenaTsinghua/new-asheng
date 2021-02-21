@@ -80,3 +80,26 @@ seconds_from_string(char *s, int *seconds)
                 break;
             } else if (*p == 'm') {
                 mul = 60;
+                break;
+            } else if (*p == 's') {
+                mul = 1;
+                break;
+            } else {
+                return -1;
+            }
+        }
+    }
+    // *p or *(p+1) should be '\0'.
+    if (*p != '\0' && *(p + 1) != '\0') {
+        return -2;
+    }
+    errno = 0;
+    x     = strtol(s, NULL, 10);
+    if (errno != 0) {
+        return -3;
+    }
+    *seconds = x * mul;
+    return 0;
+}
+
+#endif

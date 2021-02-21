@@ -1,0 +1,5 @@
+# Makefile configuration, included by Makefile.
+
+CC = @CC@
+CFLAGS = @CFLAGS@
+CPPFL
