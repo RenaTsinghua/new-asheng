@@ -8,4 +8,9 @@ AR = @AR@
 TAR = @TAR@
 
 prefix = @prefix@
-exec_prefix = 
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+datarootdir = @datarootdir@
+sysconfdir = @sysconfdir@
+srcdir = @srcdir@
+m
