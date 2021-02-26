@@ -13,4 +13,4 @@ bindir = @bindir@
 datarootdir = @datarootdir@
 sysconfdir = @sysconfdir@
 srcdir = @srcdir@
-m
+mandir=@mandir@
