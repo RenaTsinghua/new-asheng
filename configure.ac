@@ -5,4 +5,8 @@
 # is used by Makefile.
 #
 
-## Definitions of p
+## Definitions of private macros.
+
+# CONF_SUBST_INIT
+# -------------------
+# Prepare shell variables and autoconf
