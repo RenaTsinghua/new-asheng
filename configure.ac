@@ -12,4 +12,7 @@
 # Prepare shell variables and autoconf machine required by later calls
 # to CONF_SUBST.
 AC_DEFUN([CONF_SUBST_INIT],
-    [config_appe
+    [config_appended_defs=; newline='
+'
+    AC_CONFIG_COMMANDS([$config_file],
+                       [echo "
