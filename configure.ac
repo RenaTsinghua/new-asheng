@@ -23,4 +23,6 @@ AC_DEFUN([CONF_SUBST_INIT],
 # CONF_SUBST(VAL, VAR)
 # ------------------------
 # Cause the line "VAR=VAL" to be eventually appended to ${config_file}.
-AC_DEFUN
+AC_DEFUN([CONF_SUBST], [AC_REQUIRE([CONF_SUBST_INIT])
+config_appended_defs="$config_appended_defs${newline}dnl
+$1=m4_if(
