@@ -21,4 +21,6 @@ AC_DEFUN([CONF_SUBST_INIT],
 )
 
 # CONF_SUBST(VAL, VAR)
-# ------------------
+# ------------------------
+# Cause the line "VAR=VAL" to be eventually appended to ${config_file}.
+AC_DEFUN
