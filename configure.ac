@@ -25,4 +25,12 @@ AC_DEFUN([CONF_SUBST_INIT],
 # Cause the line "VAR=VAL" to be eventually appended to ${config_file}.
 AC_DEFUN([CONF_SUBST], [AC_REQUIRE([CONF_SUBST_INIT])
 config_appended_defs="$config_appended_defs${newline}dnl
-$1=m4_if(
+$1=m4_if([$#],[1],[${$1}],[$2])"]
+)
+
+## Configure body starts here.
+
+AC_PREREQ([2.59])
+AC_INIT
+
+config_file=config.mak.autogen
