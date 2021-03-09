@@ -17,4 +17,8 @@ AC_DEFUN([CONF_SUBST_INIT],
     AC_CONFIG_COMMANDS([$config_file],
                        [echo "$config_appended_defs" >> "$config_file"],
                        [config_file=$config_file
-        
+                        config_appended_defs="$config_appended_defs"])]
+)
+
+# CONF_SUBST(VAL, VAR)
+# ------------------
