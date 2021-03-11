@@ -41,4 +41,9 @@ CONF_SUBST([AUTOCONFIGURED], [YesPlease])
 
 # Checks for programs
 AC_PROG_CC
-AC_C
+AC_CHECK_TOOLS(AR, [gar ar], :)
+AC_CHECK_PROGS(TAR, [gtar tar])
+
+# libevent
+AC_ARG_WITH(event,
+    [AS_HELP_STRING([--wi
