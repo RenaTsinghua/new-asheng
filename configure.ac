@@ -34,3 +34,11 @@ AC_PREREQ([2.59])
 AC_INIT
 
 config_file=config.mak.autogen
+config_in=config.mak.in
+
+# AUTOCONFIGURED
+CONF_SUBST([AUTOCONFIGURED], [YesPlease])
+
+# Checks for programs
+AC_PROG_CC
+AC_C
