@@ -53,4 +53,7 @@ AC_ARG_WITH(event,
     fi],
     withval=yes # default
 )
-if t
+if test "$withval" != no; then
+    AC_CHECK_LIB(event,event_base_new,
+        [LIBS="-levent $LIBS"],
+        [AC_MSG_ERROR([l
