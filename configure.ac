@@ -48,4 +48,9 @@ AC_CHECK_PROGS(TAR, [gtar tar])
 AC_ARG_WITH(event,
     [AS_HELP_STRING([--with-event=DIR], [where to find the event library])],
     [if test -d "$withval"; then
-        LDFLAGS="$LDFLAGS -L$
+        LDFLAGS="$LDFLAGS -L$withval/lib"
+        CFLAGS="$CFLAGS -I$withval/include"
+    fi],
+    withval=yes # default
+)
+if t
