@@ -64,4 +64,7 @@ if test "$withval" != no; then
     )
 fi
 
-# libso
+# libsodium
+AC_ARG_WITH(sodium,
+    [AS_HELP_STRING([--with-sodium=DIR], [where to find the sodium library])],
+    [if t
