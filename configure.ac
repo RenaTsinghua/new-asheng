@@ -59,4 +59,9 @@ if test "$withval" != no; then
         [AC_MSG_ERROR([libevent2 is required - see http://libevent.org/])]
     )   
     AC_CHECK_HEADERS(event2/event.h,
-        [L
+        [LIBS="-levent $LIBS"],
+        [AC_MSG_ERROR([libevent2 is required - see http://libevent.org/])]
+    )
+fi
+
+# libso
