@@ -76,4 +76,8 @@ AC_ARG_WITH(sodium,
 if test "$withval" != no; then
     AC_CHECK_LIB(sodium,sodium_init,
         [LIBS="-lsodium $LIBS"],
-        [AC_MSG_ERROR([sodium is required - see http
+        [AC_MSG_ERROR([sodium is required - see https://github.com/jedisct1/libsodium])]
+    )   
+fi
+
+AC_CHECK_FUNCS(crypto_box_curve25519xchacha20poly130
