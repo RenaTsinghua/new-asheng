@@ -74,4 +74,6 @@ AC_ARG_WITH(sodium,
     withval=yes # default
 )
 if test "$withval" != no; then
-    AC_CHECK_LIB(sodium,sodi
+    AC_CHECK_LIB(sodium,sodium_init,
+        [LIBS="-lsodium $LIBS"],
+        [AC_MSG_ERROR([sodium is required - see http
