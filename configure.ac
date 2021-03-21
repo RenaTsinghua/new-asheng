@@ -70,3 +70,8 @@ AC_ARG_WITH(sodium,
     [if test -d "$withval"; then
         LDFLAGS="$LDFLAGS -L$withval/lib"
         CFLAGS="$CFLAGS -I$withval/include"
+    fi],
+    withval=yes # default
+)
+if test "$withval" != no; then
+    AC_CHECK_LIB(sodium,sodi
