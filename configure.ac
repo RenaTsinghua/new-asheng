@@ -80,4 +80,6 @@ if test "$withval" != no; then
     )   
 fi
 
-AC_CHECK_FUNCS(crypto_box_curve25519xchacha20poly130
+AC_CHECK_FUNCS(crypto_box_curve25519xchacha20poly1305_open_easy,
+    [CFLAGS="$CFLAGS -DHAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY"],
+    
