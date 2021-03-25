@@ -93,4 +93,6 @@ AC_OUTPUT
 AC_MSG_RESULT([
 Configuration summary:
 
-    Support for event library: $a
+    Support for event library: $ac_cv_lib_event_event_base_new
+    Support for sodium library: $ac_cv_lib_sodium_sodium_init
+    Support for 
