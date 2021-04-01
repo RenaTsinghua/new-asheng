@@ -95,4 +95,5 @@ Configuration summary:
 
     Support for event library: $ac_cv_lib_event_event_base_new
     Support for sodium library: $ac_cv_lib_sodium_sodium_init
-    Support for 
+    Support for xchacha20: $ac_cv_func_crypto_box_curve25519xchacha20poly1305_open_easy
+])
