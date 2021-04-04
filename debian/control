@@ -1,0 +1,4 @@
+Source: dnscrypt-wrapper
+Section: net
+Priority: optional
+Maintainer: Andrey Korolyov <andrey@xdel.ru>
