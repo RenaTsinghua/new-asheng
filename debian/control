@@ -3,4 +3,9 @@ Section: net
 Priority: optional
 Maintainer: Andrey Korolyov <andrey@xdel.ru>
 Build-Depends: debhelper (>= 9), automake, dh-autoreconf, libsodium-dev, libevent-dev
-Standa
+Standards-Version: 3.9.8
+Homepage: https://dnscrypt.info
+
+Package: dnscrypt-wrapper
+Architecture: any
+Depends: ${shlibs:Dep
