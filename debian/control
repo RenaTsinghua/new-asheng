@@ -8,4 +8,6 @@ Homepage: https://dnscrypt.info
 
 Package: dnscrypt-wrapper
 Architecture: any
-Depends: ${shlibs:Dep
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
+Description: custom secured DNS query wrapper
+ DNSCrypt is a protocol t
