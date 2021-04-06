@@ -1,0 +1,91 @@
+
+'\" t
+.\"     Title: useradd
+.\"    Author: Aurelien Requiem
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 11/18/2015
+.\"    Manual: System Management Commands
+.\"    Source: shadow-utils 4.2
+.\"  Language: English
+.\"
+.TH "DNSCRYPT-WRAPPER" "8" "December 26th, 2016" "Debian GNU/Linux" "Admin Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+dnscrypt\-wrapper \- Creates an empty website template almost ready for deployment.
+.SH SYNOPSIS
+.B dnscrypt\-wrapper
+.RB [\| \-h \|]
+.RB [\| \-a
+.IR <str> \|]
+.RB [\| \-r
+.IR <str> \|]
+.RB [\| \-U \|]
+.RB [\| \-u
+.IR <str> \|]
+.RB [\| \-l
+.IR <str> \|]
+.RB [\| \-p
+.IR <str> \|]
+.RB [\| \-d \|]
+.RB [\| \-V \|]
+.RB [\| \-v \|]
+.RB [\| \-\-gen-cert-file \|]
+.RB [\| \-\-gen-crypt-keypair \|]
+.RB [\| \-\-gen-provider-keypair \|]
+.RB [\| \-\-show-provider-publickey-fingerprint \|]
+.RB\fB [\| \-\-provider-cert-file=\fR\&\fI<str>\fR \|]
+.RB\fB [\| \-\-provider-name=\fR\&\fI<str>\fR \|]
+.RB\fB [\| \-\-provider-publickey-file=\fR\&\fI<str>\fR \|]
+.RB\fB [\| \-\-provider-secretkey-file=\fR\&\fI<str>\fR \|]
+.RB\fB [\| \-\-crypt-secretkey-file=\fR\&\fI<str>\fR \|]
+.RB\fB [\| \-\-cert-file-expire-days=\fR\&\fI<int>\fR \|]
+
+
+.SH DESCRIPTION
+.BR dnscrypt\-wrapper
+DNSCrypt is a protocol that authenticates communications between a DNS client and a DNS resolver. It prevents DNS spoofing. It uses cryptographic signatures to verify that responses originate from the chosen DNS resolver and haven't been tampered with.
+
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\--help\fR,
+.RS 4
+Display dnscrypt\-wrapper help message and exit.
+.RE
+.TP
+\fB\-a\fR\ \&\fI<str>\fR, \fB\-\-listen-address=\fR\&\fI<str>\fR
+.RS 4
+Set local address to listen (default: 0.0.0.0:53).
+.RE
+.TP
+\fB\fR\ \&\fI<str>\-r\fR, \fB\-\-resolver\-address=\fR\&\fI<str>\fR
+.RS 4
+Set the upstream dns resolver server (<address:port>).
+.RE
+.TP
+\fB\-U\fR, \fB\-\-unauthenticated\fR
+.RS 4
+Allow and forward unauthenticated queries (default: off).
+.RE
+.TP
+\fB\-u\fR\ \&\fI<str>\fR, \fB\-\-user=\fR\&\fI<str>\fR
+.RS 4
+Run the service as given user.
+.RE

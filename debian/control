@@ -15,4 +15,6 @@ Description: custom secured DNS query wrapper
  to verify that responses originate from the chosen DNS resolver and
  haven't been tampered with.
  .
- This package provides server-side proxy for DNS queries to a d
+ This package provides server-side proxy for DNS queries to a designated
+ upstream.
+
