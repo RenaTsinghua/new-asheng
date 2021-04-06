@@ -89,3 +89,81 @@ Allow and forward unauthenticated queries (default: off).
 .RS 4
 Run the service as given user.
 .RE
+.TP
+\fB\-l\fR\ \&\fI<str>\fR, \fB\-\-logfile=\fR\&\fI<str>\fR
+.RS 4
+Logs file path (default: stdout).
+.RE
+.TP
+\fB\-p\fR\ \&\fI<str>\fR, \fB\-\-pidfile=\fR\&\fI<str>\fR
+.RS 4
+Pid file path (default: none).
+.RE
+.TP
+\fB\-d\fR, \fB\-\-daemonize\fR
+.RS 4
+Run as daemon (default: off).
+.RE
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+.RS 4
+Set the service to be more verbose. Specify more \-VVV to increase verbosity.
+.RE
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+.RS 4
+Show version info and exit.
+.RE
+.TP
+\fB\-\-gen\-cert\-file\fR
+.RS 4
+Generate pre\-signed certificate
+.RE
+.TP
+\fB\-\-gen\-crypt\-keypair\fR
+.RS 4
+Generate crypt key pair
+.RE
+.TP
+\fB\-\-gen\-provider\-keypair\fR
+.RS 4
+Generate provider key pair
+.RE
+.TP
+\fB\-\-show\-provider\-publickey\-fingerprint\fR
+.RS 4
+Display provider public key fingerprint
+.RE
+.TP
+\fB\-\-provider\-cert\-file=\fR\&\fI<str>\fR
+.RS 4
+Certificate file (default: ./dnscrypt.cert)
+.RE
+.TP
+\fB\-\-provider\-name=\fR\&\fI<str>\fR
+.RS 4
+Provider name.
+.RE
+.TP
+\fB\-\-provider\-publickey\-file=\fR\&\fI<str>\fR
+.RS 4
+Provider public key file (default: ./public.key).
+.RE
+.TP
+\fB\-\-provider\-secretkey\-file=\fR\&\fI<str>\fR
+.RS 4
+Provider secret key file (default: ./secret.key).
+.RE
+.TP
+\fB\-\-crypt\-secretkey\-file=\fR\&\fI<str>\fR
+.RS 4
+Crypt secret key file (default: ./crypt_secret.key).
+.RE
+.TP
+\fB\-\-cert\-file\-expire\-days=\fR\&\fI<int>\fR
+.RS 4
+cert file expire days (default: 365).
+.PP
+.
+.SH "SEE ALSO"
+\fBdnscrypt-proxy\fR(8)
