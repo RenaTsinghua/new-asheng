@@ -1,0 +1,5 @@
+#!/bin/sh
+# Start/stop the DNSCrypt wrapper.
+#
+### BEGIN INIT INFO
+# Provides
