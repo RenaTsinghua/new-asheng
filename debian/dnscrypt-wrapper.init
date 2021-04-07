@@ -2,4 +2,6 @@
 # Start/stop the DNSCrypt wrapper.
 #
 ### BEGIN INIT INFO
-# Provides
+# Provides:          dnscrypt-wrapper
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $
