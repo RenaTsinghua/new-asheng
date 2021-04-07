@@ -9,4 +9,5 @@
 # Default-Stop:
 # Short-Description: DNSCrypt dns proxy wrapper
 # Description:       DNSCrypt wrapper is a secure protocol that allows
-#                    end
+#                    end-users to communicate with trusted DNS server when
+#                    DNSSEC or alternative query meas
