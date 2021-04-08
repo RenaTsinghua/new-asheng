@@ -14,4 +14,7 @@
 #                    deployed or not available at all.
 ### END INIT INFO
 
-PATH=
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DESC="DNSCrypt wrapper"
+NAME=dnscrypt-wrapper
+DAEMON=/usr/sbin/dnscrypt-wrapp
