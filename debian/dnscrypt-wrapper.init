@@ -10,4 +10,8 @@
 # Short-Description: DNSCrypt dns proxy wrapper
 # Description:       DNSCrypt wrapper is a secure protocol that allows
 #                    end-users to communicate with trusted DNS server when
-#                    DNSSEC or alternative query meas
+#                    DNSSEC or alternative query measurement tool are not 
+#                    deployed or not available at all.
+### END INIT INFO
+
+PATH=
