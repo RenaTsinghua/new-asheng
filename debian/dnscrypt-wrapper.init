@@ -23,4 +23,8 @@ SCRIPTNAME=/etc/init.d/"$NAME"
 
 test -f $DAEMON || exit 0
 
-. /lib/lsb
+. /lib/lsb/init-functions
+
+[ -r /etc/default/dnscrypt-wrapper ] && . /etc/default/dnscrypt-wrapper
+
+DAEM
