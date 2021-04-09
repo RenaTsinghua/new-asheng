@@ -31,4 +31,9 @@ DAEMON_OPTS="$RUNTIME_OPTS $NETWORK_OPTS $KEY_OPTS"
 
 case "$1" in
 	start)
-		log_daemon_msg "Starting DNSCrypt wrap
+		log_daemon_msg "Starting DNSCrypt wrapper"
+		start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS
+		log_end_msg $?
+		;;
+
+	st
