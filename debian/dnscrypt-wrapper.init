@@ -17,4 +17,10 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 DESC="DNSCrypt wrapper"
 NAME=dnscrypt-wrapper
-DAEMON=/usr/sbin/dnscrypt-wrapp
+DAEMON=/usr/sbin/dnscrypt-wrapper
+PIDFILE=/var/run/dnscrypt-wrapper.pid
+SCRIPTNAME=/etc/init.d/"$NAME"
+
+test -f $DAEMON || exit 0
+
+. /lib/lsb
