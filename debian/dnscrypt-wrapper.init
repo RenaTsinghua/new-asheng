@@ -36,4 +36,6 @@ case "$1" in
 		log_end_msg $?
 		;;
 
-	st
+	stop)
+		log_daemon_msg "Stopping DNSCrypt wrapper"
+		killproc -p $PIDFILE $DAEMON
