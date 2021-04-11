@@ -51,4 +51,7 @@ case "$1" in
 		;;
 
 	status)
-		status_of_proc -p $PIDFI
+		status_of_proc -p $PIDFILE $DAEMON $NAME && exit 0 || exit $?
+		;;
+
+	*)      log_action_msg "Usage: $SCRIPTNAME {start|stop|status|res
