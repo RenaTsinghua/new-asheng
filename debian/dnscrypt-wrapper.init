@@ -44,4 +44,11 @@ case "$1" in
 		log_end_msg $RETVAL
 		;;
 
-	restart|force-r
+	restart|force-reload)
+		log_daemon_msg "Restarting DNSCrypt wrapper" 
+		$0 stop
+		$0 start
+		;;
+
+	status)
+		status_of_proc -p $PIDFI
