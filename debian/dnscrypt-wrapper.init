@@ -39,3 +39,9 @@ case "$1" in
 	stop)
 		log_daemon_msg "Stopping DNSCrypt wrapper"
 		killproc -p $PIDFILE $DAEMON
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && [ -e "$PIDFILE" ] && rm -f $PIDFILE
+		log_end_msg $RETVAL
+		;;
+
+	restart|force-r
