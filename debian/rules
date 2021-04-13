@@ -1,3 +1,7 @@
 #!/usr/bin/make -f
 
-# Enable this export to get more detailed information about w
+# Enable this export to get more detailed information about what debhelper does
+#export DH_VERBOSE=1
+
+# parallel build by default on linux
+ifeq ($(DEB_HOST_ARCH_OS),l
