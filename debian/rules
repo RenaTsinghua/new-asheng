@@ -11,4 +11,5 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 endif
 $(info DEB_BUILD_OPTIONS=$(DEB_BUILD_OPTIONS))
 
-#
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platfo
