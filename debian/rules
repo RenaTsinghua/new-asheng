@@ -16,4 +16,9 @@ $(info DEB_BUILD_OPTIONS=$(DEB_BUILD_OPTIONS))
 export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-export DEB_BUILD_MAINT_OPTIONS=hard
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+
+# minimise needless linking
+export DEB_LDFLAGS_MAINT_APPEND= -Wl,--as-needed
+
+CONFFLAGS_C
