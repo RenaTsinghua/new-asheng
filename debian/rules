@@ -31,4 +31,5 @@ CONFFLAGS_COMMON  = --host=$(DEB_HOST_GNU_TYPE) \
                     --with-sodium
 
 %:
-	dh $@ --paralle
+	dh $@ --parallel --max-parallel=4 --with autoreconf
+
