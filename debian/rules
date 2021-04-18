@@ -27,4 +27,8 @@ CONFFLAGS_COMMON  = --host=$(DEB_HOST_GNU_TYPE) \
                     --prefix=/usr \
                     --infodir=\$${prefix}/share/info \
                     --mandir=\$${prefix}/share/man \
-    
+                    --with-event \
+                    --with-sodium
+
+%:
+	dh $@ --paralle
