@@ -301,3 +301,102 @@ dnscrypt_server_uncurve(struct context *c, const dnsccert *cert,
             return -1;
         }
     }
+
+    len -= DNSCRYPT_QUERY_HEADER_SIZE;
+    while (len > 0 && buf[--len] == 0);
+    if (buf[len] != 0x80) {
+        return -1;
+    }
+
+    memcpy(client_nonce, nonce, crypto_box_HALF_NONCEBYTES);
+    *lenp = len;
+
+    return 0;
+}
+
+void
+add_server_nonce(struct context *c, uint8_t *nonce)
+{
+    uint64_t ts;
+    uint64_t tsn;
+    uint32_t suffix;
+    ts = dnscrypt_hrtime();
+    if (ts <= c->nonce_ts_last) {
+        ts = c->nonce_ts_last + 1;
+    }
+    c->nonce_ts_last = ts;
+    tsn = (ts << 10) | (randombytes_random() & 0x3ff);
+#if (BYTE_ORDER == LITTLE_ENDIAN)
+    tsn =
+        (((uint64_t)htonl((uint32_t)tsn)) << 32) | htonl((uint32_t)(tsn >> 32));
+#endif
+    memcpy(nonce + crypto_box_HALF_NONCEBYTES, &tsn, 8);
+    suffix = randombytes_random();
+    memcpy(nonce + crypto_box_HALF_NONCEBYTES + 8, &suffix, 4);
+}
+
+//  8 bytes: magic header (CERT_MAGIC_HEADER)
+// 12 bytes: the client's nonce
+// 12 bytes: server nonce extension
+// 16 bytes: Poly1305 MAC (crypto_box_MACBYTES)
+
+#define DNSCRYPT_REPLY_BOX_OFFSET \
+    (DNSCRYPT_MAGIC_HEADER_LEN + crypto_box_HALF_NONCEBYTES + crypto_box_HALF_NONCEBYTES)
+
+int
+dnscrypt_server_curve(struct context *c, const dnsccert *cert,
+                      uint8_t client_nonce[crypto_box_HALF_NONCEBYTES],
+                      uint8_t nmkey[crypto_box_BEFORENMBYTES],
+                      uint8_t *const buf, size_t * const lenp,
+                      const size_t max_len)
+{
+    uint8_t nonce[crypto_box_NONCEBYTES];
+    uint8_t *boxed;
+    size_t len = *lenp;
+
+    memcpy(nonce, client_nonce, crypto_box_HALF_NONCEBYTES);
+    memcpy(nonce + crypto_box_HALF_NONCEBYTES, client_nonce,
+           crypto_box_HALF_NONCEBYTES);
+
+    boxed = buf + DNSCRYPT_REPLY_BOX_OFFSET;
+    memmove(boxed + crypto_box_MACBYTES, buf, len);
+    len =
+        dnscrypt_pad(boxed + crypto_box_MACBYTES, len,
+                     max_len - DNSCRYPT_REPLY_HEADER_SIZE, nonce,
+                     c->keypairs[0].crypt_secretkey);
+    // add server nonce extension
+    add_server_nonce(c, nonce);
+
+    if (XCHACHA20_CERT(cert)) {
+#ifdef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY
+        if (crypto_box_curve25519xchacha20poly1305_easy_afternm
+            (boxed, boxed + crypto_box_MACBYTES, len, nonce, nmkey) != 0) {
+            return -1;
+        }
+#endif
+    } else {
+        if (crypto_box_easy_afternm(boxed, boxed + crypto_box_MACBYTES,
+                                    len, nonce, nmkey) != 0) {
+            return -1;
+        }
+    }
+
+    memcpy(buf, DNSCRYPT_MAGIC_RESPONSE, DNSCRYPT_MAGIC_HEADER_LEN);
+    memcpy(buf + DNSCRYPT_MAGIC_HEADER_LEN, nonce, crypto_box_NONCEBYTES);
+    *lenp = len + DNSCRYPT_REPLY_HEADER_SIZE;
+    return 0;
+}
+
+/**
+ * Return 0 if served.
+ */
+int
+dnscrypt_self_serve_cert_file(struct context *c, struct dns_header *header,
+                              size_t *dns_query_len, size_t max_len)
+{
+    unsigned char *p;
+    unsigned char *ansp;
+    int qtype;
+    unsigned int nameoffset;
+    p = (unsigned char *)(header + 1);
+    int anscount = 0;
