@@ -196,3 +196,108 @@ dnscrypt_fingerprint_to_key(const char *const fingerprint,
         p++;
     }
     return -1;
+}
+
+/**
+ * Add random padding to a buffer, according to a client nonce.
+ * The length has to depend on the query in order to avoid reply attacks.
+ *
+ * @param buf a buffer
+ * @param len the initial size of the buffer
+ * @param max_len the maximum size
+ * @param nonce a nonce, made of the client nonce repeated twice
+ * @param secretkey
+ * @return the new size, after padding
+ */
+size_t
+dnscrypt_pad(uint8_t *buf, const size_t len, const size_t max_len,
+             const uint8_t *nonce, const uint8_t *secretkey)
+{
+    uint8_t *buf_padding_area = buf + len;
+    size_t padded_len;
+    uint32_t rnd;
+
+    // no padding
+    if (max_len < len + DNSCRYPT_MIN_PAD_LEN)
+        return len;
+
+    assert(nonce[crypto_box_HALF_NONCEBYTES] == nonce[0]);
+
+    crypto_stream((unsigned char *)&rnd, (unsigned long long)sizeof(rnd), nonce,
+                  secretkey);
+    padded_len =
+        len + DNSCRYPT_MIN_PAD_LEN + rnd % (max_len - len -
+                                            DNSCRYPT_MIN_PAD_LEN + 1);
+    padded_len += DNSCRYPT_BLOCK_SIZE - padded_len % DNSCRYPT_BLOCK_SIZE;
+    if (padded_len > max_len)
+        padded_len = max_len;
+
+    memset(buf_padding_area, 0, padded_len - len);
+    *buf_padding_area = 0x80;
+
+    return padded_len;
+}
+
+//  8 bytes: magic_query
+// 32 bytes: the client's DNSCurve public key (crypto_box_PUBLICKEYBYTES)
+// 12 bytes: a client-selected nonce (crypto_box_HALF_NONCEBYTES)
+// 16 bytes: Poly1305 MAC (crypto_box_MACBYTES)
+
+#define DNSCRYPT_QUERY_BOX_OFFSET \
+    (DNSCRYPT_MAGIC_HEADER_LEN + crypto_box_PUBLICKEYBYTES + crypto_box_HALF_NONCEBYTES)
+
+int
+dnscrypt_server_uncurve(struct context *c, const dnsccert *cert,
+                        uint8_t client_nonce[crypto_box_HALF_NONCEBYTES],
+                        uint8_t nmkey[crypto_box_BEFORENMBYTES],
+                        uint8_t *const buf, size_t * const lenp)
+{
+    size_t len = *lenp;
+
+    if (len <= DNSCRYPT_QUERY_HEADER_SIZE) {
+        return -1;
+    }
+
+    struct dnscrypt_query_header *query_header =
+        (struct dnscrypt_query_header *)buf;
+    Cached *cached;
+
+    if (cache_get(&cached, query_header->publickey, cert->keypair->crypt_publickey, XCHACHA20_CERT(cert))) {
+        memcpy(nmkey, cached->shared, crypto_box_BEFORENMBYTES);
+    } else {
+        memcpy(nmkey, query_header->publickey, crypto_box_PUBLICKEYBYTES);
+        if (XCHACHA20_CERT(cert)) {
+#ifdef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY
+            if (crypto_box_curve25519xchacha20poly1305_beforenm(nmkey, nmkey,
+                    cert->keypair->crypt_secretkey) != 0) {
+                return -1;
+            }
+#endif
+        } else {
+            if (crypto_box_beforenm(nmkey, nmkey,
+                    cert->keypair->crypt_secretkey) != 0) {
+                return -1;
+            }
+        }
+        cache_set(nmkey, query_header->publickey, cert->keypair->crypt_publickey, XCHACHA20_CERT(cert));
+    }
+
+    uint8_t nonce[crypto_box_NONCEBYTES];
+    memcpy(nonce, query_header->nonce, crypto_box_HALF_NONCEBYTES);
+    memset(nonce + crypto_box_HALF_NONCEBYTES, 0, crypto_box_HALF_NONCEBYTES);
+
+    if (XCHACHA20_CERT(cert)) {
+#ifdef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY
+        if (crypto_box_curve25519xchacha20poly1305_open_easy_afternm
+            (buf, buf + DNSCRYPT_QUERY_BOX_OFFSET,
+             len - DNSCRYPT_QUERY_BOX_OFFSET, nonce, nmkey) != 0) {
+            return -1;
+        }
+#endif
+    } else {
+        if (crypto_box_open_easy_afternm
+            (buf, buf + DNSCRYPT_QUERY_BOX_OFFSET,
+             len - DNSCRYPT_QUERY_BOX_OFFSET, nonce, nmkey) != 0) {
+            return -1;
+        }
+    }
