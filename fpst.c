@@ -94,3 +94,102 @@ fpst_child_set(FPST *t, FPST *v, size_t i)
     }
     t->children = tmp;
     ri = fpst_actual_index(t, i);
+    if ((rcount = count - ri - 1U) > 0U) {
+        memmove(&t->children[ri + 1U], &t->children[ri],
+                rcount * (sizeof *t->children));
+    }
+    t->children[ri] = *v;
+    fpst_bitmap_set(t, i);
+
+    return 0;
+}
+
+FPST *
+fpst_new(void)
+{
+    return NULL;
+}
+
+FPST *
+fpst_insert(FPST *trie, const char *key, size_t len, uint32_t val)
+{
+    FPST         *new_node_p;
+    FPST         *t;
+    const char   *lk;
+    FPST          new_node, saved_node;
+    size_t        i;
+    size_t        j;
+    unsigned char c;
+    unsigned char x;
+
+    if (len >= 0x7fff) {
+        return NULL;
+    }
+    if (trie == NULL) {
+        if ((new_node_p = (FPST *) malloc(sizeof *new_node_p)) == NULL) {
+            return NULL;
+        }
+        new_node_p->key = key;
+        new_node_p->val = val;
+        new_node_p->idx = 0U;
+        new_node_p->bitmap = 0U;
+        new_node_p->children = NULL;
+
+        return new_node_p;
+    }
+    t = trie;
+    j = 0U;
+    for (;;) {
+        lk = t->key;
+        x = 0U;
+        for (; j <= len; j++) {
+            x = ((unsigned char) lk[j]) ^ ((unsigned char) key[j]);
+            if (x != 0U) {
+                break;
+            }
+        }
+        if (j > len && lk[j - 1] == 0) {
+            assert(key[j - 1] == 0);
+            t->val = val;
+            return trie;
+        }
+        i = j * 2;
+        if ((x & 0xf0) == 0U) {
+            i++;
+        }
+        if (t->bitmap == 0U) {
+            /* keep index from the new key */
+        } else if (i >= t->idx) {
+            i = t->idx;
+            j = i / 2;
+        } else {
+            saved_node = *t;
+            t->key = key;
+            t->val = val;
+            t->idx = (uint16_t) i;
+            t->bitmap = 0U;
+            t->children = NULL;
+            c = fpst_quadbit_at(lk, i);
+            if (fpst_child_set(t, &saved_node, (size_t) c) != 0) {
+                *t = saved_node;
+                return NULL;
+            }
+            return trie;
+        }
+        prefetch(t->children);
+        c = fpst_quadbit_at(key, i);
+        if (!fpst_bitmap_is_set(t, c)) {
+            break;
+        }
+        t = fpst_child_get(t, (size_t) c);
+    }
+    t->idx = (uint16_t) i;
+    assert(!fpst_bitmap_is_set(t, c));
+    new_node.key = key;
+    new_node.val = val;
+    new_node.idx = 0U;
+    new_node.bitmap = 0U;
+    new_node.children = NULL;
+    if (fpst_child_set(t, &new_node, (size_t) c) != 0) {
+        return NULL;
+    }
