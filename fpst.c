@@ -193,3 +193,104 @@ fpst_insert(FPST *trie, const char *key, size_t len, uint32_t val)
     if (fpst_child_set(t, &new_node, (size_t) c) != 0) {
         return NULL;
     }
+    return trie;
+}
+
+FPST *
+fpst_insert_str(FPST *trie, const char *key, uint32_t val)
+{
+    return fpst_insert(trie, key, strlen(key), val);
+}
+
+int
+fpst_starts_with_existing_key(FPST *trie,
+                              const char *str, size_t len,
+                              const char **found_key_p,
+                              uint32_t *found_val_p)
+{
+    FPST          *t;
+    const char    *lk;
+    size_t         i;
+    size_t         j;
+    unsigned char  c;
+    int            ret = 0;
+
+    if (trie == NULL) {
+        return 0;
+    }
+    t = trie;
+    j = 0U;
+    for (;;) {
+        lk = t->key;
+        for (; j <= len; j++) {
+            if (lk[j] != str[j]) {
+                if (lk[j] == 0) {
+                    *found_key_p = t->key;
+                    *found_val_p = t->val;
+                    ret = 1;
+                }
+                break;
+            }
+        }
+        if (j > len) {
+            *found_key_p = t->key;
+            *found_val_p = t->val;
+            ret = 1;
+            break;
+        }
+        if (t->bitmap == 0U) {
+            break;
+        }
+        i = t->idx;
+        if (i > len * 2) {
+            break;
+        }
+        if (j > i / 2) {
+            j = i / 2;
+        }
+        prefetch(t->children);
+        c = fpst_quadbit_at(str, i);
+        if (!fpst_bitmap_is_set(t, c)) {
+            if (fpst_bitmap_is_set(t, 0U)) {
+                c = 0U;
+            } else {
+                break;
+            }
+        }
+        t = fpst_child_get(t, (size_t) c);
+    }
+    return ret;
+}
+
+int
+fpst_str_starts_with_existing_key(FPST *trie, const char *str,
+                                  const char **found_key_p,
+                                  uint32_t *found_val_p)
+{
+    return fpst_starts_with_existing_key(trie, str, strlen(str),
+                                         found_key_p, found_val_p);
+}
+
+static void
+fpst_free_node(FPST *t, FPST_FreeFn free_kv_fn)
+{
+    size_t count;
+    size_t i;
+
+    if (t->bitmap == 0U) {
+        assert(t->children == NULL);
+    }
+    count = (size_t) popcount(t->bitmap);
+    for (i = 0; i < count; i++) {
+        fpst_free_node(&t->children[i], free_kv_fn);
+    }
+    free(t->children);
+    t->bitmap = 0U;
+    t->children = NULL;
+    free_kv_fn(t->key, t->val);
+    t->key = NULL;
+}
+
+int
+fpst_has_key(FPST *trie, const char *key, size_t len, uint32_t *found_val_p)
+{
