@@ -294,3 +294,29 @@ fpst_free_node(FPST *t, FPST_FreeFn free_kv_fn)
 int
 fpst_has_key(FPST *trie, const char *key, size_t len, uint32_t *found_val_p)
 {
+    const char *found_key;
+    int         ret;
+
+    ret = fpst_starts_with_existing_key(trie, key, len,
+                                        &found_key, found_val_p);
+    if (ret > 0 && strlen(found_key) != len) {
+        ret = 0;
+    }
+    return ret;
+}
+
+int
+fpst_has_key_str(FPST *trie, const char *key, uint32_t *found_val_p)
+{
+    return fpst_has_key(trie, key, strlen(key), found_val_p);
+}
+
+void
+fpst_free(FPST *trie, FPST_FreeFn free_kv_fn)
+{
+    if (trie == NULL) {
+        return;
+    }
+    fpst_free_node(trie, free_kv_fn);
+    free(trie);
+}
