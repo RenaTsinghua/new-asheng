@@ -12,4 +12,8 @@ typedef struct FPST FPST;
 /** Type of the function pointer for `fpst_free()` */
 typedef void (*FPST_FreeFn)(const char *key, uint32_t val);
 
-/
+/** Returns an empty trie */
+FPST *fpst_new(void);
+
+/**
+ * Deallocates a trie, opti
