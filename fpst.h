@@ -19,4 +19,7 @@ FPST *fpst_new(void);
  * Deallocates a trie, optionally calling `free_kv_fn` for each element.
  * `free_kv_fn` can be `NULL` if this is not necessary.
  */
-void fp
+void fpst_free(FPST *trie, FPST_FreeFn free_kv_fn);
+
+/**
+ * Check if the string `str` of length `len` starts wit
