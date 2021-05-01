@@ -22,4 +22,6 @@ FPST *fpst_new(void);
 void fpst_free(FPST *trie, FPST_FreeFn free_kv_fn);
 
 /**
- * Check if the string `str` of length `len` starts wit
+ * Check if the string `str` of length `len` starts with one of the keys
+ * present in the trie. Returns `1` if this is the case, `0` otherwise.
+ * If
