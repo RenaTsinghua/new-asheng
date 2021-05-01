@@ -16,4 +16,7 @@ typedef void (*FPST_FreeFn)(const char *key, uint32_t val);
 FPST *fpst_new(void);
 
 /**
- * Deallocates a trie, opti
+ * Deallocates a trie, optionally calling `free_kv_fn` for each element.
+ * `free_kv_fn` can be `NULL` if this is not necessary.
+ */
+void fp
