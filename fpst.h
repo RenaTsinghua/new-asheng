@@ -28,4 +28,6 @@ void fpst_free(FPST *trie, FPST_FreeFn free_kv_fn);
  * with the longest matching key and its corresponding value.
  */
 int fpst_starts_with_existing_key(FPST *t,
-        
+                                  const char *str, size_t len,
+                                  const char **found_key_p,
+                       
