@@ -25,4 +25,7 @@ void fpst_free(FPST *trie, FPST_FreeFn free_kv_fn);
  * Check if the string `str` of length `len` starts with one of the keys
  * present in the trie. Returns `1` if this is the case, `0` otherwise.
  * If `found_key_p` and/or `found_val_p` are not `NULL`, these are filled
- * with the longest matchin
+ * with the longest matching key and its corresponding value.
+ */
+int fpst_starts_with_existing_key(FPST *t,
+        
