@@ -35,4 +35,5 @@ int fpst_starts_with_existing_key(FPST *t,
 /**
  * Check if the zero-terminated string `str` starts with one of the keys
  * present in the trie. Returns `1` if this is the case, `0` otherwise.
- * 
+ * If `found_key_p` and/or `found_val_p` are not `NULL`, these are filled
+ * with the longest matching 
