@@ -30,4 +30,7 @@ void fpst_free(FPST *trie, FPST_FreeFn free_kv_fn);
 int fpst_starts_with_existing_key(FPST *t,
                                   const char *str, size_t len,
                                   const char **found_key_p,
-                       
+                                  uint32_t *found_val_p);
+
+/**
+ * Check if the zero-terminated string `st
