@@ -33,4 +33,6 @@ int fpst_starts_with_existing_key(FPST *t,
                                   uint32_t *found_val_p);
 
 /**
- * Check if the zero-terminated string `st
+ * Check if the zero-terminated string `str` starts with one of the keys
+ * present in the trie. Returns `1` if this is the case, `0` otherwise.
+ * 
