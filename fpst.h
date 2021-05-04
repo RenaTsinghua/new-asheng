@@ -42,4 +42,6 @@ int fpst_str_starts_with_existing_key(FPST *trie, const char *str,
                                       const char **found_key_p, uint32_t *found_val_p);
 
 /** Check if the exact key `key` of length `len` (`\0` not included) exists */
-int fpst_has_key(FPST *trie, const char 
+int fpst_has_key(FPST *trie, const char *key, size_t len, uint32_t *found_val_p);
+
+/** Check if the exact zero-terminated key `ke
