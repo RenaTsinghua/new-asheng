@@ -38,4 +38,7 @@ int fpst_starts_with_existing_key(FPST *t,
  * If `found_key_p` and/or `found_val_p` are not `NULL`, these are filled
  * with the longest matching key and its corresponding value.
  */
-int fpst_str_starts_with_existing_key(FPST *trie, const char
+int fpst_str_starts_with_existing_key(FPST *trie, const char *str,
+                                      const char **found_key_p, uint32_t *found_val_p);
+
+/** Check if the ex
