@@ -51,4 +51,7 @@ int fpst_has_key_str(FPST *trie, const char *key, uint32_t *found_val_p);
  * Inserts a key `key` of length `len` (not including the leading `\0`)
  * into the trie.
  */
-FPST * fps
+FPST * fpst_insert(FPST *trie, const char *key, size_t len, uint32_t val);
+
+/**
+ * Inserts a zero-terminated key `ke
