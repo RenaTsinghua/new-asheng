@@ -57,3 +57,5 @@ FPST * fpst_insert(FPST *trie, const char *key, size_t len, uint32_t val);
  * Inserts a zero-terminated key `key` into the trie.
  */
 FPST * fpst_insert_str(FPST *trie, const char *key, uint32_t val);
+
+#endif
