@@ -9,4 +9,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         debhelper \
         dh-systemd \
         dh-autoreconf \
-        fakeroo
+        fakeroot \
+        devscripts
+
+ADD hack/entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
