@@ -4,4 +4,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && sed -i /security.ubuntu.com/d /etc/apt/sources.list \
     && apt-get update -y \
     && apt-get -yy -q install --no-install-recommends --no-install-suggests --fix-missing \
-        dp
+        dpkg-dev \
+        build-essential \
+        debhelper \
+        dh-systemd \
+        dh-autoreconf \
+        fakeroo
