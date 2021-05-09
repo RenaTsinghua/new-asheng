@@ -87,3 +87,45 @@ logger_lograw(int priority, const char *msg)
     fp = (logger_logfile == NULL) ? stdout : fopen(logger_logfile, "a");
     if (!fp)
         return;
+
+    for (int i = 0; i < ARRAY_SIZE(prioritynames); i++) {
+        CODE c = prioritynames[i];
+        if (c.c_val == priority) {
+            priority_flag = c.c_name;
+        }
+    }
+    assert(priority_flag);
+
+    // prefix
+    int off;
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    char buf[64];
+    off = strftime(buf, sizeof(buf), "%d %b %H:%M:%S.", localtime(&tv.tv_sec));
+    snprintf(buf + off, sizeof(buf) - off, "%03d", (int)tv.tv_usec / 1000);
+    // format log
+    char logbuf[LOGGER_LINESIZE];
+    size_t len = snprintf(logbuf, LOGGER_LINESIZE, "[%d] %s [%s] %s\n",
+                          (int)getpid(), buf, priority_flag, msg);
+    // write
+    write(logger_fd, logbuf, len);
+}
+
+void
+logger_reopen(void)
+{
+    if (logger_logfile) {
+        logger_fd = open(logger_logfile, O_APPEND | O_CREAT | O_WRONLY, 0644);
+    } else {
+        logger_fd = STDOUT_FILENO;
+    }
+}
+
+void
+logger_close(void)
+{
+    if (logger_fd >= 0) {
+        close(logger_fd);
+    }
+    logger_fd = -1;
+}
