@@ -17,4 +17,10 @@ service unbound restart
 
 # Wait unbound
 retries=3
-until [ "$retries" -le 0
+until [ "$retries" -le 0 ]; do
+    nc -n -v -w 3 127.0.0.1 -z 53
+    if [ $? -eq 0 ]; then
+        break
+    fi
+    sleep 1
+    retr
