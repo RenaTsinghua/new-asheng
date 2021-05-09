@@ -23,4 +23,5 @@ until [ "$retries" -le 0 ]; do
         break
     fi
     sleep 1
-    retr
+    retries=$((retries-1))
+done
