@@ -11,4 +11,10 @@ cat <<EOF > /etc/unbound/unbound.conf
 server:
     interface: 127.0.0.1
 remote-control:
-    con
+    control-enable: no
+EOF
+service unbound restart
+
+# Wait unbound
+retries=3
+until [ "$retries" -le 0
