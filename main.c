@@ -6,4 +6,8 @@
 
 /**
  * This is dnscrypt wrapper (server-side dnscrypt proxy), which helps to add
- * dnscrypt support to 
+ * dnscrypt support to any name resolver.
+ */
+
+static const char *const config_usage[] = {
+    "dnscrypt-wra
