@@ -10,4 +10,9 @@
  */
 
 static const char *const config_usage[] = {
-    "dnscrypt-wra
+    "dnscrypt-wrapper [options]",
+    NULL
+};
+
+int
+show_version_cb(struct argparse *this, const struct argparse_option *option)
