@@ -22,4 +22,6 @@ show_version_cb(struct argparse *this, const struct argparse_option *option)
 }
 
 static int
-sockaddr_from_ip
+sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
+                          ev_socklen_t * const sockaddr_len_p,
+         
