@@ -16,3 +16,10 @@ static const char *const config_usage[] = {
 
 int
 show_version_cb(struct argparse *this, const struct argparse_option *option)
+{
+    printf("dnscrypt-wrapper %s\n", the_version);
+    exit(0);
+}
+
+static int
+sockaddr_from_ip
