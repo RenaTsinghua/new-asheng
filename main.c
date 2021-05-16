@@ -25,4 +25,7 @@ static int
 sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
                           ev_socklen_t * const sockaddr_len_p,
                           const char *const ip, const char *const port,
-                          const 
+                          const char *const error_msg)
+{
+    char sockaddr_port[INET6_ADDRSTRLEN + sizeof "[]:65535"];
+  
