@@ -28,4 +28,8 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
                           const char *const error_msg)
 {
     char sockaddr_port[INET6_ADDRSTRLEN + sizeof "[]:65535"];
-  
+    int sockaddr_len_int;
+    char *pnt;
+    bool has_column = 0;
+    bool has_columns = 0;
+    bool 
