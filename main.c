@@ -32,4 +32,8 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
     char *pnt;
     bool has_column = 0;
     bool has_columns = 0;
-    bool 
+    bool has_brackets = *ip == '[';
+
+    if ((pnt = strchr(ip, ':')) != NULL) {
+        has_column = 1;
+      
