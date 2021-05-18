@@ -40,4 +40,6 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
             has_columns = 1;
         }
     }
-    sock
+    sockaddr_len_int = (int)sizeof *sockaddr;
+    if ((has_brackets != 0 || has_column != has_columns) &&
+      
