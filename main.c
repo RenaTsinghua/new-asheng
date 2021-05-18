@@ -36,4 +36,8 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
 
     if ((pnt = strchr(ip, ':')) != NULL) {
         has_column = 1;
-      
+        if (strchr(pnt + 1, ':') != NULL) {
+            has_columns = 1;
+        }
+    }
+    sock
