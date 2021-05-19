@@ -47,4 +47,6 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
         *sockaddr_len_p = (ev_socklen_t) sockaddr_len_int;
         return 0;
     }
-    if (has_colum
+    if (has_columns != 0 && has_brackets == 0) {
+        if (strcmp(port, "0")) {
+            evutil_snprintf(sockadd
