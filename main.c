@@ -52,4 +52,8 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
             evutil_snprintf(sockaddr_port, sizeof sockaddr_port, "[%s]:%s",
                             ip, port);
         } else {
-            evutil_snprintf(sockaddr_port, sizeof sockaddr_port, "[%s]", ip
+            evutil_snprintf(sockaddr_port, sizeof sockaddr_port, "[%s]", ip);
+        }
+    } else {
+        if (strcmp(port, "0")) {
+            evutil_snprintf(sockaddr_port, si
