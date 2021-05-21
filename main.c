@@ -58,4 +58,8 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
         if (strcmp(port, "0")) {
             evutil_snprintf(sockaddr_port, sizeof sockaddr_port, "%s:%s", ip, port);
         } else {
-            evutil_snprintf(sockaddr_port, sizeof so
+            evutil_snprintf(sockaddr_port, sizeof sockaddr_port, "%s", ip);
+        }
+    }
+    sockaddr_len_int = (int)sizeof *sockaddr;
+    i
