@@ -65,4 +65,8 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
     if (evutil_parse_sockaddr_port(sockaddr_port, (struct sockaddr *)sockaddr,
                                    &sockaddr_len_int) != 0) {
         logger(LOG_ERR, "%s: %s", error_msg, sockaddr_port);
-   
+        *sockaddr_len_p = (ev_socklen_t) 0U;
+
+        return -1;
+    }
+    *sockaddr_len_p = (ev_socklen_t) sockaddr_
