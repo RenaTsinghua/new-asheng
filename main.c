@@ -69,4 +69,13 @@ sockaddr_from_ip_and_port(struct sockaddr_storage *const sockaddr,
 
         return -1;
     }
-    *sockaddr_len_p = (ev_socklen_t) sockaddr_
+    *sockaddr_len_p = (ev_socklen_t) sockaddr_len_int;
+
+    return 0;
+}
+
+static void
+init_locale(void)
+{
+    setlocale(LC_CTYPE, "C");
+    setlocale(L
