@@ -78,4 +78,10 @@ static void
 init_locale(void)
 {
     setlocale(LC_CTYPE, "C");
-    setlocale(L
+    setlocale(LC_COLLATE, "C");
+}
+
+static void
+init_tz(void)
+{
+    static char default_tz_for_putenv[] = "TZ=UTC+00:00
