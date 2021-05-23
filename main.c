@@ -84,4 +84,11 @@ init_locale(void)
 static void
 init_tz(void)
 {
-    static char default_tz_for_putenv[] = "TZ=UTC+00:00
+    static char default_tz_for_putenv[] = "TZ=UTC+00:00";
+    char stbuf[10U];
+    struct tm *tm;
+    time_t now;
+
+    tzset();
+    time(&now);
+    if ((tm = localtim
