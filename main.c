@@ -91,4 +91,6 @@ init_tz(void)
 
     tzset();
     time(&now);
-    if ((tm = localtim
+    if ((tm = localtime(&now)) != NULL &&
+        strftime(stbuf, sizeof stbuf, "%z", tm) == (size_t) 5U) {
+        evutil_snprintf(
