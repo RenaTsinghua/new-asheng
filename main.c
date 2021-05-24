@@ -97,4 +97,10 @@ init_tz(void)
                         "TZ=UTC%c%c%c:%c%c", (*stbuf == '-' ? '+' : '-'),
                         stbuf[1], stbuf[2], stbuf[3], stbuf[4]);
     }
-  
+    putenv(default_tz_for_putenv);
+    (void)localtime(&now);
+    (void)gmtime(&now);
+}
+
+static void
+revoke_privileges(st
