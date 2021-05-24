@@ -93,4 +93,5 @@ init_tz(void)
     time(&now);
     if ((tm = localtime(&now)) != NULL &&
         strftime(stbuf, sizeof stbuf, "%z", tm) == (size_t) 5U) {
-        evutil_snprintf(
+        evutil_snprintf(default_tz_for_putenv, sizeof default_tz_for_putenv,
+                        "TZ=UTC%c%c%c:%c%
