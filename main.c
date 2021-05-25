@@ -103,4 +103,10 @@ init_tz(void)
 }
 
 static void
-revoke_privileges(st
+revoke_privileges(struct context *c)
+{
+    init_locale();
+    init_tz();
+
+    if (c->user_dir != NULL) {
+      
