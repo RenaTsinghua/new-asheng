@@ -109,4 +109,5 @@ revoke_privileges(struct context *c)
     init_tz();
 
     if (c->user_dir != NULL) {
-      
+        if (chdir(c->user_dir) != 0 || chroot(c->user_dir) != 0) {
+            logger(LOG_ERR, "Unable to chr
