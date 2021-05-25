@@ -110,4 +110,9 @@ revoke_privileges(struct context *c)
 
     if (c->user_dir != NULL) {
         if (chdir(c->user_dir) != 0 || chroot(c->user_dir) != 0) {
-            logger(LOG_ERR, "Unable to chr
+            logger(LOG_ERR, "Unable to chroot to [%s]", c->user_dir);
+            exit(1);
+        }
+    }
+    if (c->user_id != (uid_t) 0) {
+   
