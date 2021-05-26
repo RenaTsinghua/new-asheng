@@ -119,4 +119,11 @@ revoke_privileges(struct context *c)
             setegid(c->user_group) != 0 ||
             setuid(c->user_id) != 0 || seteuid(c->user_id) != 0) {
             logger(LOG_ERR, "Unable to switch to user id [%lu]",
-                   (unsi
+                   (unsigned long)c->user_id);
+            exit(1);
+        }
+    }
+}
+
+static void
+do_daemonize(
