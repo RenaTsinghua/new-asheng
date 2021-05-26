@@ -126,4 +126,10 @@ revoke_privileges(struct context *c)
 }
 
 static void
-do_daemonize(
+do_daemonize(void)
+{
+    switch (fork()) {
+    case 0:
+        break;
+    case -1:
+        logger(LOG_ERR, "fork() fai
