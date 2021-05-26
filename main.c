@@ -117,4 +117,6 @@ revoke_privileges(struct context *c)
     if (c->user_id != (uid_t) 0) {
         if (setgid(c->user_group) != 0 ||
             setegid(c->user_group) != 0 ||
-            setuid(c->user_id) != 0 |
+            setuid(c->user_id) != 0 || seteuid(c->user_id) != 0) {
+            logger(LOG_ERR, "Unable to switch to user id [%lu]",
+                   (unsi
