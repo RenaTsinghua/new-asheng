@@ -132,4 +132,11 @@ do_daemonize(void)
     case 0:
         break;
     case -1:
-        logger(LOG_ERR, "fork() fai
+        logger(LOG_ERR, "fork() failed");
+        exit(1);
+    default:
+        exit(0);
+    }
+
+    if (setsid() == -1) {
+        logger(LOG_ERR, 
