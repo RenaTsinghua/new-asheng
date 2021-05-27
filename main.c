@@ -139,4 +139,12 @@ do_daemonize(void)
     }
 
     if (setsid() == -1) {
-        logger(LOG_ERR, 
+        logger(LOG_ERR, "setsid() failed");
+        exit(1);
+    }
+
+    close(0);
+    close(1);
+    close(2);
+
+    // if
