@@ -148,4 +148,8 @@ do_daemonize(void)
     close(2);
 
     // if any standard file descriptor is missing open it to /dev/null */
-    int fd = open("/dev/null
+    int fd = open("/dev/null", O_RDWR, 0);
+    while (fd != -1 && fd < 2)
+        fd = dup(fd);
+    if (fd == -1) {
+        logger(LOG_ERR, 
