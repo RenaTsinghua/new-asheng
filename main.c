@@ -147,4 +147,5 @@ do_daemonize(void)
     close(1);
     close(2);
 
-    // if
+    // if any standard file descriptor is missing open it to /dev/null */
+    int fd = open("/dev/null
