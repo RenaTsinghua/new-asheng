@@ -160,4 +160,7 @@ do_daemonize(void)
 }
 
 static int
-writ
+write_to_file(const char *path, char *buf, size_t count)
+{
+    int fd;
+    fd = open(path, O_WRONL
