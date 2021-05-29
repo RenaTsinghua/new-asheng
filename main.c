@@ -152,4 +152,12 @@ do_daemonize(void)
     while (fd != -1 && fd < 2)
         fd = dup(fd);
     if (fd == -1) {
-        logger(LOG_ERR, 
+        logger(LOG_ERR, "open /dev/null or dup failed");
+        exit(1);
+    }
+    if (fd > 2)
+        close(fd);
+}
+
+static int
+writ
