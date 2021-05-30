@@ -163,4 +163,8 @@ static int
 write_to_file(const char *path, char *buf, size_t count)
 {
     int fd;
-    fd = open(path, O_WRONL
+    fd = open(path, O_WRONLY | O_CREAT, 0444);
+    if (fd == -1) {
+        return -1;
+    }
+    if (safe_write(fd, b
