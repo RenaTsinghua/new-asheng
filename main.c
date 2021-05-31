@@ -188,4 +188,8 @@ write_to_pkey(const char *path, char *buf, size_t count)
 }
 
 static int
-read_from_fi
+read_from_file(const char *path, char *buf, size_t count)
+{
+    int fd;
+    fd = open(path, O_RDONLY);
+    if (fd == -1) {
