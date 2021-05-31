@@ -181,4 +181,11 @@ write_to_pkey(const char *path, char *buf, size_t count)
     if (fd == -1) {
         return -1;
     }
-    
+    if (safe_write(fd, buf, count, 3) != count) {
+        return -2;
+    }
+    return 0;
+}
+
+static int
+read_from_fi
