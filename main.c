@@ -174,4 +174,11 @@ write_to_file(const char *path, char *buf, size_t count)
 }
 
 static int
-write_to_pkey(const char *path, char *buf, 
+write_to_pkey(const char *path, char *buf, size_t count)
+{
+    int fd;
+    fd = open(path, O_WRONLY | O_CREAT, 0400);
+    if (fd == -1) {
+        return -1;
+    }
+    
