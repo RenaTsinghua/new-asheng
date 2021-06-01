@@ -193,3 +193,8 @@ read_from_file(const char *path, char *buf, size_t count)
     int fd;
     fd = open(path, O_RDONLY);
     if (fd == -1) {
+        return -1;
+    }
+    if (safe_read(fd, buf, count) != count) {
+        close(fd);
+  
