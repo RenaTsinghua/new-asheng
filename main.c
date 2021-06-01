@@ -197,4 +197,11 @@ read_from_file(const char *path, char *buf, size_t count)
     }
     if (safe_read(fd, buf, count) != count) {
         close(fd);
-  
+        return -2;
+    }
+    close(fd);
+    return 0;
+}
+
+static int
+filter_signed_certs(struct co
