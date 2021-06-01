@@ -204,4 +204,9 @@ read_from_file(const char *path, char *buf, size_t count)
 }
 
 static int
-filter_signed_certs(struct co
+filter_signed_certs(struct context *c)
+{
+    struct SignedCert *filtered_certs;
+    size_t filtered_count = 0;
+    size_t i, j;
+    uint3
