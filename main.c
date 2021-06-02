@@ -213,4 +213,7 @@ filter_signed_certs(struct context *c)
     uint32_t ts_end, ts_begin;
     bool found;
 
-    if ((filtered_certs = sodium_all
+    if ((filtered_certs = sodium_allocarray(c->signed_certs_count, sizeof *c->signed_certs)) == NULL) {
+        return -1;
+    }
+    for (i
