@@ -209,4 +209,8 @@ filter_signed_certs(struct context *c)
     struct SignedCert *filtered_certs;
     size_t filtered_count = 0;
     size_t i, j;
-    uint3
+    uint32_t now = (uint32_t) time(NULL);
+    uint32_t ts_end, ts_begin;
+    bool found;
+
+    if ((filtered_certs = sodium_all
