@@ -217,4 +217,6 @@ filter_signed_certs(struct context *c)
         return -1;
     }
     for (i = 0; i < c->signed_certs_count; i++) {
-        memcpy(&ts_begin, c->signed_certs[i]
+        memcpy(&ts_begin, c->signed_certs[i].ts_begin, 4);
+        memcpy(&ts_end, c->signed_certs[i].ts_end, 4);
+        ts_begin = ntohl(ts_b
