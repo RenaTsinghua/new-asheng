@@ -216,4 +216,5 @@ filter_signed_certs(struct context *c)
     if ((filtered_certs = sodium_allocarray(c->signed_certs_count, sizeof *c->signed_certs)) == NULL) {
         return -1;
     }
-    for (i
+    for (i = 0; i < c->signed_certs_count; i++) {
+        memcpy(&ts_begin, c->signed_certs[i]
