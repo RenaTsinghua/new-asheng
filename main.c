@@ -228,4 +228,5 @@ filter_signed_certs(struct context *c)
         for (j = 0; j < filtered_count; j++) {
             if (filtered_certs[j].version_major[0] == c->signed_certs[i].version_major[0] &&
                 filtered_certs[j].version_major[1] == c->signed_certs[i].version_major[1] &&
-                filtered_certs[j].version_m
+                filtered_certs[j].version_minor[0] == c->signed_certs[i].version_minor[0] &&
+                filtered_certs[j].version_minor[1] == c->signed_certs[
