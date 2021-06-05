@@ -222,4 +222,8 @@ filter_signed_certs(struct context *c)
         ts_begin = ntohl(ts_begin);
         ts_end = ntohl(ts_end);
         if (now < ts_begin || ts_end <= now) {
-            
+            continue;
+        }
+        found = 0;
+        for (j = 0; j < filtered_count; j++) {
+            if (filtered_ce
