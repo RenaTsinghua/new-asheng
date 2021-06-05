@@ -226,4 +226,5 @@ filter_signed_certs(struct context *c)
         }
         found = 0;
         for (j = 0; j < filtered_count; j++) {
-            if (filtered_ce
+            if (filtered_certs[j].version_major[0] == c->signed_certs[i].version_major[0] &&
+                filtered_certs[j].version_m
