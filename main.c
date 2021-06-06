@@ -231,4 +231,5 @@ filter_signed_certs(struct context *c)
                 filtered_certs[j].version_minor[0] == c->signed_certs[i].version_minor[0] &&
                 filtered_certs[j].version_minor[1] == c->signed_certs[i].version_minor[1]) {
                 found = 1;
-                if (ntohl(*(uint32_t *)filtered_c
+                if (ntohl(*(uint32_t *)filtered_certs[j].serial) < ntohl(*(uint32_t *)c->signed_certs[i].serial)) {
+                    filtered_certs[j] = c->signed_
