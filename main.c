@@ -240,4 +240,8 @@ filter_signed_certs(struct context *c)
             filtered_certs[filtered_count++] = c->signed_certs[i];
         }
     }
-    sodium_free(c->si
+    sodium_free(c->signed_certs);
+    c->signed_certs = filtered_certs;
+    c->signed_certs_count = filtered_count;
+
+    retur
