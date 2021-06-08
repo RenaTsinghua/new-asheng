@@ -237,4 +237,7 @@ filter_signed_certs(struct context *c)
             }
         }
         if (found == 0) {
-            filtere
+            filtered_certs[filtered_count++] = c->signed_certs[i];
+        }
+    }
+    sodium_free(c->si
