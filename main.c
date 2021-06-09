@@ -254,4 +254,5 @@ parse_cert_files(struct context *c)
     size_t signed_cert_id;
 
     c->signed_certs_count = 0U;
-    if ((prov
+    if ((provider_cert_files = strdup(c->provider_cert_file)) == NULL) {
+        logger(LOG_ERR, "Could not allo
