@@ -244,4 +244,10 @@ filter_signed_certs(struct context *c)
     c->signed_certs = filtered_certs;
     c->signed_certs_count = filtered_count;
 
-    retur
+    return 0;
+}
+
+static int
+parse_cert_files(struct context *c)
+{
+    char *provider_cert_files, *pr
