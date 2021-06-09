@@ -255,4 +255,8 @@ parse_cert_files(struct context *c)
 
     c->signed_certs_count = 0U;
     if ((provider_cert_files = strdup(c->provider_cert_file)) == NULL) {
-        logger(LOG_ERR, "Could not allo
+        logger(LOG_ERR, "Could not allocate memory!");
+        return -1;
+    }
+
+    for (provider_cert_file = strtok(provider_cert_file
