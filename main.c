@@ -250,4 +250,8 @@ filter_signed_certs(struct context *c)
 static int
 parse_cert_files(struct context *c)
 {
-    char *provider_cert_files, *pr
+    char *provider_cert_files, *provider_cert_file;
+    size_t signed_cert_id;
+
+    c->signed_certs_count = 0U;
+    if ((prov
