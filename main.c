@@ -259,4 +259,7 @@ parse_cert_files(struct context *c)
         return -1;
     }
 
-    for (provider_cert_file = strtok(provider_cert_file
+    for (provider_cert_file = strtok(provider_cert_files, ",");
+         provider_cert_file != NULL;
+         provider_cert_file = strtok(NULL, ",")) {
+  
