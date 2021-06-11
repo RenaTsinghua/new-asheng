@@ -266,4 +266,7 @@ parse_cert_files(struct context *c)
     }
 
     if (c->signed_certs_count <= 0U) {
-        free(provid
+        free(provider_cert_files);
+        return 0;
+    }
+    memcpy(provider_cert_files, c->provider_cert_
