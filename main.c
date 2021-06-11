@@ -262,4 +262,8 @@ parse_cert_files(struct context *c)
     for (provider_cert_file = strtok(provider_cert_files, ",");
          provider_cert_file != NULL;
          provider_cert_file = strtok(NULL, ",")) {
-  
+        c->signed_certs_count++;
+    }
+
+    if (c->signed_certs_count <= 0U) {
+        free(provid
