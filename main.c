@@ -270,4 +270,7 @@ parse_cert_files(struct context *c)
         return 0;
     }
     memcpy(provider_cert_files, c->provider_cert_file, strlen(c->provider_cert_file) + 1U);
-    c->signed_certs = sodium_allocarray(c->sign
+    c->signed_certs = sodium_allocarray(c->signed_certs_count, sizeof *c->signed_certs);
+    signed_cert_id = 0U;
+
+    for (provider_cert_file = strtok(
