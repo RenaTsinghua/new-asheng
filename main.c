@@ -273,4 +273,6 @@ parse_cert_files(struct context *c)
     c->signed_certs = sodium_allocarray(c->signed_certs_count, sizeof *c->signed_certs);
     signed_cert_id = 0U;
 
-    for (provider_cert_file = strtok(
+    for (provider_cert_file = strtok(provider_cert_files, ",");
+         provider_cert_file != NULL;
+         provider_cert_file = strtok(
