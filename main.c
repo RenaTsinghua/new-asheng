@@ -284,4 +284,10 @@ parse_cert_files(struct context *c)
                    provider_cert_file);
             return 1;
         }
- 
+        signed_cert_id++;
+    }
+    free(provider_cert_files);
+    return 0;
+}
+
+static i
