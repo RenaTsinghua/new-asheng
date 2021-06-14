@@ -280,4 +280,8 @@ parse_cert_files(struct context *c)
         if (read_from_file
             (provider_cert_file, (char *)(c->signed_certs + signed_cert_id),
                 sizeof(struct SignedCert)) != 0) {
-            logger(LOG_ERR, "%s i
+            logger(LOG_ERR, "%s is not valid signed certificate.",
+                   provider_cert_file);
+            return 1;
+        }
+ 
