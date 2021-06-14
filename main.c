@@ -278,4 +278,6 @@ parse_cert_files(struct context *c)
          provider_cert_file = strtok(NULL, ",")) {
 
         if (read_from_file
-            (provider_cert_file, (char *)(c->signed_certs + s
+            (provider_cert_file, (char *)(c->signed_certs + signed_cert_id),
+                sizeof(struct SignedCert)) != 0) {
+            logger(LOG_ERR, "%s i
