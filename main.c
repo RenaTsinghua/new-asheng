@@ -290,4 +290,8 @@ parse_cert_files(struct context *c)
     return 0;
 }
 
-static i
+static int
+match_cert_to_keys(struct context *c) {
+    size_t keypair_id, signed_cert_id, cert_id;
+
+    c->certs = sodiu
