@@ -294,4 +294,8 @@ static int
 match_cert_to_keys(struct context *c) {
     size_t keypair_id, signed_cert_id, cert_id;
 
-    c->certs = sodiu
+    c->certs = sodium_allocarray(c->signed_certs_count, sizeof *c->certs);
+    c->certs_count = c->signed_certs_count;
+    cert_id = 0U;
+
+    for(
