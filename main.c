@@ -299,4 +299,6 @@ match_cert_to_keys(struct context *c) {
     cert_id = 0U;
 
     for(keypair_id=0; keypair_id < c->keypairs_count; keypair_id++) {
-        KeyPair *kp = c->keypairs + 
+        KeyPair *kp = c->keypairs + keypair_id;
+        int found_cert = 0;
+        for(signed_cert_id=0; signed_cert_id < c->signed_certs_co
