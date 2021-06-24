@@ -302,4 +302,6 @@ match_cert_to_keys(struct context *c) {
         KeyPair *kp = c->keypairs + keypair_id;
         int found_cert = 0;
         for(signed_cert_id=0; signed_cert_id < c->signed_certs_count; signed_cert_id++) {
-            struct SignedCert *signed_cert = c->signed_certs
+            struct SignedCert *signed_cert = c->signed_certs + signed_cert_id;
+            struct Cert *cert = (struct Cert *)signed_cert;
+            if(memcmp(kp->cr
