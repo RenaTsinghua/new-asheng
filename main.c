@@ -306,4 +306,7 @@ match_cert_to_keys(struct context *c) {
             struct Cert *cert = (struct Cert *)signed_cert;
             if(memcmp(kp->crypt_publickey,
                       cert->server_publickey,
-                      crypto_box_PUBLICKEYBYTES) =
+                      crypto_box_PUBLICKEYBYTES) == 0) {
+                dnsccert *current_cert = c->certs + cert_id++;
+                found_cert = 1;
+ 
