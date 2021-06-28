@@ -309,4 +309,6 @@ match_cert_to_keys(struct context *c) {
                       crypto_box_PUBLICKEYBYTES) == 0) {
                 dnsccert *current_cert = c->certs + cert_id++;
                 found_cert = 1;
- 
+                current_cert->keypair = kp;
+                memcpy(current_cert->magic_query,
+                       
