@@ -316,4 +316,7 @@ match_cert_to_keys(struct context *c) {
                 );
                 memcpy(current_cert->es_version,
                        cert->version_major,
-                        sizeof cert->versio
+                        sizeof cert->version_major
+                );
+#ifndef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY
+        
