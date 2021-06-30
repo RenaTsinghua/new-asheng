@@ -314,4 +314,6 @@ match_cert_to_keys(struct context *c) {
                        cert->magic_query,
                        sizeof cert->magic_query
                 );
-  
+                memcpy(current_cert->es_version,
+                       cert->version_major,
+                        sizeof cert->versio
