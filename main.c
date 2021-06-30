@@ -319,4 +319,6 @@ match_cert_to_keys(struct context *c) {
                         sizeof cert->version_major
                 );
 #ifndef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY
-        
+                if (current_cert->es_version[1] == 0x02) {
+                    logger(LOG_ERR,
+             
