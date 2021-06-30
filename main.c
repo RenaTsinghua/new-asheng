@@ -311,4 +311,7 @@ match_cert_to_keys(struct context *c) {
                 found_cert = 1;
                 current_cert->keypair = kp;
                 memcpy(current_cert->magic_query,
-                       
+                       cert->magic_query,
+                       sizeof cert->magic_query
+                );
+  
