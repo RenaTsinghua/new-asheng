@@ -328,4 +328,7 @@ match_cert_to_keys(struct context *c) {
 #endif
             }
         }
-        if (!found_cer
+        if (!found_cert) {
+            logger(LOG_ERR,
+                   "could not match secret key %d with a certificate.",
+               
