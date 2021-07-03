@@ -322,4 +322,10 @@ match_cert_to_keys(struct context *c) {
                 if (current_cert->es_version[1] == 0x02) {
                     logger(LOG_ERR,
                            "Certificate for XChacha20 but your "
-                           "libsodium version does not suppor
+                           "libsodium version does not support it.");
+                    return 1;
+                }
+#endif
+            }
+        }
+        if (!found_cer
