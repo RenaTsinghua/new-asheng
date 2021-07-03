@@ -321,4 +321,5 @@ match_cert_to_keys(struct context *c) {
 #ifndef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY
                 if (current_cert->es_version[1] == 0x02) {
                     logger(LOG_ERR,
-             
+                           "Certificate for XChacha20 but your "
+                           "libsodium version does not suppor
