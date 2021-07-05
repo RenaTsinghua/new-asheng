@@ -331,4 +331,11 @@ match_cert_to_keys(struct context *c) {
         if (!found_cert) {
             logger(LOG_ERR,
                    "could not match secret key %d with a certificate.",
-               
+                   keypair_id + 1);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+#ifndef sodium_base64_VARIA
