@@ -338,4 +338,6 @@ match_cert_to_keys(struct context *c) {
     return 0;
 }
 
-#ifndef sodium_base64_VARIA
+#ifndef sodium_base64_VARIANT_URLSAFE_NO_PADDING
+#define EQ(x, y) \
+    ((((0U - ((unsigned int) (x) ^ (unsigned int) 
