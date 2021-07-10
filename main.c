@@ -340,4 +340,6 @@ match_cert_to_keys(struct context *c) {
 
 #ifndef sodium_base64_VARIANT_URLSAFE_NO_PADDING
 #define EQ(x, y) \
-    ((((0U - ((unsigned int) (x) ^ (unsigned int) 
+    ((((0U - ((unsigned int) (x) ^ (unsigned int) (y))) >> 8) & 0xFF) ^ 0xFF)
+#define GT(x, y) ((((unsigned int) (y) - (unsigned int) (x)) >> 8) & 0xFF)
+#define GE(x, y) (G
