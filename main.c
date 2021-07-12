@@ -342,4 +342,10 @@ match_cert_to_keys(struct context *c) {
 #define EQ(x, y) \
     ((((0U - ((unsigned int) (x) ^ (unsigned int) (y))) >> 8) & 0xFF) ^ 0xFF)
 #define GT(x, y) ((((unsigned int) (y) - (unsigned int) (x)) >> 8) & 0xFF)
-#define GE(x, y) (G
+#define GE(x, y) (GT(y, x) ^ 0xFF)
+#define LT(x, y) GT(y, x)
+
+static int
+b64_byte_to_urlsafe_char(unsigned int x)
+{
+    return (LT(x, 
