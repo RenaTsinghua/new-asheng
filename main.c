@@ -356,4 +356,9 @@ b64_byte_to_urlsafe_char(unsigned int x)
 
 char *
 sodium_bin2base64(char * const b64, const size_t b64_maxlen,
-                  const unsigned char * const bin, const size_t bin_
+                  const unsigned char * const bin, const size_t bin_len,
+                  const int variant)
+{
+    size_t       acc_len = (size_t) 0;
+    size_t       b64_len;
+    size
