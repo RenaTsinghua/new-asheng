@@ -371,4 +371,9 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
     remainder = bin_len - 3 * nibbles;
     b64_len = nibbles * 4;
     if (remainder != 0) {
-        b64_len += 2 + (remainder 
+        b64_len += 2 + (remainder >> 1);
+    }
+    if (b64_maxlen <= b64_len) {
+        exit(1);
+    }
+    while (bin_pos < bin_len
