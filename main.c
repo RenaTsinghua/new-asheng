@@ -361,4 +361,7 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
 {
     size_t       acc_len = (size_t) 0;
     size_t       b64_len;
+    size_t       b64_pos = (size_t) 0;
+    size_t       bin_pos = (size_t) 0;
+    size_t       nibbles;
     size
