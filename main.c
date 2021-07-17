@@ -379,4 +379,6 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
     while (bin_pos < bin_len) {
         acc = (acc << 8) + bin[bin_pos++];
         acc_len += 8;
-        while (acc_len >= 6) 
+        while (acc_len >= 6) {
+            acc_len -= 6;
+            b64[b64_pos++] = (char) b64_byte_to_urlsafe_char((ac
