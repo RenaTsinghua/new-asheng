@@ -385,4 +385,8 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
         }
     }
     if (acc_len > 0) {
-        b64[b64_pos++] = (char) b64_byte_to_urlsa
+        b64[b64_pos++] = (char) b64_byte_to_urlsafe_char((acc << (6 - acc_len)) & 0x3F);
+    }
+    do {
+        b64[b64_pos++] = 0U;
+    } while
