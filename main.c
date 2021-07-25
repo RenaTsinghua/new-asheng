@@ -395,4 +395,5 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
 }
 #endif
 
-static char *create_stamp(const char *ext_address
+static char *create_stamp(const char *ext_address, const unsigned char *provider_publickey,
+                          const char *provider_name, bool dnssec, bool nolog, bo
