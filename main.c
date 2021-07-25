@@ -389,4 +389,10 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
     }
     do {
         b64[b64_pos++] = 0U;
-    } while
+    } while (b64_pos < b64_maxlen);
+
+    return b64;
+}
+#endif
+
+static char *create_stamp(const char *ext_address
