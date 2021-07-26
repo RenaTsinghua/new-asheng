@@ -400,4 +400,7 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
 {
     unsigned char *stamp_bin, *p;
     char *stamp;
-    unsigned char props[8] = 
+    unsigned char props[8] = {0};
+    size_t len;
+    size_t ext_address_len = strlen(ext_address),
+           provider_publickey_len 
