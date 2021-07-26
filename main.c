@@ -403,4 +403,8 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
     unsigned char props[8] = {0};
     size_t len;
     size_t ext_address_len = strlen(ext_address),
-           provider_publickey_len 
+           provider_publickey_len = crypto_sign_ed25519_PUBLICKEYBYTES,
+           provider_name_len = strlen(provider_name);
+
+    if (dnssec)
+  
