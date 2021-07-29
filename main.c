@@ -407,4 +407,8 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
            provider_name_len = strlen(provider_name);
 
     if (dnssec)
-  
+        props[0] |= 1;
+    if (nolog)
+        props[0] |= 2;
+    if (nofilter)
+        props[0] |=
