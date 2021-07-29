@@ -413,4 +413,8 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
     if (nofilter)
         props[0] |= 4;
     len = 1 + 8 + 1 + ext_address_len + 1 + provider_publickey_len + 1 + provider_name_len;
-    if ((stamp_bin 
+    if ((stamp_bin = malloc(len)) == NULL)
+        exit(1);
+    p = stamp_bin;
+    *p++ = 0x01;
+    memcpy(p, p
