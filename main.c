@@ -417,4 +417,6 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
         exit(1);
     p = stamp_bin;
     *p++ = 0x01;
-    memcpy(p, p
+    memcpy(p, props, sizeof props); p += sizeof props;
+    *p++ = (unsigned char) ext_address_len;
+    memcpy(p, ext_address, ext_address_
