@@ -421,4 +421,5 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
     *p++ = (unsigned char) ext_address_len;
     memcpy(p, ext_address, ext_address_len); p += ext_address_len;
     *p++ = (unsigned char) provider_publickey_len;
-    memcpy(p, provider_publick
+    memcpy(p, provider_publickey, provider_publickey_len); p += provider_publickey_len;
+    *p++ = (unsigned char) provid
