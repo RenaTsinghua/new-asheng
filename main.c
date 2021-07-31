@@ -428,4 +428,7 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
         exit(1);
     }
     if ((stamp = malloc(len * 4 / 3 + 2)) == NULL) {
-  
+        exit(1);
+    }
+    sodium_bin2base64(stamp, len * 4 / 3 + 2, stamp_bin, len, 7);
+    free(stam
