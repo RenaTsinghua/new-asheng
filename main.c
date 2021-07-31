@@ -424,4 +424,8 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
     memcpy(p, provider_publickey, provider_publickey_len); p += provider_publickey_len;
     *p++ = (unsigned char) provider_name_len;
     memcpy(p, provider_name, provider_name_len); p += provider_name_len;
-    i
+    if (p - stamp_bin != len) {
+        exit(1);
+    }
+    if ((stamp = malloc(len * 4 / 3 + 2)) == NULL) {
+  
