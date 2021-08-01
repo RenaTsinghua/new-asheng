@@ -431,4 +431,12 @@ static char *create_stamp(const char *ext_address, const unsigned char *provider
         exit(1);
     }
     sodium_bin2base64(stamp, len * 4 / 3 + 2, stamp_bin, len, 7);
-    free(stam
+    free(stamp_bin);
+    return stamp;
+}
+
+int
+main(int argc, const char **argv)
+{
+    struct context c;
+    
