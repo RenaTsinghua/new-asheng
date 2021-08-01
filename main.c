@@ -439,4 +439,8 @@ int
 main(int argc, const char **argv)
 {
     struct context c;
-    
+    memset(&c, 0, sizeof(struct context));
+
+    char *blacklist_file = NULL;
+    int gen_provider_keypair = 0;
+    int gen
