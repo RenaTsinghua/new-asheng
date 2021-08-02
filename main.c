@@ -447,4 +447,7 @@ main(int argc, const char **argv)
     int gen_cert_file = 0;
     char *cert_file_expire_days = NULL;
     int provider_publickey = 0;
- 
+    int provider_publickey_dns_records = 0;
+    int verbose = 0;
+    int use_xchacha20 = 0;
+    int nolog = 0, dnssec =
