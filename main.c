@@ -443,4 +443,8 @@ main(int argc, const char **argv)
 
     char *blacklist_file = NULL;
     int gen_provider_keypair = 0;
-    int gen
+    int gen_crypt_keypair = 0;
+    int gen_cert_file = 0;
+    char *cert_file_expire_days = NULL;
+    int provider_publickey = 0;
+ 
