@@ -453,4 +453,7 @@ main(int argc, const char **argv)
     int nolog = 0, dnssec = 0, nofilter = 0;
     bool no_tcp = false, no_udp = false;
     struct argparse argparse;
-    st
+    struct argparse_option options[] = {
+        OPT_HELP(),
+        OPT_BOOLEAN(0, "gen-cert-file", &gen_cert_file,
+         
