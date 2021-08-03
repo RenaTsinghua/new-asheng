@@ -456,4 +456,5 @@ main(int argc, const char **argv)
     struct argparse_option options[] = {
         OPT_HELP(),
         OPT_BOOLEAN(0, "gen-cert-file", &gen_cert_file,
-         
+                    "generate pre-signed certificate"),
+        OPT_BOOLEAN(0, "gen-crypt-keypair", &gen_crypt_keyp
