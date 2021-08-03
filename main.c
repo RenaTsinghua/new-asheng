@@ -450,4 +450,7 @@ main(int argc, const char **argv)
     int provider_publickey_dns_records = 0;
     int verbose = 0;
     int use_xchacha20 = 0;
-    int nolog = 0, dnssec =
+    int nolog = 0, dnssec = 0, nofilter = 0;
+    bool no_tcp = false, no_udp = false;
+    struct argparse argparse;
+    st
