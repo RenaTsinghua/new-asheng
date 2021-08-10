@@ -461,4 +461,5 @@ main(int argc, const char **argv)
                     "generate crypt key pair"),
         OPT_BOOLEAN(0, "gen-provider-keypair", &gen_provider_keypair,
                     "generate provider key pair"),
-        OPT_BOOL
+        OPT_BOOLEAN(0, "show-provider-publickey", &provider_publickey,
+                    "show provider pub
