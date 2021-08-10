@@ -462,4 +462,6 @@ main(int argc, const char **argv)
         OPT_BOOLEAN(0, "gen-provider-keypair", &gen_provider_keypair,
                     "generate provider key pair"),
         OPT_BOOLEAN(0, "show-provider-publickey", &provider_publickey,
-                    "show provider pub
+                    "show provider public key"),
+        OPT_BOOLEAN(0, "show-provider-publickey-dns-records", &provider_publickey_dns_records,
+         
