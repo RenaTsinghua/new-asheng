@@ -459,4 +459,6 @@ main(int argc, const char **argv)
                     "generate pre-signed certificate"),
         OPT_BOOLEAN(0, "gen-crypt-keypair", &gen_crypt_keypair,
                     "generate crypt key pair"),
-        OPT_BOOLEAN(0, "gen-provider-keypair", 
+        OPT_BOOLEAN(0, "gen-provider-keypair", &gen_provider_keypair,
+                    "generate provider key pair"),
+        OPT_BOOL
