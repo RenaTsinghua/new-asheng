@@ -467,4 +467,5 @@ main(int argc, const char **argv)
                     "show records for DNS servers"),
         OPT_STRING(0, "provider-cert-file", &c.provider_cert_file,
                    "certificate file (default: ./dnscrypt.cert)"),
-        OPT_STRING(0
+        OPT_STRING(0, "provider-name", &c.provider_name, "provider name"),
+        OPT_STRING(0, "provider-publickey-file", &c.provid
