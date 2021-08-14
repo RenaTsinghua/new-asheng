@@ -465,4 +465,6 @@ main(int argc, const char **argv)
                     "show provider public key"),
         OPT_BOOLEAN(0, "show-provider-publickey-dns-records", &provider_publickey_dns_records,
                     "show records for DNS servers"),
-        OPT_STRING(0, "provider-cert-file", &c.provider_cert_f
+        OPT_STRING(0, "provider-cert-file", &c.provider_cert_file,
+                   "certificate file (default: ./dnscrypt.cert)"),
+        OPT_STRING(0
