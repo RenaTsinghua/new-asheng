@@ -468,4 +468,6 @@ main(int argc, const char **argv)
         OPT_STRING(0, "provider-cert-file", &c.provider_cert_file,
                    "certificate file (default: ./dnscrypt.cert)"),
         OPT_STRING(0, "provider-name", &c.provider_name, "provider name"),
-        OPT_STRING(0, "provider-publickey-file", &c.provid
+        OPT_STRING(0, "provider-publickey-file", &c.provider_publickey_file,
+                   "provider public key file (default: ./public.key)"),
+        OPT_STRI
