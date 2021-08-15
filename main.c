@@ -470,4 +470,5 @@ main(int argc, const char **argv)
         OPT_STRING(0, "provider-name", &c.provider_name, "provider name"),
         OPT_STRING(0, "provider-publickey-file", &c.provider_publickey_file,
                    "provider public key file (default: ./public.key)"),
-        OPT_STRI
+        OPT_STRING(0, "provider-secretkey-file", &c.provider_secretkey_file,
+                   "provider secret key fil
