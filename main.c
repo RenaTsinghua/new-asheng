@@ -475,4 +475,5 @@ main(int argc, const char **argv)
         OPT_STRING(0, "crypt-secretkey-file", &c.crypt_secretkey_file,
                    "crypt secret key file (default: ./crypt_secret.key)"),
         OPT_STRING(0, "cert-file-expire-days", &cert_file_expire_days, "cert file expire days (1d, 2h, 30m, 180s, default: 1d)"),
-        OPT_BOOLEAN(0, 
+        OPT_BOOLEAN(0, "nolog", &nolog, "indicate that the server doesn't store logs"),
+        OPT_BOOLEAN(0, "nofilter", &nofilter, "indic
