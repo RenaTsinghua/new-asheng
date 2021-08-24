@@ -479,4 +479,5 @@ main(int argc, const char **argv)
         OPT_BOOLEAN(0, "nofilter", &nofilter, "indicate that the server doesn't enforce its own blacklist"),
         OPT_BOOLEAN(0, "dnssec", &dnssec, "indicate that the server supports DNSSEC"),
         OPT_STRING('a', "listen-address", &c.listen_address,
-             
+                   "local address to listen (default: 0.0.0.0:53)"),
+        OPT_BOOLEAN(0, "no-udp", &no_udp, "do not listen on UDP")
