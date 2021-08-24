@@ -477,4 +477,6 @@ main(int argc, const char **argv)
         OPT_STRING(0, "cert-file-expire-days", &cert_file_expire_days, "cert file expire days (1d, 2h, 30m, 180s, default: 1d)"),
         OPT_BOOLEAN(0, "nolog", &nolog, "indicate that the server doesn't store logs"),
         OPT_BOOLEAN(0, "nofilter", &nofilter, "indicate that the server doesn't enforce its own blacklist"),
-        OPT_BOOLEAN(0, "dnssec", &dnssec, "indic
+        OPT_BOOLEAN(0, "dnssec", &dnssec, "indicate that the server supports DNSSEC"),
+        OPT_STRING('a', "listen-address", &c.listen_address,
+             
