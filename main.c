@@ -483,4 +483,6 @@ main(int argc, const char **argv)
         OPT_BOOLEAN(0, "no-udp", &no_udp, "do not listen on UDP"),
         OPT_BOOLEAN(0, "no-tcp", &no_tcp, "do not listen on TCP"),
         OPT_STRING('b', "blacklist-file", &blacklist_file, "blacklist file"),
-        OPT_STRING('E', "ext-address", &c.ext_address, "extern
+        OPT_STRING('E', "ext-address", &c.ext_address, "external IP address"),
+        OPT_STRING('r', "resolver-address", &c.resolver_address,
+                 
