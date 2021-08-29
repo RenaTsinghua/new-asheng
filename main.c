@@ -485,4 +485,5 @@ main(int argc, const char **argv)
         OPT_STRING('b', "blacklist-file", &blacklist_file, "blacklist file"),
         OPT_STRING('E', "ext-address", &c.ext_address, "external IP address"),
         OPT_STRING('r', "resolver-address", &c.resolver_address,
-                 
+                   "upstream dns resolver server (<address:port>)"),
+        OPT_STRING('o', "outgoing-address", &c.outgoi
