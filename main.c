@@ -487,4 +487,6 @@ main(int argc, const char **argv)
         OPT_STRING('r', "resolver-address", &c.resolver_address,
                    "upstream dns resolver server (<address:port>)"),
         OPT_STRING('o', "outgoing-address", &c.outgoing_address,
-                   "address to use to connect to dns resolver server (<address:port>)
+                   "address to use to connect to dns resolver server (<address:port>)"),
+        OPT_BOOLEAN('U', "unauthenticated", &c.allow_not_dnscrypted,
+                    "allo
