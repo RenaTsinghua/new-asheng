@@ -489,4 +489,5 @@ main(int argc, const char **argv)
         OPT_STRING('o', "outgoing-address", &c.outgoing_address,
                    "address to use to connect to dns resolver server (<address:port>)"),
         OPT_BOOLEAN('U', "unauthenticated", &c.allow_not_dnscrypted,
-                    "allo
+                    "allow and forward unauthenticated queries (default: off)"),
+        OPT_STRING('u', "user", &c.user, "run a
