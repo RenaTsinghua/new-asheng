@@ -490,4 +490,7 @@ main(int argc, const char **argv)
                    "address to use to connect to dns resolver server (<address:port>)"),
         OPT_BOOLEAN('U', "unauthenticated", &c.allow_not_dnscrypted,
                     "allow and forward unauthenticated queries (default: off)"),
-        OPT_STRING('u', "user", &c.user, "run a
+        OPT_STRING('u', "user", &c.user, "run as given user"),
+        OPT_STRING('l', "logfile", &c.logfile,
+                   "log file path (default: stdout)"),
+    
