@@ -493,4 +493,6 @@ main(int argc, const char **argv)
         OPT_STRING('u', "user", &c.user, "run as given user"),
         OPT_STRING('l', "logfile", &c.logfile,
                    "log file path (default: stdout)"),
-    
+        OPT_STRING('p', "pidfile", &c.pidfile, "pid stored file"),
+        OPT_BOOLEAN('d', "daemonize", &c.daemonize,
+   
