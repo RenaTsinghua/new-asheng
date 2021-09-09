@@ -497,4 +497,5 @@ main(int argc, const char **argv)
         OPT_BOOLEAN('d', "daemonize", &c.daemonize,
                     "run as daemon (default: off)"),
         OPT_BOOLEAN('V', "verbose", &verbose,
-           
+                    "show verbose logs (specify more -VVV to increase verbosity)"),
+        OPT_BOOLEAN('v', "version", 
