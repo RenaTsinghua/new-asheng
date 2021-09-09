@@ -495,4 +495,6 @@ main(int argc, const char **argv)
                    "log file path (default: stdout)"),
         OPT_STRING('p', "pidfile", &c.pidfile, "pid stored file"),
         OPT_BOOLEAN('d', "daemonize", &c.daemonize,
-   
+                    "run as daemon (default: off)"),
+        OPT_BOOLEAN('V', "verbose", &verbose,
+           
