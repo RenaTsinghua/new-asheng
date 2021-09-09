@@ -498,4 +498,5 @@ main(int argc, const char **argv)
                     "run as daemon (default: off)"),
         OPT_BOOLEAN('V', "verbose", &verbose,
                     "show verbose logs (specify more -VVV to increase verbosity)"),
-        OPT_BOOLEAN('v', "version", 
+        OPT_BOOLEAN('v', "version", NULL, "show version info", show_version_cb),
+#ifdef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_
