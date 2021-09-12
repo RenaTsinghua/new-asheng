@@ -500,4 +500,9 @@ main(int argc, const char **argv)
                     "show verbose logs (specify more -VVV to increase verbosity)"),
         OPT_BOOLEAN('v', "version", NULL, "show version info", show_version_cb),
 #ifdef HAVE_CRYPTO_BOX_CURVE25519XCHACHA20POLY1305_OPEN_EASY
-        OPT_BOOLEAN('x', "xchacha20", &use_xchacha20, "generate a certificate for use with the xc
+        OPT_BOOLEAN('x', "xchacha20", &use_xchacha20, "generate a certificate for use with the xchacha20 cipher"),
+#endif
+        OPT_END(),
+    };
+
+    argparse_init(&argparse, options, config_usage, 0
