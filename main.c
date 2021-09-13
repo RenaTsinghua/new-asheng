@@ -505,4 +505,9 @@ main(int argc, const char **argv)
         OPT_END(),
     };
 
-    argparse_init(&argparse, options, config_usage, 0
+    argparse_init(&argparse, options, config_usage, 0);
+    argparse_parse(&argparse, argc, argv);
+
+    if (no_udp && no_tcp) {
+        fprintf(stderr,
+   
