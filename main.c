@@ -510,4 +510,6 @@ main(int argc, const char **argv)
 
     if (no_udp && no_tcp) {
         fprintf(stderr,
-   
+                "Error: UDP/TCP listeners are both disabled\n\n");
+        argparse_usage(&argparse);
+       
