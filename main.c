@@ -512,4 +512,14 @@ main(int argc, const char **argv)
         fprintf(stderr,
                 "Error: UDP/TCP listeners are both disabled\n\n");
         argparse_usage(&argparse);
-       
+        exit(1);
+    }
+
+
+    if (sodium_init() != 0) {
+        return 1;
+    }
+
+    debug_init();
+
+    if (!c.li
