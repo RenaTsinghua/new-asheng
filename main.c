@@ -522,4 +522,8 @@ main(int argc, const char **argv)
 
     debug_init();
 
-    if (!c.li
+    if (!c.listen_address)
+        c.listen_address = "0.0.0.0:53";
+
+    if (!c.crypt_secretkey_file)
+        c.crypt_secretkey_file =
