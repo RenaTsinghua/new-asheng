@@ -532,4 +532,11 @@ main(int argc, const char **argv)
         c.provider_publickey_file = "public.key";
 
     if (!c.provider_secretkey_file)
-        c.provider_secretkey_file = "secret.
+        c.provider_secretkey_file = "secret.key";
+
+    if (!c.provider_cert_file)
+        c.provider_cert_file = "dnscrypt.cert";
+
+    c.keypairs = NULL;
+
+ 
