@@ -529,4 +529,7 @@ main(int argc, const char **argv)
         c.crypt_secretkey_file = "crypt_secret.key";
 
     if (!c.provider_publickey_file)
-        c.provider_publickey_file = "publi
+        c.provider_publickey_file = "public.key";
+
+    if (!c.provider_secretkey_file)
+        c.provider_secretkey_file = "secret.
