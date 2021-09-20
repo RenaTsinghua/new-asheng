@@ -526,4 +526,7 @@ main(int argc, const char **argv)
         c.listen_address = "0.0.0.0:53";
 
     if (!c.crypt_secretkey_file)
-        c.crypt_secretkey_file =
+        c.crypt_secretkey_file = "crypt_secret.key";
+
+    if (!c.provider_publickey_file)
+        c.provider_publickey_file = "publi
