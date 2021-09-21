@@ -539,4 +539,5 @@ main(int argc, const char **argv)
 
     c.keypairs = NULL;
 
- 
+    if (gen_provider_keypair) {
+        uint8_t provider_publickey[crypto_sign_ed25519_PUBLICKEYBYT
