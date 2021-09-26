@@ -544,4 +544,5 @@ main(int argc, const char **argv)
         uint8_t provider_secretkey[crypto_sign_ed25519_SECRETKEYBYTES];
 
         if (!dnssec) {
-           
+            fprintf(stderr,
+                    "Warning: do not forget to add --dnssec if your server supports DNSSEC\n\
