@@ -549,4 +549,7 @@ main(int argc, const char **argv)
         }
         if (!nolog) {
             fprintf(stderr,
-                    "Warning: do not 
+                    "Warning: do not forget to add --nolog if your server doesn't store logs\n\n");
+        }
+        if (!nofilter) {
+            fp
