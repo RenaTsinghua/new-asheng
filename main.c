@@ -552,4 +552,5 @@ main(int argc, const char **argv)
                     "Warning: do not forget to add --nolog if your server doesn't store logs\n\n");
         }
         if (!nofilter) {
-            fp
+            fprintf(stderr,
+                    "Warning: do not forget to add --nofilter if your server doesn't intentionally block 
