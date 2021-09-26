@@ -545,4 +545,8 @@ main(int argc, const char **argv)
 
         if (!dnssec) {
             fprintf(stderr,
-                    "Warning: do not forget to add --dnssec if your server supports DNSSEC\n\
+                    "Warning: do not forget to add --dnssec if your server supports DNSSEC\n\n");
+        }
+        if (!nolog) {
+            fprintf(stderr,
+                    "Warning: do not 
