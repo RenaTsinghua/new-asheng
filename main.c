@@ -562,4 +562,7 @@ main(int argc, const char **argv)
         }
         if (!c.ext_address || strncmp(c.ext_address, "0.", 2) == 0) {
             fprintf(stderr,
-        
+                    "Missing external address. Ex: --ext-address=192.168.1.1\n");
+            exit(1);
+        }
+
