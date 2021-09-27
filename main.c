@@ -553,4 +553,8 @@ main(int argc, const char **argv)
         }
         if (!nofilter) {
             fprintf(stderr,
-                    "Warning: do not forget to add --nofilter if your server doesn't intentionally block 
+                    "Warning: do not forget to add --nofilter if your server doesn't intentionally block domains\n\n");
+        }
+        if (!c.provider_name) {
+            fprintf(stderr,
+                    "Missing provide
