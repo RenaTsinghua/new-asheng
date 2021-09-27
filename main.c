@@ -557,4 +557,7 @@ main(int argc, const char **argv)
         }
         if (!c.provider_name) {
             fprintf(stderr,
-                    "Missing provide
+                    "Missing provider name. Ex: --provider-name=2.dnscrypt-cert.example.com\n");
+            exit(1);
+        }
+        
