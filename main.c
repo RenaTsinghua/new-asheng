@@ -560,4 +560,6 @@ main(int argc, const char **argv)
                     "Missing provider name. Ex: --provider-name=2.dnscrypt-cert.example.com\n");
             exit(1);
         }
+        if (!c.ext_address || strncmp(c.ext_address, "0.", 2) == 0) {
+            fprintf(stderr,
         
