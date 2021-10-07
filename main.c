@@ -566,3 +566,6 @@ main(int argc, const char **argv)
             exit(1);
         }
 
+        printf("Generate provider key pair...");
+        fflush(stdout);
+        if (crypto_sign_ed25519_ke
