@@ -573,4 +573,5 @@ main(int argc, const char **argv)
             char *stamp;
 
             puts(" ok.\n");
-            stamp = create_stamp(c.ext_address, provider_publick
+            stamp = create_stamp(c.ext_address, provider_publickey, c.provider_name, dnssec, nolog, nofilter);
+            dnscrypt_key_to_fingerprint(fingerprint,
