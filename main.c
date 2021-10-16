@@ -568,4 +568,6 @@ main(int argc, const char **argv)
 
         printf("Generate provider key pair...");
         fflush(stdout);
-        if (crypto_sign_ed25519_ke
+        if (crypto_sign_ed25519_keypair(provider_publickey, provider_secretkey) == 0) {
+            char fingerprint[80];
+       
