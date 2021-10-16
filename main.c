@@ -570,4 +570,7 @@ main(int argc, const char **argv)
         fflush(stdout);
         if (crypto_sign_ed25519_keypair(provider_publickey, provider_secretkey) == 0) {
             char fingerprint[80];
-       
+            char *stamp;
+
+            puts(" ok.\n");
+            stamp = create_stamp(c.ext_address, provider_publick
