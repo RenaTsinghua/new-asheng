@@ -577,4 +577,6 @@ main(int argc, const char **argv)
             dnscrypt_key_to_fingerprint(fingerprint, provider_publickey);
 
             printf("Stamp for dnscrypt-proxy 2.x:\n"
-                  
+                   "  sdns://%s\n\n"
+                   "Parameters for dnscrypt-proxy 1.x:\n"
+                   "  dnscrypt
