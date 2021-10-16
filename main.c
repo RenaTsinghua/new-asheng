@@ -574,4 +574,7 @@ main(int argc, const char **argv)
 
             puts(" ok.\n");
             stamp = create_stamp(c.ext_address, provider_publickey, c.provider_name, dnssec, nolog, nofilter);
-            dnscrypt_key_to_fingerprint(fingerprint,
+            dnscrypt_key_to_fingerprint(fingerprint, provider_publickey);
+
+            printf("Stamp for dnscrypt-proxy 2.x:\n"
+                  
