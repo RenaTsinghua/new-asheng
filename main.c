@@ -581,4 +581,6 @@ main(int argc, const char **argv)
                    "Parameters for dnscrypt-proxy 1.x:\n"
                    "  dnscrypt-proxy --provider-key=%s\n"
                    "                 --resolver-address=%s\n"
-                 
+                   "                 --provider-name=%s\n",
+                   stamp,
+                   fingerprint, c.ext_addres
