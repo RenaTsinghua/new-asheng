@@ -585,4 +585,6 @@ main(int argc, const char **argv)
                    stamp,
                    fingerprint, c.ext_address, c.provider_name);
             if (write_to_file
-                (c.provider_publickey_file, (char *)prov
+                (c.provider_publickey_file, (char *)provider_publickey,
+                 crypto_sign_ed25519_PUBLICKEYBYTES) == 0
+                && write_to_pkey(c
