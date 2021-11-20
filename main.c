@@ -587,4 +587,5 @@ main(int argc, const char **argv)
             if (write_to_file
                 (c.provider_publickey_file, (char *)provider_publickey,
                  crypto_sign_ed25519_PUBLICKEYBYTES) == 0
-                && write_to_pkey(c
+                && write_to_pkey(c.provider_secretkey_file, (char *)provider_secretkey,
+                                 crypto_s
