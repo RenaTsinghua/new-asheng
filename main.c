@@ -583,4 +583,6 @@ main(int argc, const char **argv)
                    "                 --resolver-address=%s\n"
                    "                 --provider-name=%s\n",
                    stamp,
-                   fingerprint, c.ext_addres
+                   fingerprint, c.ext_address, c.provider_name);
+            if (write_to_file
+                (c.provider_publickey_file, (char *)prov
