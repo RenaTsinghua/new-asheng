@@ -590,4 +590,7 @@ main(int argc, const char **argv)
                 && write_to_pkey(c.provider_secretkey_file, (char *)provider_secretkey,
                                  crypto_sign_ed25519_SECRETKEYBYTES) == 0) {
                 printf("Keys are stored in %s & %s.\n",
-          
+                       c.provider_publickey_file, c.provider_secretkey_file);
+                exit(0);
+            }
+        
