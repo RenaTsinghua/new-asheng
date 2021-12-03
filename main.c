@@ -593,4 +593,5 @@ main(int argc, const char **argv)
                        c.provider_publickey_file, c.provider_secretkey_file);
                 exit(0);
             }
-        
+            printf("\n\n*KEYS HAVE NOT BEEN SAVED*\n\nA provider key pair already exists.\n"
+              
