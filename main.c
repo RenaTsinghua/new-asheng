@@ -594,4 +594,5 @@ main(int argc, const char **argv)
                 exit(0);
             }
             printf("\n\n*KEYS HAVE NOT BEEN SAVED*\n\nA provider key pair already exists.\n"
-              
+                   "If you really want to overwrite it, delete the %s and %s files.\n\n"
+                   "The provider public key
