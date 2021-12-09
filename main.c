@@ -596,4 +596,6 @@ main(int argc, const char **argv)
             printf("\n\n*KEYS HAVE NOT BEEN SAVED*\n\nA provider key pair already exists.\n"
                    "If you really want to overwrite it, delete the %s and %s files.\n\n"
                    "The provider public key is what client give to dnscrypt-proxy\n"
-                   "in order to use your service (long-term key).\n
+                   "in order to use your service (long-term key).\n\n"
+                   "Unless the private key has been compromised, you probably do not\n"
+                   "want
