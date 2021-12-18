@@ -598,4 +598,5 @@ main(int argc, const char **argv)
                    "The provider public key is what client give to dnscrypt-proxy\n"
                    "in order to use your service (long-term key).\n\n"
                    "Unless the private key has been compromised, you probably do not\n"
-                   "want
+                   "want to overwrite it with a new one.\n\n"
+                   "Usually, what you want (if current certi
