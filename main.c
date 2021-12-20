@@ -599,4 +599,5 @@ main(int argc, const char **argv)
                    "in order to use your service (long-term key).\n\n"
                    "Unless the private key has been compromised, you probably do not\n"
                    "want to overwrite it with a new one.\n\n"
-                   "Usually, what you want (if current certi
+                   "Usually, what you want (if current certificates are about to expire)\n"
+                   "to regenerate is the server key pairs (--gen-cr
