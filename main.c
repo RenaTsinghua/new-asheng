@@ -600,4 +600,6 @@ main(int argc, const char **argv)
                    "Unless the private key has been compromised, you probably do not\n"
                    "want to overwrite it with a new one.\n\n"
                    "Usually, what you want (if current certificates are about to expire)\n"
-                   "to regenerate is the server key pairs (--gen-cr
+                   "to regenerate is the server key pairs (--gen-crypt-keypair),\n"
+                   "not the master keys.\n",
+                   c.pro
