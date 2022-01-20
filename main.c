@@ -602,4 +602,7 @@ main(int argc, const char **argv)
                    "Usually, what you want (if current certificates are about to expire)\n"
                    "to regenerate is the server key pairs (--gen-crypt-keypair),\n"
                    "not the master keys.\n",
-                   c.pro
+                   c.provider_publickey_file, c.provider_secretkey_file);
+            exit(1);
+        } else {
+      
