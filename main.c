@@ -605,4 +605,9 @@ main(int argc, const char **argv)
                    c.provider_publickey_file, c.provider_secretkey_file);
             exit(1);
         } else {
+            printf(" failed.\n");
+            exit(1);
+        }
+    }
+    if (provider_publickey_dns_records) {
       
