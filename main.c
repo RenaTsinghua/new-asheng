@@ -610,4 +610,7 @@ main(int argc, const char **argv)
         }
     }
     if (provider_publickey_dns_records) {
-      
+        if (parse_cert_files(&c) || filter_signed_certs(&c)) {
+            exit(1);
+        }
+        logger(LOG_NOTIC
