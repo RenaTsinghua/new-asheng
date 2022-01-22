@@ -613,4 +613,6 @@ main(int argc, const char **argv)
         if (parse_cert_files(&c) || filter_signed_certs(&c)) {
             exit(1);
         }
-        logger(LOG_NOTIC
+        logger(LOG_NOTICE, "TXT record for signed-certificate:");
+        printf("* Record for nsd:\n");
+        for(int i=0; i < c.sign
