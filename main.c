@@ -617,4 +617,7 @@ main(int argc, const char **argv)
         printf("* Record for nsd:\n");
         for(int i=0; i < c.signed_certs_count; i++){
             cert_display_txt_record(c.signed_certs + i);
-            pri
+            printf("\n");
+        }
+        printf("* Record for tinydns:\n");
+        for(int i=0; i < c.sign
