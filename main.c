@@ -621,4 +621,11 @@ main(int argc, const char **argv)
         }
         printf("* Record for tinydns:\n");
         for(int i=0; i < c.signed_certs_count; i++){
-            cert_display_txt_record_tinydns(c.signed_c
+            cert_display_txt_record_tinydns(c.signed_certs + i);
+            printf("\n");
+        }
+        exit(0);
+    }
+
+    if (provider_publickey) {
+        char fingerprint[80];
