@@ -631,4 +631,6 @@ main(int argc, const char **argv)
         char fingerprint[80];
 
         if (read_from_file(c.provider_publickey_file,
-                           (char *
+                           (char *)c.provider_publickey,
+                           crypto_sign_ed25519_PUBLICKEYBYTES) != 0) {
+     
