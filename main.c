@@ -629,3 +629,6 @@ main(int argc, const char **argv)
 
     if (provider_publickey) {
         char fingerprint[80];
+
+        if (read_from_file(c.provider_publickey_file,
+                           (char *
