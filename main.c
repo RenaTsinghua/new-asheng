@@ -633,4 +633,7 @@ main(int argc, const char **argv)
         if (read_from_file(c.provider_publickey_file,
                            (char *)c.provider_publickey,
                            crypto_sign_ed25519_PUBLICKEYBYTES) != 0) {
-     
+            logger(LOG_ERR, "Unable to read %s", c.provider_publickey_file);
+            exit(1);
+        }
+    
