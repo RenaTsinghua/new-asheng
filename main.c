@@ -636,4 +636,5 @@ main(int argc, const char **argv)
             logger(LOG_ERR, "Unable to read %s", c.provider_publickey_file);
             exit(1);
         }
-    
+        dnscrypt_key_to_fingerprint(fingerprint, c.provider_publickey);
+        printf("Provider public key: %
