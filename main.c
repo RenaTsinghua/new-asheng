@@ -637,4 +637,9 @@ main(int argc, const char **argv)
             exit(1);
         }
         dnscrypt_key_to_fingerprint(fingerprint, c.provider_publickey);
-        printf("Provider public key: %
+        printf("Provider public key: %s\n", fingerprint);
+        exit(0);
+    }
+
+    if (gen_crypt_keypair) {
+        printf("Generate crypt key pai
