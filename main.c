@@ -647,4 +647,6 @@ main(int argc, const char **argv)
         if ((c.keypairs = sodium_malloc(sizeof *c.keypairs)) == NULL)
             exit(1);
         if (crypto_box_keypair(c.keypairs->crypt_publickey,
-                               c.k
+                               c.keypairs->crypt_secretkey) == 0) {
+            printf(" ok.\n");
+            if (write_t
