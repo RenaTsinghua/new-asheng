@@ -649,4 +649,5 @@ main(int argc, const char **argv)
         if (crypto_box_keypair(c.keypairs->crypt_publickey,
                                c.keypairs->crypt_secretkey) == 0) {
             printf(" ok.\n");
-            if (write_t
+            if (write_to_pkey(c.crypt_secretkey_file,
+                              (char *)c.keypairs->crypt_secretke
