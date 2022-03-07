@@ -652,4 +652,8 @@ main(int argc, const char **argv)
             if (write_to_pkey(c.crypt_secretkey_file,
                               (char *)c.keypairs->crypt_secretkey,
                               crypto_box_SECRETKEYBYTES) == 0) {
-                printf("Secret key stored in %s
+                printf("Secret key stored in %s\n",
+                       c.crypt_secretkey_file);
+                exit(0);
+            }
+            logge
