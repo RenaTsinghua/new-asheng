@@ -657,4 +657,6 @@ main(int argc, const char **argv)
                 exit(0);
             }
             logger(LOG_ERR, "The new certificate was not saved - "
-                   "Maybe the %s file already
+                   "Maybe the %s file already exists - please delete it first.",
+                   c.crypt_secretkey_file);
+            exit(1);
