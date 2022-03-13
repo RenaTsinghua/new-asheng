@@ -660,3 +660,11 @@ main(int argc, const char **argv)
                    "Maybe the %s file already exists - please delete it first.",
                    c.crypt_secretkey_file);
             exit(1);
+        } else {
+            printf(" failed.\n");
+            exit(1);
+        }
+    }
+
+    // setup logger
+    
