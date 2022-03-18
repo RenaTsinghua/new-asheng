@@ -671,4 +671,7 @@ main(int argc, const char **argv)
         logger_logfile = c.logfile;
     }
     logger_verbosity = LOG_NOTICE;  // default
- 
+    logger_verbosity += verbose;
+    if (logger_verbosity > LOG_DEBUG)
+        logger_verbosity = LOG_DEBUG;
+
