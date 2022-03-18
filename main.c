@@ -675,3 +675,8 @@ main(int argc, const char **argv)
     if (logger_verbosity > LOG_DEBUG)
         logger_verbosity = LOG_DEBUG;
 
+    char *crypt_secretkey_files, *crypt_secretkey_file;
+    size_t keypair_id;
+
+    c.keypairs_count = 0U;
+    
