@@ -667,4 +667,8 @@ main(int argc, const char **argv)
     }
 
     // setup logger
-    
+    if (c.logfile) {
+        logger_logfile = c.logfile;
+    }
+    logger_verbosity = LOG_NOTICE;  // default
+ 
