@@ -679,4 +679,6 @@ main(int argc, const char **argv)
     size_t keypair_id;
 
     c.keypairs_count = 0U;
-    
+    if ((crypt_secretkey_files = strdup(c.crypt_secretkey_file)) == NULL)
+        exit(1);
+    for (c
