@@ -681,4 +681,6 @@ main(int argc, const char **argv)
     c.keypairs_count = 0U;
     if ((crypt_secretkey_files = strdup(c.crypt_secretkey_file)) == NULL)
         exit(1);
-    for (c
+    for (crypt_secretkey_file = strtok(crypt_secretkey_files, ",");
+         crypt_secretkey_file != NULL;
+         cryp
