@@ -683,4 +683,7 @@ main(int argc, const char **argv)
         exit(1);
     for (crypt_secretkey_file = strtok(crypt_secretkey_files, ",");
          crypt_secretkey_file != NULL;
-         cryp
+         crypt_secretkey_file = strtok(NULL, ",")) {
+        c.keypairs_count++;
+    }
+    if (c.keypairs_count 
