@@ -689,3 +689,7 @@ main(int argc, const char **argv)
     if (c.keypairs_count <= 0U) {
         logger(LOG_ERR, "You must specify --crypt-secretkey-file.\n\n");
         argparse_usage(&argparse);
+        exit(0);
+    }
+    memcpy(crypt_secretkey_files, c.crypt_secretkey_file, strlen(c.crypt_secretkey_file) + 1U);
+    c
