@@ -686,4 +686,6 @@ main(int argc, const char **argv)
          crypt_secretkey_file = strtok(NULL, ",")) {
         c.keypairs_count++;
     }
-    if (c.keypairs_count 
+    if (c.keypairs_count <= 0U) {
+        logger(LOG_ERR, "You must specify --crypt-secretkey-file.\n\n");
+        argparse_usage(&argparse);
