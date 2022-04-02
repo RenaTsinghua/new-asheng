@@ -692,4 +692,6 @@ main(int argc, const char **argv)
         exit(0);
     }
     memcpy(crypt_secretkey_files, c.crypt_secretkey_file, strlen(c.crypt_secretkey_file) + 1U);
-    c
+    c.keypairs = sodium_allocarray(c.keypairs_count, sizeof *c.keypairs);
+    keypair_id = 0U;
+    for (cry
