@@ -702,4 +702,7 @@ main(int argc, const char **argv)
         if (read_from_file(crypt_secretkey_file,
                            (char *)c.keypairs[keypair_id].crypt_secretkey,
                            crypto_box_SECRETKEYBYTES) != 0) {
-            logger(LOG_ERR, "Un
+            logger(LOG_ERR, "Unable to read %s", crypt_secretkey_file);
+            exit(1);
+        }
+        if (crypto_sc
