@@ -700,4 +700,6 @@ main(int argc, const char **argv)
         char fingerprint[80];
 
         if (read_from_file(crypt_secretkey_file,
-                           (char *)c.keypairs[keypair_id].cryp
+                           (char *)c.keypairs[keypair_id].crypt_secretkey,
+                           crypto_box_SECRETKEYBYTES) != 0) {
+            logger(LOG_ERR, "Un
