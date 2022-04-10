@@ -696,3 +696,7 @@ main(int argc, const char **argv)
     keypair_id = 0U;
     for (crypt_secretkey_file = strtok(crypt_secretkey_files, ",");
          crypt_secretkey_file != NULL;
+         crypt_secretkey_file = strtok(NULL, ",")) {
+        char fingerprint[80];
+
+        if (read_
