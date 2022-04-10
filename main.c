@@ -699,4 +699,5 @@ main(int argc, const char **argv)
          crypt_secretkey_file = strtok(NULL, ",")) {
         char fingerprint[80];
 
-        if (read_
+        if (read_from_file(crypt_secretkey_file,
+                           (char *)c.keypairs[keypair_id].cryp
