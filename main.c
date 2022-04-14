@@ -705,4 +705,5 @@ main(int argc, const char **argv)
             logger(LOG_ERR, "Unable to read %s", crypt_secretkey_file);
             exit(1);
         }
-        if (crypto_sc
+        if (crypto_scalarmult_base(c.keypairs[keypair_id].crypt_publickey,
+                                   c.keypairs[key
