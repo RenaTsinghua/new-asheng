@@ -706,4 +706,6 @@ main(int argc, const char **argv)
             exit(1);
         }
         if (crypto_scalarmult_base(c.keypairs[keypair_id].crypt_publickey,
-                                   c.keypairs[key
+                                   c.keypairs[keypair_id].crypt_secretkey) != 0)
+            exit(1);
+        dnscrypt_key_to_fingerprint(fingerprint, c.keypairs[keypair_id]
