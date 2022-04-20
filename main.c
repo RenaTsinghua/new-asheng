@@ -710,4 +710,9 @@ main(int argc, const char **argv)
             exit(1);
         dnscrypt_key_to_fingerprint(fingerprint, c.keypairs[keypair_id].crypt_publickey);
         logger(LOG_INFO, "Crypt public key fingerprint for %s: %s",
-          
+               crypt_secretkey_file, fingerprint);
+        keypair_id++;
+    }
+    free(crypt_secretkey_files);
+
+    // gen
