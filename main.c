@@ -715,4 +715,7 @@ main(int argc, const char **argv)
     }
     free(crypt_secretkey_files);
 
-    // gen
+    // generate signed certificate
+    if (gen_cert_file) {
+        if (c.keypairs_count != 1U) {
+            logger(L
