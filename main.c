@@ -718,4 +718,7 @@ main(int argc, const char **argv)
     // generate signed certificate
     if (gen_cert_file) {
         if (c.keypairs_count != 1U) {
-            logger(L
+            logger(LOG_ERR, "A certificate can only store a single key");
+            exit(1);
+        }
+       
