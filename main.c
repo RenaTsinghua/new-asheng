@@ -721,4 +721,6 @@ main(int argc, const char **argv)
             logger(LOG_ERR, "A certificate can only store a single key");
             exit(1);
         }
-       
+        if (read_from_file
+            (c.provider_publickey_file, (char *)c.provider_publickey,
+             crypto_sign_ed
