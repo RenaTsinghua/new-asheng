@@ -725,4 +725,5 @@ main(int argc, const char **argv)
             (c.provider_publickey_file, (char *)c.provider_publickey,
              crypto_sign_ed25519_PUBLICKEYBYTES) == 0
             && read_from_file(c.provider_secretkey_file,
-                   
+                              (char *)c.provider_secretkey,
+                              crypto_sign_ed25519_SECRETKE
