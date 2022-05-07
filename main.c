@@ -726,4 +726,7 @@ main(int argc, const char **argv)
              crypto_sign_ed25519_PUBLICKEYBYTES) == 0
             && read_from_file(c.provider_secretkey_file,
                               (char *)c.provider_secretkey,
-                              crypto_sign_ed25519_SECRETKE
+                              crypto_sign_ed25519_SECRETKEYBYTES) == 0) {
+        } else {
+            logger(LOG_ERR, "Unable to load master keys from %s and %s.",
+           
