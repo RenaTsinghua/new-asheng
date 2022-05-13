@@ -734,4 +734,5 @@ main(int argc, const char **argv)
         }
         int cert_file_expire_seconds = CERT_FILE_EXPIRE_DAYS * 24 * 3600;
         if (cert_file_expire_days != NULL) {
-           if (seconds_from_string(cert_file_expire_days, &cert_file_e
+           if (seconds_from_string(cert_file_expire_days, &cert_file_expire_seconds) != 0) {
+               logger(LOG_ERR, "Unable to parse expire time string: %
