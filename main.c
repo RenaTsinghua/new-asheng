@@ -732,4 +732,5 @@ main(int argc, const char **argv)
                    c.provider_publickey_file, c.provider_secretkey_file);
             exit(1);
         }
-  
+        int cert_file_expire_seconds = CERT_FILE_EXPIRE_DAYS * 24 * 3600;
+        if (cert_file_expire_
