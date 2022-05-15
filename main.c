@@ -739,4 +739,5 @@ main(int argc, const char **argv)
                exit(1);
            }
         }
-        logger(LO
+        logger(LOG_NOTICE, "Generating pre-signed certificate (expire in %d seconds).", cert_file_expire_seconds);
+   
