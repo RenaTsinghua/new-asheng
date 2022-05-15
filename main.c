@@ -740,4 +740,5 @@ main(int argc, const char **argv)
            }
         }
         logger(LOG_NOTICE, "Generating pre-signed certificate (expire in %d seconds).", cert_file_expire_seconds);
-   
+        struct SignedCert *signed_cert =
+            cert_build_cert(c.keypairs->crypt_publickey, cert_file_
