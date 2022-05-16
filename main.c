@@ -746,4 +746,6 @@ main(int argc, const char **argv)
             logger(LOG_NOTICE, "Failed.");
             exit(1);
         }
-        logg
+        logger(LOG_NOTICE, "TXT record for signed-certificate:");
+        printf("* Record for nsd:\n");
+        cert_display_
