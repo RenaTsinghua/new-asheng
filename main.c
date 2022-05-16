@@ -748,4 +748,7 @@ main(int argc, const char **argv)
         }
         logger(LOG_NOTICE, "TXT record for signed-certificate:");
         printf("* Record for nsd:\n");
-        cert_display_
+        cert_display_txt_record(signed_cert);
+        printf("\n");
+        printf("* Record for tinydns:\n");
+        cert_displ
