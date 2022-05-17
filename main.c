@@ -751,4 +751,7 @@ main(int argc, const char **argv)
         cert_display_txt_record(signed_cert);
         printf("\n");
         printf("* Record for tinydns:\n");
-        cert_displ
+        cert_display_txt_record_tinydns(signed_cert);
+        printf("\n");
+        if (write_to_file
+            (c.provid
