@@ -754,4 +754,6 @@ main(int argc, const char **argv)
         cert_display_txt_record_tinydns(signed_cert);
         printf("\n");
         if (write_to_file
-            (c.provid
+            (c.provider_cert_file, (char *)signed_cert,
+             sizeof(struct SignedCert)) != 0) {
+    
