@@ -756,4 +756,5 @@ main(int argc, const char **argv)
         if (write_to_file
             (c.provider_cert_file, (char *)signed_cert,
              sizeof(struct SignedCert)) != 0) {
-    
+            logger(LOG_ERR, "The new certificate was not saved - "
+                   "Maybe the %s file already
