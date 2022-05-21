@@ -757,4 +757,6 @@ main(int argc, const char **argv)
             (c.provider_cert_file, (char *)signed_cert,
              sizeof(struct SignedCert)) != 0) {
             logger(LOG_ERR, "The new certificate was not saved - "
-                   "Maybe the %s file already
+                   "Maybe the %s file already exists - please delete it first.",
+                   c.provider_cert_file);
+            exit(1);
