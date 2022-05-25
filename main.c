@@ -764,3 +764,6 @@ main(int argc, const char **argv)
         logger(LOG_NOTICE, "Certificate stored in %s.", c.provider_cert_file);
         exit(0);
     }
+
+    if (!c.resolver_address) {
+        logger(LOG_ERR, "You must specify --resolver-ad
