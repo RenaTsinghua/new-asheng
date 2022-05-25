@@ -766,4 +766,9 @@ main(int argc, const char **argv)
     }
 
     if (!c.resolver_address) {
-        logger(LOG_ERR, "You must specify --resolver-ad
+        logger(LOG_ERR, "You must specify --resolver-address.\n\n");
+        argparse_usage(&argparse);
+        exit(0);
+    }
+
+    if (blacklist_file != NULL && 
