@@ -771,4 +771,5 @@ main(int argc, const char **argv)
         exit(0);
     }
 
-    if (blacklist_file != NULL && 
+    if (blacklist_file != NULL && blocking_init(&c, blacklist_file) != 0) {
+        logger(LOG_ERR, "Unable to load the blacklist fi
