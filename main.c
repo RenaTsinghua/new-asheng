@@ -760,3 +760,7 @@ main(int argc, const char **argv)
                    "Maybe the %s file already exists - please delete it first.",
                    c.provider_cert_file);
             exit(1);
+        }
+        logger(LOG_NOTICE, "Certificate stored in %s.", c.provider_cert_file);
+        exit(0);
+    }
