@@ -779,4 +779,7 @@ main(int argc, const char **argv)
     c.udp_listener_handle = -1;
     c.udp_resolver_handle = -1;
 
-    if
+    if (c.user) {
+        struct passwd *pw = getpwnam(c.user);
+        if (pw == NULL) {
+            logger(LOG_ER
