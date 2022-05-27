@@ -782,4 +782,8 @@ main(int argc, const char **argv)
     if (c.user) {
         struct passwd *pw = getpwnam(c.user);
         if (pw == NULL) {
-            logger(LOG_ER
+            logger(LOG_ERR, "Unknown user: [%s]", c.user);
+            exit(1);
+        }
+        c.user_id = pw->pw_uid;
+        c
