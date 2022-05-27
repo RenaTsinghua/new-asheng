@@ -772,4 +772,11 @@ main(int argc, const char **argv)
     }
 
     if (blacklist_file != NULL && blocking_init(&c, blacklist_file) != 0) {
-        logger(LOG_ERR, "Unable to load the blacklist fi
+        logger(LOG_ERR, "Unable to load the blacklist file");
+        exit(1);
+    }
+
+    c.udp_listener_handle = -1;
+    c.udp_resolver_handle = -1;
+
+    if
