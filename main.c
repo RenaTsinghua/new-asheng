@@ -786,4 +786,9 @@ main(int argc, const char **argv)
             exit(1);
         }
         c.user_id = pw->pw_uid;
-        c
+        c.user_group = pw->pw_gid;
+        c.user_dir = strdup(pw->pw_dir);
+    }
+
+    if (!c.provider_name) {
+ 
