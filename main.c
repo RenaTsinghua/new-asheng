@@ -791,4 +791,9 @@ main(int argc, const char **argv)
     }
 
     if (!c.provider_name) {
- 
+        logger(LOG_ERR, "You must specify --provider-name");
+        exit(1);
+    }
+
+    if (parse_cert_files(&c)) {
+        ex
