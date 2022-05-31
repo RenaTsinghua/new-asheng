@@ -796,4 +796,9 @@ main(int argc, const char **argv)
     }
 
     if (parse_cert_files(&c)) {
-        ex
+        exit(1);
+    }
+    if (match_cert_to_keys(&c)) {
+        exit(1);
+    }
+    if (c.signed_certs_count <= 
