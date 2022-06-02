@@ -801,4 +801,6 @@ main(int argc, const char **argv)
     if (match_cert_to_keys(&c)) {
         exit(1);
     }
-    if (c.signed_certs_count <= 
+    if (c.signed_certs_count <= 0U) {
+        logger(LOG_ERR, "You must specify --provider-cert-file.\n\n");
+        argparse_usage(&argparse
