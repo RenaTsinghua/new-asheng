@@ -803,4 +803,10 @@ main(int argc, const char **argv)
     }
     if (c.signed_certs_count <= 0U) {
         logger(LOG_ERR, "You must specify --provider-cert-file.\n\n");
-        argparse_usage(&argparse
+        argparse_usage(&argparse);
+        exit(1);
+    }
+    if (filter_signed_certs(&c)) {
+        exit(1);
+    }
+    if (c.signed_certs_cou
