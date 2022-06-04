@@ -809,4 +809,8 @@ main(int argc, const char **argv)
     if (filter_signed_certs(&c)) {
         exit(1);
     }
-    if (c.signed_certs_cou
+    if (c.signed_certs_count <= 0U) {
+        logger(LOG_ERR, "No (currently) valid certs found.\n\n");
+        exit(1);
+    }
+ 
