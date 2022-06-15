@@ -815,4 +815,6 @@ main(int argc, const char **argv)
     }
     for (int i = 0; i < c.signed_certs_count; i++) {
         uint32_t ts_end, ts_begin;
-        memcpy(&
+        memcpy(&ts_begin, c.signed_certs[i].ts_begin, 4);
+        memcpy(&ts_end, c.signed_certs[i].ts_end, 4);
+        ts_begin =
