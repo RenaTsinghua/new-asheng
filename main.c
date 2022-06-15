@@ -819,4 +819,10 @@ main(int argc, const char **argv)
         memcpy(&ts_end, c.signed_certs[i].ts_end, 4);
         ts_begin = ntohl(ts_begin);
         ts_end = ntohl(ts_end);
-        logger(LOG_INFO, "Signed certs %d valid from %d to 
+        logger(LOG_INFO, "Signed certs %d valid from %d to %d", i, ts_begin, ts_end);
+    }
+
+    if (c.daemonize) {
+        do_daemonize();
+    }
+    if 
