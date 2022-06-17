@@ -825,4 +825,9 @@ main(int argc, const char **argv)
     if (c.daemonize) {
         do_daemonize();
     }
-    if 
+    if (c.pidfile) {
+        pidfile_create(c.pidfile);
+    }
+
+    if (sockaddr_from_ip_and_port(&c.resolver_sockaddr,
+    
