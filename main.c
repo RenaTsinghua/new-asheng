@@ -832,4 +832,10 @@ main(int argc, const char **argv)
     if (sockaddr_from_ip_and_port(&c.resolver_sockaddr,
                                   &c.resolver_sockaddr_len,
                                   c.resolver_address,
-                                  "53", "Unsupported resolver addr
+                                  "53", "Unsupported resolver address") != 0) {
+        exit(1);
+    }
+
+    if (c.outgoing_address &&
+        sockaddr_from_ip_and_port(&c.outgoing_sockaddr,
+   
