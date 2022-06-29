@@ -845,4 +845,6 @@ main(int argc, const char **argv)
     }
 
     if (sockaddr_from_ip_and_port(&c.local_sockaddr,
+                                  &c.local_sockaddr_len,
+                                  c.listen_address,
                                
