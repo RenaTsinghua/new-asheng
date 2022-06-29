@@ -838,4 +838,5 @@ main(int argc, const char **argv)
 
     if (c.outgoing_address &&
         sockaddr_from_ip_and_port(&c.outgoing_sockaddr,
-   
+                                  &c.outgoing_sockaddr_len,
+                                  c.outg
