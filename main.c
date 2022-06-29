@@ -841,4 +841,8 @@ main(int argc, const char **argv)
                                   &c.outgoing_sockaddr_len,
                                   c.outgoing_address,
                                   "0", "Unsupported outgoing address") != 0) {
-    
+        exit(1);
+    }
+
+    if (sockaddr_from_ip_and_port(&c.local_sockaddr,
+                               
