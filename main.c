@@ -854,4 +854,9 @@ main(int argc, const char **argv)
     randombytes_buf(c.hash_key, sizeof c.hash_key);
 
     if ((c.event_loop = event_base_new()) == NULL) {
-        logger(LOG_ERR, "Unable to initialize the event loop.
+        logger(LOG_ERR, "Unable to initialize the event loop.");
+        exit(1);
+    }
+
+	if (!no_udp && udp_listener_bind(&c) != 0) {
+        logger(LOG_ERR, "Failed to b
