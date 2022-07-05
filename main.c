@@ -863,4 +863,7 @@ main(int argc, const char **argv)
         exit(1);
 	}
 
-    if (!no_tcp && tcp_listener_bi
+    if (!no_tcp && tcp_listener_bind(&c) != 0) {
+        logger(LOG_ERR, "Failed to bind TCP listener on %s", c.listen_address);
+        exit(1);
+    
