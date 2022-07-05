@@ -866,4 +866,7 @@ main(int argc, const char **argv)
     if (!no_tcp && tcp_listener_bind(&c) != 0) {
         logger(LOG_ERR, "Failed to bind TCP listener on %s", c.listen_address);
         exit(1);
-    
+    }
+
+    if (!no_udp && udp_listener_start(&c) != 0) {
+        logger(LOG_ERR, "Unable to start UDP lis
