@@ -875,4 +875,9 @@ main(int argc, const char **argv)
 
     if (!no_tcp && tcp_listener_start(&c) != 0) {
         logger(LOG_ERR, "Unable to start TCP listener on %s", c.listen_address);
-      
+        exit(1);
+    }
+
+    revoke_privileges(&c);
+
+    event_base_dispatch(c.event_loo
