@@ -873,4 +873,6 @@ main(int argc, const char **argv)
         exit(1);
     }
 
-    if (!no_tcp && tcp_listener_start(&c) != 0)
+    if (!no_tcp && tcp_listener_start(&c) != 0) {
+        logger(LOG_ERR, "Unable to start TCP listener on %s", c.listen_address);
+      
