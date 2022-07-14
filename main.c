@@ -880,4 +880,9 @@ main(int argc, const char **argv)
 
     revoke_privileges(&c);
 
-    event_base_dispatch(c.event_loo
+    event_base_dispatch(c.event_loop);
+
+    logger(LOG_INFO, "Stopping proxy");
+    udp_listener_stop(&c);
+    tcp_listener_stop(&c);
+    ev
