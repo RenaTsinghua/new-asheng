@@ -12,4 +12,13 @@ pidfile_remove_file(void)
     }
 }
 
-static
+static void
+pidfile_atexit_handler(void)
+{
+    pidfile_remove_file();
+}
+
+static void
+pidfile_sig_exit_handler(int sig)
+{
+ 
