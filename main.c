@@ -885,4 +885,8 @@ main(int argc, const char **argv)
     logger(LOG_INFO, "Stopping proxy");
     udp_listener_stop(&c);
     tcp_listener_stop(&c);
-    ev
+    event_base_free(c.event_loop);
+    blocking_free(&c);
+
+    return 0;
+}
