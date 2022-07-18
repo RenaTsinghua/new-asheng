@@ -21,4 +21,11 @@ pidfile_atexit_handler(void)
 static void
 pidfile_sig_exit_handler(int sig)
 {
- 
+    (void)sig;
+    if (exit_requested)
+        return;
+    exit_requested = 1;
+    exit(0);
+}
+
+static void
