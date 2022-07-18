@@ -29,3 +29,7 @@ pidfile_sig_exit_handler(int sig)
 }
 
 static void
+pidfile_install_signal_handlers(void (*handler) (int))
+{
+    signal(SIGPIPE, SIG_IGN);
+    signal(SIGALRM, handler)
