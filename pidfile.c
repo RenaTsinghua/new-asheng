@@ -46,3 +46,11 @@ int
 pidfile_create(const char *const pidfile)
 {
     FILE *fp;
+    _pidfile = pidfile;
+
+    fp = fopen(pidfile, "w");
+    if (!fp) {
+        return -1;
+    }
+
+   
