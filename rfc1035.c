@@ -237,3 +237,99 @@ skip_name(unsigned char *ansp, struct dns_header *header, size_t plen,
                 break; /* zero length label marks the end. */
             }
         }
+    }
+
+    if (!CHECK_LEN(header, ansp, plen, extrabytes)) {
+        return NULL;
+    }
+    return ansp;
+}
+
+unsigned char *
+skip_questions(struct dns_header *header, size_t plen)
+{
+    int            q;
+    unsigned char *ansp = (unsigned char *) (header + 1);
+
+    for (q = ntohs(header->qdcount); q != 0; q--) {
+        if (!(ansp = skip_name(ansp, header, plen, 4))) {
+            return NULL;
+        }
+        ansp += 4; /* class and type */
+    }
+    return ansp;
+}
+
+unsigned char *
+do_rfc1035_name(unsigned char *p, char *sval)
+{
+    int j;
+
+    while (sval && *sval) {
+        unsigned char *cp = p++;
+        for (j = 0; *sval && (*sval != '.'); sval++, j++) {
+            *p++ = *sval;
+        }
+        *cp = j;
+        if (*sval) {
+            sval++;
+        }
+    }
+    return p;
+}
+
+int
+add_resource_record(struct dns_header *header, unsigned int nameoffset, size_t plen,
+                    unsigned char **pp, unsigned long ttl, unsigned int *offset,
+                    unsigned short type, unsigned short class, char *format,
+                    ...)
+{
+    va_list        ap;
+    unsigned char *sav, *p = *pp;
+    int            j;
+    unsigned short usval;
+    long           lval;
+    char          *sval;
+
+    if (!CHECK_LEN(header, p, plen, 12)) {
+        return 0;
+    }
+    PUTSHORT(nameoffset | 0xc000, p);
+    PUTSHORT(type, p);
+    PUTSHORT(class, p);
+    PUTLONG(ttl, p); /* TTL */
+
+    sav = p;        /* Save pointer to RDLength field */
+    PUTSHORT(0, p); /* Placeholder RDLength */
+
+    va_start(ap, format); /* make ap point to 1st unamed argument */
+
+    for (; *format; format++)
+        switch (*format) {
+#ifdef HAVE_IPV6
+        case '6':
+            if (!CHECK_LEN(header, p, plen, IN6ADDRSZ)) {
+                return 0;
+            }
+            sval = va_arg(ap, char *);
+            memcpy(p, sval, IN6ADDRSZ);
+            p += IN6ADDRSZ;
+            break;
+#endif
+
+        case '4':
+            if (!CHECK_LEN(header, p, plen, INADDRSZ)) {
+                return 0;
+            }
+            sval = va_arg(ap, char *);
+            memcpy(p, sval, INADDRSZ);
+            p += INADDRSZ;
+            break;
+
+        case 's':
+            if (!CHECK_LEN(header, p, plen, 2)) {
+                return 0;
+            }
+            usval = va_arg(ap, int);
+            PUTSHORT(usval, p);
+            break;
