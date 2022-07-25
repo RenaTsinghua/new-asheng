@@ -38,3 +38,96 @@ extract_name(struct dns_header *header, size_t plen, unsigned char **pp,
         *cp = 0;
     }
     while (1) {
+        unsigned int label_type;
+
+        if (!CHECK_LEN(header, p, plen, 1)) {
+            return 0;
+        }
+        if ((l = *p++) == 0) {
+        /* end marker */
+            /* check that there are the correct no of bytes after the name */
+            if (!CHECK_LEN(header, p, plen, extrabytes)) {
+                return 0;
+            }
+            if (isExtract) {
+                if (cp != (unsigned char *) name) {
+                    cp--;
+                }
+                *cp = 0; /* terminate: lose final period */
+            } else if (*cp != 0) {
+                retvalue = 2;
+            }
+            if (p1) { /* we jumped via compression */
+                *pp = p1;
+            } else {
+                *pp = p;
+            }
+            return retvalue;
+        }
+
+        label_type = l & 0xc0;
+
+        if (label_type == 0xc0) { /* pointer */
+            if (!CHECK_LEN(header, p, plen, 1)) {
+                return 0;
+            }
+
+            /* get offset */
+            l = (l & 0x3f) << 8;
+            l |= *p++;
+
+            if (!p1) { /* first jump, save location to go back to */
+                p1 = p;
+            }
+            hops++; /* break malicious infinite loops */
+            if (hops > 255) {
+                return 0;
+            }
+            p = l + (unsigned char *) header;
+        } else if (label_type == 0x80) {
+            return 0;                  /* reserved */
+        } else if (label_type == 0x40) { /* ELT */
+            unsigned int count, digs;
+
+            if ((l & 0x3f) != 1) {
+                return 0; /* we only understand bitstrings */
+            }
+            if (!isExtract) {
+                return 0; /* Cannot compare bitsrings */
+            }
+            count = *p++;
+            if (count == 0) {
+                count = 256;
+            }
+            digs = ((count - 1) >> 2) + 1;
+
+            /* output is \[x<hex>/siz]. which is digs+9 chars */
+            if (cp - (unsigned char *) name + digs + 9 >= MAXDNAME) {
+                return 0;
+            }
+
+            if (!CHECK_LEN(header, p, plen, (count - 1) >> 3)) {
+                return 0;
+            }
+
+            *cp++ = '\\';
+            *cp++ = '[';
+            *cp++ = 'x';
+            for (j = 0; j < digs; j++) {
+                unsigned int dig;
+                if (j % 2 == 0) {
+                    dig = *p >> 4;
+                } else {
+                    dig = *p++ & 0x0f;
+                }
+                *cp++ = dig < 10 ? dig + '0' : dig + 'A' - 10;
+            }
+            cp += sprintf((char *) cp, "/%d]", count);
+
+            /* do this here to overwrite the zero char from sprintf */
+            *cp++ = '.';
+        } else { /* label_type = 0 -> label. */
+            if (cp - (unsigned char *) name + l + 1 >= MAXDNAME) {
+                return 0;
+            }
+            if (!CHECK_LEN(header, p, plen, l)) {
