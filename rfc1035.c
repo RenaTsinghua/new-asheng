@@ -333,3 +333,60 @@ add_resource_record(struct dns_header *header, unsigned int nameoffset, size_t p
             usval = va_arg(ap, int);
             PUTSHORT(usval, p);
             break;
+
+        case 'l':
+            if (!CHECK_LEN(header, p, plen, 4)) {
+                return 0;
+            }
+            lval = va_arg(ap, long);
+            PUTLONG(lval, p);
+            break;
+
+        case 'd':
+            /* get domain-name answer arg and store it in RDATA field */
+            if (offset) {
+                *offset = p - (unsigned char *) header;
+            }
+            p = do_rfc1035_name(p, va_arg(ap, char *));
+            *p++ = 0;
+            break;
+
+        case 't':
+            usval = va_arg(ap, int);
+            sval  = va_arg(ap, char *);
+            if (!CHECK_LEN(header, p, plen, usval)) {
+                return 0;
+            }
+            if (usval != 0) {
+                memcpy(p, sval, usval);
+            }
+            p += usval;
+            break;
+
+        case 'z':
+            sval  = va_arg(ap, char *);
+            usval = sval ? strlen(sval) : 0;
+            if (usval > 255) {
+                usval = 255;
+            }
+            if (!CHECK_LEN(header, p, plen, (1 + usval))) {
+                return 0;
+            }
+            *p++ = (unsigned char) usval;
+            memcpy(p, sval, usval);
+            p += usval;
+            break;
+        }
+
+    va_end(ap); /* clean up variable argument pointer */
+
+    j = p - sav - 2;
+    if (!CHECK_LEN(header, sav, plen, 2)) {
+        return 0;
+    }
+    PUTSHORT(j, sav); /* Now, store real RDLength */
+
+    *pp = p;
+
+    return 1;
+}
