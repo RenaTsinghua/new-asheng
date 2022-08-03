@@ -5,4 +5,5 @@
 #include "dns-protocol.h"
 #include <sodium.h>
 
-int questions_ha
+int questions_hash(uint64_t *hash, struct dns_header *header, size_t plen,
+                   char *
