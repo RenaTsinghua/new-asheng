@@ -9,4 +9,7 @@ int questions_hash(uint64_t *hash, struct dns_header *header, size_t plen,
                    char *buff,
                    const unsigned char key[crypto_shorthash_KEYBYTES]);
 
-int extract_name(struct dns_header *
+int extract_name(struct dns_header *header, size_t plen, unsigned char **pp,
+                 char *name, int isExtract, int extrabytes);
+
+in
