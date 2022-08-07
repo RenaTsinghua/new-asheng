@@ -12,4 +12,5 @@ int questions_hash(uint64_t *hash, struct dns_header *header, size_t plen,
 int extract_name(struct dns_header *header, size_t plen, unsigned char **pp,
                  char *name, int isExtract, int extrabytes);
 
-in
+int add_resource_record(struct dns_header *header, unsigned int nameoffset,
+                        siz
