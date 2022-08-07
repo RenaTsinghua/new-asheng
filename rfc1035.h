@@ -13,4 +13,5 @@ int extract_name(struct dns_header *header, size_t plen, unsigned char **pp,
                  char *name, int isExtract, int extrabytes);
 
 int add_resource_record(struct dns_header *header, unsigned int nameoffset,
-                        siz
+                        size_t plen, unsigned char **pp, unsigned long ttl,
+                        unsigned int *offset, unsi
