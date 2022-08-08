@@ -17,4 +17,6 @@ int add_resource_record(struct dns_header *header, unsigned int nameoffset,
                         unsigned int *offset, unsigned short type,
                         unsigned short class, char *format, ...);
 
-unsigned char *s
+unsigned char *skip_questions(struct dns_header *header, size_t plen);
+
+#endif
