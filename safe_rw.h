@@ -9,4 +9,8 @@
 #include <unistd.h>
 
 ssize_t safe_write(const int fd, const void *const buf_, size_t count,
-                   con
+                   const int timeout);
+
+ssize_t safe_read(const int fd, void *const buf_, size_t count);
+
+ssize_t safe_read_partial(const int 
