@@ -5,4 +5,8 @@
 #include <assert.h>
 #include <errno.h>
 #include <poll.h>
-#include
+#include <stdlib.h>
+#include <unistd.h>
+
+ssize_t safe_write(const int fd, const void *const buf_, size_t count,
+                   con
