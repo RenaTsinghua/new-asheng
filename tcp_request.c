@@ -36,3 +36,91 @@ tcp_request_kill(TCPRequest *const tcp_request)
     }
     tcp_request->context = NULL;
     free(tcp_request);
+}
+
+static void
+tcp_tune(evutil_socket_t handle)
+{
+    if (handle == -1) {
+        return;
+    }
+
+    setsockopt(handle, IPPROTO_IP, IP_TOS, (void *) (int []) {
+               0x70}, sizeof(int));
+#ifdef TCP_QUICKACK
+    setsockopt(handle, IPPROTO_TCP, TCP_QUICKACK, (void *)(int[]) {
+               1}, sizeof(int));
+#else
+    setsockopt(handle, IPPROTO_TCP, TCP_NODELAY, (void *)(int[]) {
+               1}, sizeof(int));
+#endif
+#if defined(__linux__) && defined(SO_REUSEPORT)
+    setsockopt(handle, SOL_SOCKET, SO_REUSEPORT, (void *)(int[]) {
+               1}, sizeof(int));
+#endif
+}
+
+static void
+timeout_timer_cb(evutil_socket_t timeout_timer_handle, short ev_flags,
+                 void *const tcp_request_)
+{
+    TCPRequest *const tcp_request = tcp_request_;
+
+    (void)ev_flags;
+    (void)timeout_timer_handle;
+    logger(LOG_DEBUG, "resolver timeout (TCP)");
+    tcp_request_kill(tcp_request);
+}
+
+int
+tcp_listener_kill_oldest_request(struct context *c)
+{
+    if (TAILQ_EMPTY(&c->tcp_request_queue)) {
+        return -1;
+    }
+    tcp_request_kill(TAILQ_FIRST(&c->tcp_request_queue));
+
+    return 0;
+}
+
+
+/**
+ * Return 0 if served.
+ */
+static int
+self_serve_cert_file(struct context *c, struct dns_header *header,
+                     size_t dns_query_len, size_t max_len, TCPRequest *tcp_request)
+{
+    uint8_t dns_query_len_buf[2];
+    if (dnscrypt_self_serve_cert_file(c, header, &dns_query_len, max_len) == 0) {
+        dns_query_len_buf[0] = (dns_query_len >> 8) & 0xff;
+        dns_query_len_buf[1] = dns_query_len & 0xff;
+        if (bufferevent_write(tcp_request->client_proxy_bev,
+                        dns_query_len_buf, (size_t) 2U) != 0 ||
+            bufferevent_write(tcp_request->client_proxy_bev, (void *)header,
+                            (size_t)dns_query_len) != 0) {
+            tcp_request_kill(tcp_request);
+            return -1;
+        }
+        bufferevent_enable(tcp_request->client_proxy_bev, EV_WRITE);
+        bufferevent_free(tcp_request->proxy_resolver_bev);
+        tcp_request->proxy_resolver_bev = NULL;
+        return 0;
+    }
+    return -1;
+}
+
+static void
+client_proxy_read_cb(struct bufferevent *const client_proxy_bev,
+                     void *const tcp_request_)
+{
+    const size_t sizeof_dns_query = DNS_MAX_PACKET_SIZE_TCP - 2U;
+    static uint8_t *dns_query = NULL;
+    uint8_t dns_query_len_buf[2];
+    uint8_t dns_curved_query_len_buf[2];
+    TCPRequest *tcp_request = tcp_request_;
+    struct context *c = tcp_request->context;
+    struct evbuffer *input = bufferevent_get_input(client_proxy_bev);
+    size_t available_size;
+    size_t dns_query_len;
+    size_t max_query_size;
