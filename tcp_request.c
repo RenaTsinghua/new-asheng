@@ -415,3 +415,107 @@ tcp_connection_cb(struct evconnlistener *const tcp_conn_listener,
         return;
     }
     const struct timeval tv = {
+        .tv_sec = (time_t) DNS_QUERY_TIMEOUT,.tv_usec = 0
+    };
+    evtimer_add(tcp_request->timeout_timer, &tv);
+    bufferevent_setwatermark(tcp_request->client_proxy_bev,
+                             EV_READ, (size_t) 2U,
+                             (size_t) DNS_MAX_PACKET_SIZE_TCP);
+    bufferevent_setcb(tcp_request->client_proxy_bev,
+                      client_proxy_read_cb, client_proxy_write_cb,
+                      client_proxy_event_cb, tcp_request);
+    if (bufferevent_socket_connect
+        (tcp_request->proxy_resolver_bev,
+         (struct sockaddr *)&c->resolver_sockaddr,
+         (int)c->resolver_sockaddr_len) != 0) {
+        tcp_request_kill(tcp_request);
+        return;
+    }
+    bufferevent_setwatermark(tcp_request->proxy_resolver_bev,
+                             EV_READ, (size_t) 2U,
+                             (size_t) DNS_MAX_PACKET_SIZE_TCP);
+    bufferevent_setcb(tcp_request->proxy_resolver_bev,
+                      resolver_proxy_read_cb, NULL, proxy_resolver_event_cb,
+                      tcp_request);
+    bufferevent_enable(tcp_request->client_proxy_bev, EV_READ);
+}
+
+static void
+tcp_accept_timer_cb(evutil_socket_t handle, const short event,
+                    void *const context)
+{
+    struct context *c = context;
+
+    (void)handle;
+    (void)event;
+    event_free(c->tcp_accept_timer);
+    c->tcp_accept_timer = NULL;
+    evconnlistener_enable(c->tcp_conn_listener);
+}
+
+static void
+tcp_accept_error_cb(struct evconnlistener *const tcp_conn_listener,
+                    void *const context)
+{
+    struct context *c = context;
+
+    (void)tcp_conn_listener;
+    if (c->tcp_accept_timer == NULL) {
+        c->tcp_accept_timer = evtimer_new
+            (c->event_loop, tcp_accept_timer_cb, c);
+        if (c->tcp_accept_timer == NULL) {
+            return;
+        }
+    }
+    if (evtimer_pending(c->tcp_accept_timer, NULL)) {
+        return;
+    }
+    evconnlistener_disable(c->tcp_conn_listener);
+
+    const struct timeval tv = {
+        .tv_sec = (time_t) 1,
+        .tv_usec = 0
+    };
+    evtimer_add(c->tcp_accept_timer, &tv);
+}
+
+int
+tcp_listener_bind(struct context *c)
+{
+    debug_assert(c->tcp_conn_listener == NULL);
+#ifndef LEV_OPT_DEFERRED_ACCEPT
+# define LEV_OPT_DEFERRED_ACCEPT 0
+#endif
+
+    /* Until libevent gets support for SO_REUSEPORT we have to break
+     * evconnlistener_new_bind() into a series of:
+     * socket(), tcp_tune(), bind(), evconnlistener_new() */
+    evutil_socket_t fd;
+    fd = socket(c->local_sockaddr.ss_family, SOCK_STREAM, IPPROTO_TCP);
+
+    tcp_tune(fd);
+    evutil_make_socket_nonblocking(fd);
+
+    if (bind(fd, (struct sockaddr *) &c->local_sockaddr, c->local_sockaddr_len) < 0) {
+        logger(LOG_ERR, "Unable to bind (TCP): %s", c->listen_address);
+        return -1;
+    }
+
+    c->tcp_conn_listener =
+        evconnlistener_new(c->event_loop,
+                                tcp_connection_cb, c,
+                                LEV_OPT_CLOSE_ON_FREE |
+                                LEV_OPT_CLOSE_ON_EXEC |
+                                LEV_OPT_REUSEABLE |
+                                LEV_OPT_DEFERRED_ACCEPT,
+                                TCP_REQUEST_BACKLOG,
+                                fd);
+    if (c->tcp_conn_listener == NULL) {
+        logger(LOG_ERR, "Unable to create listener (TCP)");
+        return -1;
+    }
+    if (evconnlistener_disable(c->tcp_conn_listener) != 0) {
+        evconnlistener_free(c->tcp_conn_listener);
+        c->tcp_conn_listener = NULL;
+        return -1;
+    }
