@@ -323,3 +323,95 @@ resolver_proxy_read_cb(struct bufferevent *const proxy_resolver_bev,
 
     if (tcp_request->is_blocked) {
         struct dns_header *p = (struct dns_header *) dns_reply;
+        SET_RCODE(p, REFUSED);
+    }
+    if (tcp_request->is_dnscrypted) {
+        if (dnscrypt_server_curve(c, tcp_request->cert,
+                                  tcp_request->client_nonce, tcp_request->nmkey,
+                                  dns_reply, &dns_reply_len, max_len) != 0) {
+            logger(LOG_ERR, "Curving reply failed.");
+            return;
+        }
+    }
+
+    dns_curved_reply_len_buf[0] = (dns_reply_len >> 8) & 0xff;
+    dns_curved_reply_len_buf[1] = dns_reply_len & 0xff;
+    if (bufferevent_write(tcp_request->client_proxy_bev,
+                          dns_curved_reply_len_buf, (size_t) 2U) != 0 ||
+        bufferevent_write(tcp_request->client_proxy_bev, dns_reply,
+                          dns_reply_len) != 0) {
+        tcp_request_kill(tcp_request);
+        return;
+    }
+    bufferevent_enable(tcp_request->client_proxy_bev, EV_WRITE);
+    bufferevent_free(tcp_request->proxy_resolver_bev);
+    tcp_request->proxy_resolver_bev = NULL;
+}
+
+static void
+tcp_connection_cb(struct evconnlistener *const tcp_conn_listener,
+                  evutil_socket_t handle,
+                  struct sockaddr *const client_sockaddr,
+                  const int client_sockaddr_len_int, void *const context)
+{
+    logger(LOG_DEBUG, "Accepted a tcp connection.");
+    evutil_socket_t fd;
+    struct context *c = context;
+    TCPRequest *tcp_request;
+
+    (void)tcp_conn_listener;
+    (void)client_sockaddr;
+    (void)client_sockaddr_len_int;
+    if ((tcp_request = calloc((size_t) 1U, sizeof *tcp_request)) == NULL) {
+        return;
+    }
+    tcp_request->context = c;
+    tcp_request->timeout_timer = NULL;
+    tcp_request->proxy_resolver_query_evbuf = NULL;
+    tcp_request->client_proxy_bev = bufferevent_socket_new(c->event_loop,
+                                                           handle,
+                                                           BEV_OPT_CLOSE_ON_FREE);
+    if (tcp_request->client_proxy_bev == NULL) {
+        evutil_closesocket(handle);
+        free(tcp_request);
+        return;
+    }
+
+    fd = socket(c->resolver_sockaddr.ss_family, SOCK_STREAM, IPPROTO_TCP);
+    tcp_tune(fd);
+    if (evutil_make_socket_nonblocking(fd)) {
+        logger(LOG_WARNING, "Could not make socket %d non-blocking", fd);
+    }
+    tcp_request->proxy_resolver_bev = bufferevent_socket_new(c->event_loop, fd,
+                                                             BEV_OPT_CLOSE_ON_FREE);
+
+    if (tcp_request->proxy_resolver_bev == NULL) {
+        bufferevent_free(tcp_request->client_proxy_bev);
+        tcp_request->client_proxy_bev = NULL;
+        free(tcp_request);
+        return;
+    }
+
+    /* Bind source IP:port if --outgoing-address is provided */
+    if(c->outgoing_address &&
+        bind(fd,
+             (struct sockaddr *)&c->outgoing_sockaddr,
+             c->outgoing_sockaddr_len) != 0) {
+        logger(LOG_ERR, "Unable to bind (TCP) [%s]",
+            evutil_socket_error_to_string(evutil_socket_geterror
+                (tcp_request->proxy_resolver_bev)));
+        tcp_request_kill(tcp_request);
+        return;
+    }
+
+    c->connections++;
+    TAILQ_INSERT_TAIL(&c->tcp_request_queue, tcp_request, queue);
+    memset(&tcp_request->status, 0, sizeof tcp_request->status);
+    tcp_request->status.is_in_queue = 1;
+    if ((tcp_request->timeout_timer =
+         evtimer_new(tcp_request->context->event_loop,
+                     timeout_timer_cb, tcp_request)) == NULL) {
+        tcp_request_kill(tcp_request);
+        return;
+    }
+    const struct timeval tv = {
