@@ -227,3 +227,99 @@ client_proxy_read_cb(struct bufferevent *const client_proxy_bev,
         tcp_request_kill(tcp_request);
         return;
     }
+
+    bufferevent_enable(tcp_request->proxy_resolver_bev, EV_READ);
+}
+
+static void
+client_proxy_event_cb(struct bufferevent *const client_proxy_bev,
+                      const short events, void *const tcp_request_)
+{
+    TCPRequest *const tcp_request = tcp_request_;
+
+    (void)client_proxy_bev;
+    (void)events;
+    tcp_request_kill(tcp_request);
+}
+
+static void
+client_proxy_write_cb(struct bufferevent *const client_proxy_bev,
+                      void *const tcp_request_)
+{
+    TCPRequest *const tcp_request = tcp_request_;
+
+    (void)client_proxy_bev;
+    tcp_request_kill(tcp_request);
+}
+
+static void
+proxy_resolver_event_cb(struct bufferevent *const proxy_resolver_bev,
+                        const short events, void *const tcp_request_)
+{
+    TCPRequest *const tcp_request = tcp_request_;
+
+    (void)proxy_resolver_bev;
+    if ((events & BEV_EVENT_ERROR) != 0) {
+        tcp_request_kill(tcp_request);
+        return;
+    }
+    if ((events & BEV_EVENT_CONNECTED) == 0) {
+        tcp_tune(bufferevent_getfd(proxy_resolver_bev));
+        return;
+    }
+}
+
+static void
+resolver_proxy_read_cb(struct bufferevent *const proxy_resolver_bev,
+                       void *const tcp_request_)
+{
+    uint8_t dns_reply_len_buf[2];
+    uint8_t dns_curved_reply_len_buf[2];
+    uint8_t *dns_reply_bev;
+    TCPRequest *tcp_request = tcp_request_;
+    struct context *c = tcp_request->context;
+    struct evbuffer *input = bufferevent_get_input(proxy_resolver_bev);
+    size_t available_size;
+    const size_t sizeof_dns_reply = DNS_MAX_PACKET_SIZE_TCP - 2U;
+    static uint8_t *dns_reply = NULL;
+    size_t dns_reply_len;
+
+    if (dns_reply == NULL && (dns_reply = sodium_malloc(sizeof_dns_reply)) == NULL) {
+        tcp_request_kill(tcp_request);
+        return;
+    }
+    logger(LOG_DEBUG, "Resolver read callback.");
+    if (tcp_request->status.has_dns_reply_len == 0) {
+        debug_assert(evbuffer_get_length(input) >= (size_t) 2U);
+        evbuffer_remove(input, dns_reply_len_buf, sizeof dns_reply_len_buf);
+        tcp_request->dns_reply_len = (size_t)
+            ((dns_reply_len_buf[0] << 8) | dns_reply_len_buf[1]);
+        tcp_request->status.has_dns_reply_len = 1;
+    }
+    debug_assert(tcp_request->status.has_dns_reply_len != 0);
+    dns_reply_len = tcp_request->dns_reply_len;
+    if (dns_reply_len < (size_t) DNS_HEADER_SIZE) {
+        logger(LOG_WARNING, "Short reply received");
+        tcp_request_kill(tcp_request);
+        return;
+    }
+    available_size = evbuffer_get_length(input);
+    if (available_size < dns_reply_len) {
+        bufferevent_setwatermark(tcp_request->proxy_resolver_bev,
+                                 EV_READ, dns_reply_len, dns_reply_len);
+        return;
+    }
+    debug_assert(available_size >= dns_reply_len);
+    dns_reply_bev = evbuffer_pullup(input, (ssize_t) dns_reply_len);
+    if (dns_reply_bev == NULL) {
+        tcp_request_kill(tcp_request);
+        return;
+    }
+
+    memcpy(dns_reply, dns_reply_bev, dns_reply_len);
+
+    size_t max_len =
+        dns_reply_len + DNSCRYPT_MAX_PADDING + DNSCRYPT_REPLY_HEADER_SIZE;
+
+    if (tcp_request->is_blocked) {
+        struct dns_header *p = (struct dns_header *) dns_reply;
