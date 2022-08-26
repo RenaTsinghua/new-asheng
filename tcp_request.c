@@ -519,3 +519,28 @@ tcp_listener_bind(struct context *c)
         c->tcp_conn_listener = NULL;
         return -1;
     }
+    evconnlistener_set_error_cb(c->tcp_conn_listener, tcp_accept_error_cb);
+    TAILQ_INIT(&c->tcp_request_queue);
+
+    return 0;
+}
+
+int
+tcp_listener_start(struct context *c)
+{
+    debug_assert(c->tcp_conn_listener != NULL);
+    if (evconnlistener_enable(c->tcp_conn_listener) != 0) {
+        return -1;
+    }
+    return 0;
+}
+
+void
+tcp_listener_stop(struct context *c)
+{
+    evconnlistener_free(c->tcp_conn_listener);
+    c->tcp_conn_listener = NULL;
+    while (tcp_listener_kill_oldest_request(c) != 0) {
+    }
+    logger(LOG_INFO, "TCP listener shut down");
+}
