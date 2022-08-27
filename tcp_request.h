@@ -13,4 +13,7 @@ struct context;
 struct cert_;
 
 typedef struct TCPRequestStatus_ {
-    bool
+    bool has_dns_query_len:1;
+    bool has_dns_reply_len:1;
+    bool is_in_queue:1;
+    bool is_dying:
