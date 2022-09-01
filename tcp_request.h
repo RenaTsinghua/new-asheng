@@ -21,4 +21,6 @@ typedef struct TCPRequestStatus_ {
 
 typedef struct TCPRequest_ {
     TAILQ_ENTRY(TCPRequest_) queue;
-    struct buf
+    struct bufferevent *client_proxy_bev;
+    struct bufferevent *proxy_resolver_bev;
+    struct evbuffer *proxy_resolver_
