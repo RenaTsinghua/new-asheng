@@ -29,4 +29,7 @@ typedef struct TCPRequest_ {
     uint8_t client_nonce[crypto_box_HALF_NONCEBYTES];
     uint8_t nmkey[crypto_box_BEFORENMBYTES];
     size_t dns_query_len;
-    
+    size_t dns_reply_len;
+    TCPRequestStatus status;
+    const struct cert_ *cert;
+    bool is_dnscrypted;
