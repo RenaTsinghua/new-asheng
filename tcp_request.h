@@ -33,3 +33,8 @@ typedef struct TCPRequest_ {
     TCPRequestStatus status;
     const struct cert_ *cert;
     bool is_dnscrypted;
+    bool is_blocked;
+} TCPRequest;
+
+int tcp_listener_bind(struct context *c);
+int tcp_listener_start(struct 
