@@ -26,4 +26,7 @@ typedef struct TCPRequest_ {
     struct evbuffer *proxy_resolver_query_evbuf;
     struct context *context;
     struct event *timeout_timer;
-    uint8_t client_nonce[cryp
+    uint8_t client_nonce[crypto_box_HALF_NONCEBYTES];
+    uint8_t nmkey[crypto_box_BEFORENMBYTES];
+    size_t dns_query_len;
+    
