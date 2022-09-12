@@ -44,4 +44,10 @@ GEM
 PLATFORMS
   ruby
 
-DEPENDENCIE
+DEPENDENCIES
+  aruba (~> 0.14.6)
+  cucumber (~> 3.1.2)
+  net-dns
+
+BUNDLED WITH
+   1.13.6
