@@ -178,3 +178,102 @@ def corrupt(magic_query, pk, nonce, nmkey, message):
             f = injectbyte
         elif c2 == 3:
             # 12 is min dns header size
+            args = {'minint': 12}
+            f = truncatepacket
+        message = f(message, **args)
+        args = {}
+        f = noop
+
+    encoded_message = dnscrypt.encode_message(message, nonce, nmkey)
+    return f(mkmsg(magic_query, pk, nonce, encoded_message), **args)
+
+class DnsCrypt():
+    def __init__(self, ip, port, provider_name, provider_key):
+        self.ip = ip
+        self.port = port
+        self.provider_name = provider_name
+        self.provider_key = provider_key.replace(':', '')
+        self.provider_pk, self.magic_query = dnscrypt.get_public_key(
+            self.ip, self.port, self.provider_key, self.provider_name)
+
+        self.pk, self.sk = dnscrypt.generate_keypair()
+        self.nmkey = dnscrypt.create_nmkey(self.provider_pk[:32], self.sk)
+
+    def query(self, qname, qtype, corrupted=False,return_packet=True):
+        # create dns query
+        header = dnscrypt.DnsHeader()
+
+        question = dnscrypt.DnsQuestion()
+        question.labels = qname.split('.')
+        question.qtype = qtype
+
+        packet = dnscrypt.DnsPacket(header)
+        packet.addQuestion(question)
+
+        message = packet.toBinary() + '\x00\x00\x29\x04\xe4' + 6 * '\x00' + '\x80'
+
+        # custom rules for type 48
+        if qtype == 48:
+            url_part = ''
+            for part in question.labels:
+                url_part += chr(len(part)) + part
+            message = '\x124\x01\x00\x00\x01\x00\x00\x00\x00\x00\x01' + url_part + '\x00\x000\x00\x01\x00\x00)\x05\x00\x00\x00\x80\x00\x00\x00\x80'
+
+        nonce = "%x" % int(time.time()) + os.urandom(4).encode('hex')[4:]
+        if corrupted:
+            payload = corrupt(self.magic_query, self.pk, nonce, self.nmkey, message)
+        else:
+            payload = self.magic_query + self.pk + nonce + dnscrypt.encode_message(message, nonce, self.nmkey)
+
+        #poly = poly1305.onetimeauth_poly1305(encoded_message, provider_pk[:32])  not quite sure if that's needed for something...
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        dest = (self.ip, self.port)
+
+        sock.sendto(payload, dest)
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Fuzzer for DNSCrypt')
+    parser.add_argument(
+        '--provider-name', '-p',
+        default='2.dnscrypt-cert.example.com',
+        help='Provider name, default: %(default)s',
+    )
+    parser.add_argument(
+        '--provider-key', '-k',
+        help='Provider key',
+        required=True,
+    )
+    parser.add_argument(
+        '--host', '-H',
+        default='127.0.0.1',
+        help='DNS host to fuzz, default: %(default)s',
+    )
+    parser.add_argument(
+        '--port', '-P',
+        default=443, type=int,
+        help='Port the dnscrypt service is running on, default: %(default)s',
+    )
+    parser.add_argument(
+        '--queryfile', '-q',
+        required=True,
+        help='Path to the file containing query samples. Format: qname\tqtype. Example file available at https://nominum.com/measurement-tools/'
+    )
+    parser.add_argument(
+        '--count', '-c',
+        type=int,
+        default=1000000,
+        help='Number of queries to perform, default: %(default)s',
+    )
+    parser.add_argument(
+        '--non-corrupted', '-C',
+        type=int,
+        default=1000,
+        help='How often to not corrupt a query. 1 query every --non-corrupted query will be sent coorruption free. 0 for always corrupt, default: %(default)s',
+    )
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    args = parse_args()
+    args.provider_key = args.provider_key.replace(':', '')
