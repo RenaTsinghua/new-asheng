@@ -277,3 +277,20 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
     args.provider_key = args.provider_key.replace(':', '')
+    d = DnsCrypt(args.host, args.port, args.provider_name, args.provider_key)
+
+    queries = []
+    with open(args.queryfile) as f:
+        for l in f:
+            qname, qtype = l.split()
+            queries.append((codecs.escape_decode(qname)[0], qtypemap[qtype],))
+
+    for i in xrange(args.count):
+        corrupted = True
+        if args.non_corrupted == 0 or random.randint(0, args.non_corrupted) == 0:
+            corrupted = False
+        q = random.choice(queries)
+        try:
+            r = d.query(q[0], q[1], corrupted=corrupted)
+        except Exception:
+            pdb.set_trace()
