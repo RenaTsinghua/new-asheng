@@ -11,4 +11,5 @@ Feature: Test certs in TXT records
     And a time limited secret key
     When a xsalsa20 cert is generated
     Then it is a xsalsa20 cert
-    Given a running dnscrypt wrapper with options "--crypt-secretkey-file=1.key,keys1/1.key,keys2/1.key --provider-cert-file=1.cert,keys1/1.
+    Given a running dnscrypt wrapper with options "--crypt-secretkey-file=1.key,keys1/1.key,keys2/1.key --provider-cert-file=1.cert,keys1/1.cert,keys2/1.cert"
+    When a client asks dnscrypt-wrapper for "2.dnscrypt-cert.example.com" "TXT" rec
