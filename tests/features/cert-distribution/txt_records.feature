@@ -19,4 +19,8 @@ Feature: Test certs in TXT records
 
   Scenario: query provider-name, TXT record, multiple certificates and TCP resolver
     """
-    Check that we can serve recent certificate ov
+    Check that we can serve recent certificate over TCP.
+    """
+    # Generate a fresh cert.
+    Given a provider keypair
+    And a time limited se
