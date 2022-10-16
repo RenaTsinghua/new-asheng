@@ -30,4 +30,5 @@ Feature: Test certs in TXT records
     And a tcp resolver
     When a client asks dnscrypt-wrapper for "2.dnscrypt-cert.example.com" "TXT" record
     Then dnscrypt-wrapper returns "1.cert"
-    Then
+    Then dnscrypt-wrapper does not return "keys1/1.cert"
+    Then dnscrypt-wrapper does not return "keys2/1.c
