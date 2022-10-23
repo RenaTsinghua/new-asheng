@@ -38,4 +38,7 @@ Feature: Test certs in TXT records
     Check that we can serve recent certs with different ES versions
     for the same key.
     """
-    # Generate a fresh
+    # Generate a fresh cert.
+    Given a provider keypair
+    And a time limited secret key
+    When a xsalsa20 cert is gener
