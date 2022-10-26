@@ -46,4 +46,6 @@ Feature: Test certs in TXT records
     Given a running dnscrypt wrapper with options "--crypt-secretkey-file=1.key  --provider-cert-file=1.cert,keys1/1.cert,keys2/1.cert,keys2/1.xchacha20.cert"
     When a client asks dnscrypt-wrapper for "2.dnscrypt-cert.example.com" "TXT" record
     Then dnscrypt-wrapper returns "1.cert"
-    Then dnscryp
+    Then dnscrypt-wrapper does not return "keys1/1.cert"
+    Then dnscrypt-wrapper does not return "keys2/1.cert"
+    Then d
