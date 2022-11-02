@@ -51,4 +51,6 @@ Feature: Test certs in TXT records
     Then dnscrypt-wrapper returns "keys2/1.xchacha20.cert"
 
   Scenario: query provider-name, TXT record, key with no cert
- 
+    """
+    when a key is provided but we don't have matching cert, dnscrypt-wrapper
+    should fail 
