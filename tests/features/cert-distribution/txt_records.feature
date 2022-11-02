@@ -53,4 +53,6 @@ Feature: Test certs in TXT records
   Scenario: query provider-name, TXT record, key with no cert
     """
     when a key is provided but we don't have matching cert, dnscrypt-wrapper
-    should fail 
+    should fail to start.
+    """
+    Given a running dnscrypt wrapper with options "--crypt-secretkey-file=keys2/2.key  -
