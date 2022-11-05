@@ -55,4 +55,5 @@ Feature: Test certs in TXT records
     when a key is provided but we don't have matching cert, dnscrypt-wrapper
     should fail to start.
     """
-    Given a running dnscrypt wrapper with options "--crypt-secretkey-file=keys2/2.key  -
+    Given a running dnscrypt wrapper with options "--crypt-secretkey-file=keys2/2.key  --provider-cert-file=keys2/1.cert,keys2/1.xchacha20.cert"
+    Then dnscrypt-wrapper fails with "could not 
