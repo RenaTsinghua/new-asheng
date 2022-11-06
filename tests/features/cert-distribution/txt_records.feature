@@ -56,4 +56,6 @@ Feature: Test certs in TXT records
     should fail to start.
     """
     Given a running dnscrypt wrapper with options "--crypt-secretkey-file=keys2/2.key  --provider-cert-file=keys2/1.cert,keys2/1.xchacha20.cert"
-    Then dnscrypt-wrapper fails with "could not 
+    Then dnscrypt-wrapper fails with "could not match secret key 1 with a certificate"
+
+  Scenario: query provider-name, A reco
