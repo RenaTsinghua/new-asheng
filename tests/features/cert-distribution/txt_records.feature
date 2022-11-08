@@ -62,4 +62,5 @@ Feature: Test certs in TXT records
     """
     Check that A records are not served unencrypted.
     """
-    Given a running dnscrypt
+    Given a running dnscrypt wrapper with options "--crypt-secretkey-file=keys1/1.key  --provider-cert-file=keys1/1.cert"
+   
