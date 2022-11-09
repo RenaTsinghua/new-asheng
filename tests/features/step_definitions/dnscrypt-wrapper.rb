@@ -9,4 +9,10 @@ Before do
 end
 
 After do
-  Process.kill("K
+  Process.kill("KILL", @pipe.pid) if @pipe
+  @pipe = nil
+end
+
+Around do |scenario, block|
+  Timeout.timeout(3.0) do
+    block.c
