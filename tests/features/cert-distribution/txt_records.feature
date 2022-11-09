@@ -71,4 +71,5 @@ Feature: Test certs in TXT records
     Check that TXT record for something else than provider name are not served
     unencrypted.
     """
-    Given a running dnscrypt wrap
+    Given a running dnscrypt wrapper with options "--crypt-secretkey-file=keys1/1.key  --provider-cert-file=keys1/1.cert"
+    When a client
