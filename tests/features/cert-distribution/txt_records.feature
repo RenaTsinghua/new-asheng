@@ -68,4 +68,7 @@ Feature: Test certs in TXT records
 
   Scenario: query non provider-name, TXT record
     """
-    Check that TXT record
+    Check that TXT record for something else than provider name are not served
+    unencrypted.
+    """
+    Given a running dnscrypt wrap
