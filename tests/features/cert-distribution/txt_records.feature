@@ -73,4 +73,4 @@ Feature: Test certs in TXT records
     """
     Given a running dnscrypt wrapper with options "--crypt-secretkey-file=keys1/1.key  --provider-cert-file=keys1/1.cert"
     When a client asks dnscrypt-wrapper for "not2.dnscrypt-cert.example.com" "TXT" record
-    Then a "Timeout::Er
+    Then a "Timeout::Error" is thrown
