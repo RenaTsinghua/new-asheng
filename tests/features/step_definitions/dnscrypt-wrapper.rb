@@ -15,4 +15,9 @@ end
 
 Around do |scenario, block|
   Timeout.timeout(3.0) do
-    block.c
+    block.call
+  end
+end
+
+Given /^a running dnscrypt wrapper with options "([^"]*)"$/ do |options|
+  str = "../
