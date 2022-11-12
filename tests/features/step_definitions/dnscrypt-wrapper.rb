@@ -20,4 +20,6 @@ Around do |scenario, block|
 end
 
 Given /^a running dnscrypt wrapper with options "([^"]*)"$/ do |options|
-  str = "../
+  str = "../dnscrypt-wrapper " +
+    "--resolver-address=127.0.0.1:53 " +
+    "--provider-name=2.dns
