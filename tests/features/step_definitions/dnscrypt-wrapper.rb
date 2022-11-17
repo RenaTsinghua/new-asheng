@@ -22,4 +22,6 @@ end
 Given /^a running dnscrypt wrapper with options "([^"]*)"$/ do |options|
   str = "../dnscrypt-wrapper " +
     "--resolver-address=127.0.0.1:53 " +
-    "--provider-name=2.dns
+    "--provider-name=2.dnscrypt-cert.example.com " +
+    "--listen-address=#{WRAPPER_IP}:#{WRAPPER_PORT} #{options}"
+  @pi
