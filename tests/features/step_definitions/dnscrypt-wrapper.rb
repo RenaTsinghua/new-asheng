@@ -28,4 +28,8 @@ Given /^a running dnscrypt wrapper with options "([^"]*)"$/ do |options|
   begin
     Timeout.timeout(0.5) do
       Process.wait @pipe.pid
-      @
+      @error = @pipe.read
+      @pipe = nil
+    end
+  rescue Timeout::Error
+    # The process is still runnin
