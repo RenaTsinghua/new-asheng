@@ -32,4 +32,12 @@ Given /^a running dnscrypt wrapper with options "([^"]*)"$/ do |options|
       @pipe = nil
     end
   rescue Timeout::Error
-    # The process is still runnin
+    # The process is still running, so it did not fail yet/
+  end
+end
+
+And /^a tcp resolver$/ do
+  @resolver.use_tcp = true
+end
+
+Wh
