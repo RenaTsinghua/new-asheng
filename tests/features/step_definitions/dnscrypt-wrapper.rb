@@ -40,4 +40,6 @@ And /^a tcp resolver$/ do
   @resolver.use_tcp = true
 end
 
-Wh
+When /^a client asks dnscrypt\-wrapper for "([^"]*)" "([^"]*)" record$/ do |name, qtype|
+  begin
+    Timeout
