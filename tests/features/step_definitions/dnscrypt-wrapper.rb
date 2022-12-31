@@ -64,3 +64,6 @@ Then /^dnscrypt\-wrapper does not return "([^"]*)"$/ do |certfile|
   expect(@answer_section.collect { |a| a.txt.strip().force_encoding('UTF-8') }).not_to include(cert)
 end
 
+Then /^a "(.*)" is thrown$/ do |error|
+  @error.class.to_s == error
+end
