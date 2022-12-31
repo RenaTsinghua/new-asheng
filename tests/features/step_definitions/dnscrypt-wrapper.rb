@@ -59,4 +59,6 @@ Then /^dnscrypt-wrapper fails with "(.*)"$/ do |error|
   expect(@error).to include(error)
 end
 
-Then /^dnscrypt\-wrapper 
+Then /^dnscrypt\-wrapper does not return "([^"]*)"$/ do |certfile|
+  cert = open(certfile).read()
+  expect(@answer_sect
