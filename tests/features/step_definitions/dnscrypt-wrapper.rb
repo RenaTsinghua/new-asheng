@@ -48,3 +48,8 @@ When /^a client asks dnscrypt\-wrapper for "([^"]*)" "([^"]*)" record$/ do |name
   rescue Timeout::Error => @error
   rescue Errno::ECONNREFUSED => @error
   end
+end
+
+Then /^dnscrypt\-wrapper returns "([^"]*)"$/ do |certfile|
+  cert = open(certfile).read()
+  expec
