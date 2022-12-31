@@ -43,4 +43,8 @@ end
 When /^a client asks dnscrypt\-wrapper for "([^"]*)" "([^"]*)" record$/ do |name, qtype|
   begin
     Timeout.timeout(0.5) do
-      @answer_section = @resolver.query(name, Net::DNS.const_get(qtype.upcase)).
+      @answer_section = @resolver.query(name, Net::DNS.const_get(qtype.upcase)).answer
+    end
+  rescue Timeout::Error => @error
+  rescue Errno::ECONNREFUSED => @error
+  end
