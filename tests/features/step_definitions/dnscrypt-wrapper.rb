@@ -52,4 +52,7 @@ end
 
 Then /^dnscrypt\-wrapper returns "([^"]*)"$/ do |certfile|
   cert = open(certfile).read()
-  expec
+  expect(@answer_section.collect { |a| a.txt.strip().force_encoding('UTF-8') }).to include(cert)
+end
+
+Then /^dnscrypt-w
