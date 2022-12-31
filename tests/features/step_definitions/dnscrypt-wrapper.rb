@@ -55,4 +55,8 @@ Then /^dnscrypt\-wrapper returns "([^"]*)"$/ do |certfile|
   expect(@answer_section.collect { |a| a.txt.strip().force_encoding('UTF-8') }).to include(cert)
 end
 
-Then /^dnscrypt-w
+Then /^dnscrypt-wrapper fails with "(.*)"$/ do |error|
+  expect(@error).to include(error)
+end
+
+Then /^dnscrypt\-wrapper 
