@@ -228,3 +228,104 @@ name##_RB_REMOVE_COLOR(struct name *head, struct type *parent, struct type *elm)
 				tmp = RB_LEFT(parent, field);		\
 			}						\
 			if ((RB_LEFT(tmp, field) == NULL ||		\
+			    RB_COLOR(RB_LEFT(tmp, field), field) == RB_BLACK) &&\
+			    (RB_RIGHT(tmp, field) == NULL ||		\
+			    RB_COLOR(RB_RIGHT(tmp, field), field) == RB_BLACK)) {\
+				RB_COLOR(tmp, field) = RB_RED;		\
+				elm = parent;				\
+				parent = RB_PARENT(elm, field);		\
+			} else {					\
+				if (RB_LEFT(tmp, field) == NULL ||	\
+				    RB_COLOR(RB_LEFT(tmp, field), field) == RB_BLACK) {\
+					struct type *oright;		\
+					if ((oright = RB_RIGHT(tmp, field)))\
+						RB_COLOR(oright, field) = RB_BLACK;\
+					RB_COLOR(tmp, field) = RB_RED;	\
+					RB_ROTATE_LEFT(head, tmp, oright, field);\
+					tmp = RB_LEFT(parent, field);	\
+				}					\
+				RB_COLOR(tmp, field) = RB_COLOR(parent, field);\
+				RB_COLOR(parent, field) = RB_BLACK;	\
+				if (RB_LEFT(tmp, field))		\
+					RB_COLOR(RB_LEFT(tmp, field), field) = RB_BLACK;\
+				RB_ROTATE_RIGHT(head, parent, tmp, field);\
+				elm = RB_ROOT(head);			\
+				break;					\
+			}						\
+		}							\
+	}								\
+	if (elm)							\
+		RB_COLOR(elm, field) = RB_BLACK;			\
+}									\
+									\
+attr struct type *							\
+name##_RB_REMOVE(struct name *head, struct type *elm)			\
+{									\
+	struct type *child, *parent, *old = elm;			\
+	int color;							\
+	if (RB_LEFT(elm, field) == NULL)				\
+		child = RB_RIGHT(elm, field);				\
+	else if (RB_RIGHT(elm, field) == NULL)				\
+		child = RB_LEFT(elm, field);				\
+	else {								\
+		struct type *left;					\
+		elm = RB_RIGHT(elm, field);				\
+		while ((left = RB_LEFT(elm, field)))			\
+			elm = left;					\
+		child = RB_RIGHT(elm, field);				\
+		parent = RB_PARENT(elm, field);				\
+		color = RB_COLOR(elm, field);				\
+		if (child)						\
+			RB_PARENT(child, field) = parent;		\
+		if (parent) {						\
+			if (RB_LEFT(parent, field) == elm)		\
+				RB_LEFT(parent, field) = child;		\
+			else						\
+				RB_RIGHT(parent, field) = child;	\
+			RB_AUGMENT(parent);				\
+		} else							\
+			RB_ROOT(head) = child;				\
+		if (RB_PARENT(elm, field) == old)			\
+			parent = elm;					\
+		(elm)->field = (old)->field;				\
+		if (RB_PARENT(old, field)) {				\
+			if (RB_LEFT(RB_PARENT(old, field), field) == old)\
+				RB_LEFT(RB_PARENT(old, field), field) = elm;\
+			else						\
+				RB_RIGHT(RB_PARENT(old, field), field) = elm;\
+			RB_AUGMENT(RB_PARENT(old, field));		\
+		} else							\
+			RB_ROOT(head) = elm;				\
+		RB_PARENT(RB_LEFT(old, field), field) = elm;		\
+		if (RB_RIGHT(old, field))				\
+			RB_PARENT(RB_RIGHT(old, field), field) = elm;	\
+		if (parent) {						\
+			left = parent;					\
+			do {						\
+				RB_AUGMENT(left);			\
+			} while ((left = RB_PARENT(left, field)));	\
+		}							\
+		goto color;						\
+	}								\
+	parent = RB_PARENT(elm, field);					\
+	color = RB_COLOR(elm, field);					\
+	if (child)							\
+		RB_PARENT(child, field) = parent;			\
+	if (parent) {							\
+		if (RB_LEFT(parent, field) == elm)			\
+			RB_LEFT(parent, field) = child;			\
+		else							\
+			RB_RIGHT(parent, field) = child;		\
+		RB_AUGMENT(parent);					\
+	} else								\
+		RB_ROOT(head) = child;					\
+color:									\
+	if (color == RB_BLACK)						\
+		name##_RB_REMOVE_COLOR(head, parent, child);		\
+	return (old);							\
+}									\
+									\
+/* Inserts a node into the RB tree */					\
+attr struct type *							\
+name##_RB_INSERT(struct name *head, struct type *elm)			\
+{									\
