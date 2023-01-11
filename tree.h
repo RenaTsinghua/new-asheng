@@ -329,3 +329,112 @@ color:									\
 attr struct type *							\
 name##_RB_INSERT(struct name *head, struct type *elm)			\
 {									\
+	struct type *tmp;						\
+	struct type *parent = NULL;					\
+	int comp = 0;							\
+	tmp = RB_ROOT(head);						\
+	while (tmp) {							\
+		parent = tmp;						\
+		comp = (cmp)(elm, parent);				\
+		if (comp < 0)						\
+			tmp = RB_LEFT(tmp, field);			\
+		else if (comp > 0)					\
+			tmp = RB_RIGHT(tmp, field);			\
+		else							\
+			return (tmp);					\
+	}								\
+	RB_SET(elm, parent, field);					\
+	if (parent != NULL) {						\
+		if (comp < 0)						\
+			RB_LEFT(parent, field) = elm;			\
+		else							\
+			RB_RIGHT(parent, field) = elm;			\
+		RB_AUGMENT(parent);					\
+	} else								\
+		RB_ROOT(head) = elm;					\
+	name##_RB_INSERT_COLOR(head, elm);				\
+	return (NULL);							\
+}									\
+									\
+/* Finds the node with the same key as elm */				\
+attr struct type *							\
+name##_RB_FIND(struct name *head, struct type *elm)			\
+{									\
+	struct type *tmp = RB_ROOT(head);				\
+	int comp;							\
+	while (tmp) {							\
+		comp = cmp(elm, tmp);					\
+		if (comp < 0)						\
+			tmp = RB_LEFT(tmp, field);			\
+		else if (comp > 0)					\
+			tmp = RB_RIGHT(tmp, field);			\
+		else							\
+			return (tmp);					\
+	}								\
+	return (NULL);							\
+}									\
+									\
+/* Finds the first node greater than or equal to the search key */	\
+attr struct type *							\
+name##_RB_NFIND(struct name *head, struct type *elm)			\
+{									\
+	struct type *tmp = RB_ROOT(head);				\
+	struct type *res = NULL;					\
+	int comp;							\
+	while (tmp) {							\
+		comp = cmp(elm, tmp);					\
+		if (comp < 0) {						\
+			res = tmp;					\
+			tmp = RB_LEFT(tmp, field);			\
+		}							\
+		else if (comp > 0)					\
+			tmp = RB_RIGHT(tmp, field);			\
+		else							\
+			return (tmp);					\
+	}								\
+	return (res);							\
+}									\
+									\
+/* ARGSUSED */								\
+attr struct type *							\
+name##_RB_NEXT(struct type *elm)					\
+{									\
+	if (RB_RIGHT(elm, field)) {					\
+		elm = RB_RIGHT(elm, field);				\
+		while (RB_LEFT(elm, field))				\
+			elm = RB_LEFT(elm, field);			\
+	} else {							\
+		if (RB_PARENT(elm, field) &&				\
+		    (elm == RB_LEFT(RB_PARENT(elm, field), field)))	\
+			elm = RB_PARENT(elm, field);			\
+		else {							\
+			while (RB_PARENT(elm, field) &&			\
+			    (elm == RB_RIGHT(RB_PARENT(elm, field), field)))\
+				elm = RB_PARENT(elm, field);		\
+			elm = RB_PARENT(elm, field);			\
+		}							\
+	}								\
+	return (elm);							\
+}									\
+									\
+/* ARGSUSED */								\
+attr struct type *							\
+name##_RB_PREV(struct type *elm)					\
+{									\
+	if (RB_LEFT(elm, field)) {					\
+		elm = RB_LEFT(elm, field);				\
+		while (RB_RIGHT(elm, field))				\
+			elm = RB_RIGHT(elm, field);			\
+	} else {							\
+		if (RB_PARENT(elm, field) &&				\
+		    (elm == RB_RIGHT(RB_PARENT(elm, field), field)))	\
+			elm = RB_PARENT(elm, field);			\
+		else {							\
+			while (RB_PARENT(elm, field) &&			\
+			    (elm == RB_LEFT(RB_PARENT(elm, field), field)))\
+				elm = RB_PARENT(elm, field);		\
+			elm = RB_PARENT(elm, field);			\
+		}							\
+	}								\
+	return (elm);							\
+}									\
