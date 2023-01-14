@@ -438,3 +438,52 @@ name##_RB_PREV(struct type *elm)					\
 	}								\
 	return (elm);							\
 }									\
+									\
+attr struct type *							\
+name##_RB_MINMAX(struct name *head, int val)				\
+{									\
+	struct type *tmp = RB_ROOT(head);				\
+	struct type *parent = NULL;					\
+	while (tmp) {							\
+		parent = tmp;						\
+		if (val < 0)						\
+			tmp = RB_LEFT(tmp, field);			\
+		else							\
+			tmp = RB_RIGHT(tmp, field);			\
+	}								\
+	return (parent);						\
+}
+
+#define RB_NEGINF	-1
+#define RB_INF	1
+
+#define RB_INSERT(name, x, y)	name##_RB_INSERT(x, y)
+#define RB_REMOVE(name, x, y)	name##_RB_REMOVE(x, y)
+#define RB_FIND(name, x, y)	name##_RB_FIND(x, y)
+#define RB_NFIND(name, x, y)	name##_RB_NFIND(x, y)
+#define RB_NEXT(name, x, y)	name##_RB_NEXT(y)
+#define RB_PREV(name, x, y)	name##_RB_PREV(y)
+#define RB_MIN(name, x)		name##_RB_MINMAX(x, RB_NEGINF)
+#define RB_MAX(name, x)		name##_RB_MINMAX(x, RB_INF)
+
+#define RB_FOREACH(x, name, head)					\
+	for ((x) = RB_MIN(name, head);					\
+	     (x) != NULL;						\
+	     (x) = name##_RB_NEXT(x))
+
+#define RB_FOREACH_SAFE(x, name, head, y)				\
+	for ((x) = RB_MIN(name, head);					\
+	    ((x) != NULL) && ((y) = name##_RB_NEXT(x), 1);		\
+	     (x) = (y))
+
+#define RB_FOREACH_REVERSE(x, name, head)				\
+	for ((x) = RB_MAX(name, head);					\
+	     (x) != NULL;						\
+	     (x) = name##_RB_PREV(x))
+
+#define RB_FOREACH_REVERSE_SAFE(x, name, head, y)			\
+	for ((x) = RB_MAX(name, head);					\
+	    ((x) != NULL) && ((y) = name##_RB_PREV(x), 1);		\
+	     (x) = (y))
+
+#endif	/* _SYS_TREE_H_ */
