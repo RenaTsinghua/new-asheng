@@ -248,3 +248,104 @@ self_serve_cert_file(struct context *c, struct dns_header *header,
             .dest_addr = (struct sockaddr *)&udp_request->client_sockaddr,
             .dest_len = udp_request->client_sockaddr_len,
             .cb = udp_request_kill
+        };
+        sendto_with_retry(&retry_ctx);
+        return 0;
+    }
+    logger(LOG_DEBUG, "failed to serve cert file, err: %d", ret);
+    return ret;
+}
+
+static void
+client_to_proxy_cb(evutil_socket_t client_proxy_handle, short ev_flags,
+                   void *const context)
+{
+    logger(LOG_DEBUG, "client to proxy cb");
+    const size_t sizeof_dns_query = DNS_MAX_PACKET_SIZE_UDP;
+    static uint8_t *dns_query = NULL;
+    struct context *c = context;
+    UDPRequest *udp_request;
+    ssize_t nread;
+    size_t dns_query_len = 0;
+
+    if (dns_query == NULL && (dns_query = sodium_malloc(sizeof_dns_query)) == NULL) {
+        return;
+    }
+    (void)ev_flags;
+    assert(client_proxy_handle == c->udp_listener_handle);
+
+    udp_request = calloc(1, sizeof(*udp_request));
+    if (udp_request == NULL)
+        return;
+
+    udp_request->context = c;
+    udp_request->sendto_retry_timer = NULL;
+    udp_request->timeout_timer = NULL;
+    udp_request->client_proxy_handle = client_proxy_handle;
+    udp_request->client_sockaddr_len = sizeof(udp_request->client_sockaddr);
+    memset(&udp_request->status, 0, sizeof(udp_request->status));
+    nread = recvfrom(client_proxy_handle,
+                     (void *)dns_query,
+                     sizeof_dns_query,
+                     0,
+                     (struct sockaddr *)&udp_request->client_sockaddr,
+                     &udp_request->client_sockaddr_len);
+    if (nread < 0) {
+        const int err = evutil_socket_geterror(client_proxy_handle);
+        if (!EVUTIL_ERR_RW_RETRIABLE(err)) {
+            logger(LOG_WARNING, "recvfrom(client): [%s]",
+                   evutil_socket_error_to_string(err));
+        }
+        udp_request_kill(udp_request);
+        return;
+    }
+
+    if (nread < (ssize_t) DNS_HEADER_SIZE || nread > sizeof_dns_query) {
+        logger(LOG_DEBUG, "Short query received");
+        udp_request_kill(udp_request);
+        return;
+    }
+
+    dns_query_len = (size_t) nread;
+    assert(dns_query_len <= sizeof_dns_query);
+
+    assert(SIZE_MAX - DNSCRYPT_MAX_PADDING - DNSCRYPT_QUERY_HEADER_SIZE >
+           dns_query_len);
+
+    udp_request->len = (uint16_t) dns_query_len;
+    // decrypt if encrypted
+    struct dnscrypt_query_header *dnscrypt_header =
+        (struct dnscrypt_query_header *)dns_query;
+    debug_assert(sizeof c->keypairs[0].crypt_publickey >= DNSCRYPT_MAGIC_HEADER_LEN);
+    if ((udp_request->cert =
+         find_cert(c, dnscrypt_header->magic_query, dns_query_len)) == NULL) {
+        udp_request->is_dnscrypted = false;
+    } else {
+        if (dnscrypt_server_uncurve(c, udp_request->cert,
+                                    udp_request->client_nonce,
+                                    udp_request->nmkey, dns_query,
+                                    &dns_query_len) != 0 || dns_query_len < DNS_HEADER_SIZE) {
+            logger(LOG_DEBUG, "Received a suspicious query from the client");
+            udp_request_kill(udp_request);
+            return;
+        }
+        udp_request->is_dnscrypted = true;
+    }
+
+    struct dns_header *header = (struct dns_header *)dns_query;
+
+    // self serve signed certificate for provider name?
+    if (!udp_request->is_dnscrypted) {
+        if (self_serve_cert_file(c, header, dns_query_len, sizeof_dns_query, udp_request) == 0)
+            return;
+        if (!c->allow_not_dnscrypted) {
+            logger(LOG_DEBUG, "Unauthenticated query received over UDP");
+            udp_request_kill(udp_request);
+            return;
+        }
+    }
+
+    udp_request->is_blocked = is_blocked(c, header, dns_query_len);
+
+    udp_request->id = ntohs(header->id);
+    if (questions_hash(&udp_request->hash, header, dns_query_len, c->namebuff, c->hash_key) != 0) {
