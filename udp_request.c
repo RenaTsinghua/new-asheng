@@ -436,3 +436,113 @@ resolver_to_proxy_cb(evutil_socket_t proxy_resolver_handle, short ev_flags,
     static uint8_t *dns_reply = NULL;
     struct context *c = context;
     UDPRequest *udp_request = NULL;
+    struct sockaddr_storage resolver_sockaddr;
+    ev_socklen_t resolver_sockaddr_len = sizeof(struct sockaddr_storage);
+    ssize_t nread;
+    size_t dns_reply_len = (size_t) 0U;
+
+    (void)ev_flags;
+    if (dns_reply == NULL && (dns_reply = sodium_malloc(sizeof_dns_reply)) == NULL) {
+        return;
+    }
+    nread = recvfrom(proxy_resolver_handle,
+                     (void *)dns_reply, sizeof_dns_reply, 0,
+                     (struct sockaddr *)&resolver_sockaddr,
+                     &resolver_sockaddr_len);
+    if (nread < 0) {
+        const int err = evutil_socket_geterror(proxy_resolver_handle);
+        if (!EVUTIL_ERR_RW_RETRIABLE(err)) {
+            logger(LOG_WARNING, "recvfrom(resolver): [%s]",
+                   evutil_socket_error_to_string(err));
+        }
+        return;
+    }
+    if (evutil_sockaddr_cmp((const struct sockaddr *)&resolver_sockaddr,
+                            (const struct sockaddr *)
+                            &c->resolver_sockaddr, 1) != 0) {
+        logger(LOG_WARNING,
+               "Received a resolver reply from a different resolver");
+        return;
+    }
+    dns_reply_len = nread;
+
+    struct dns_header *header = (struct dns_header *)dns_reply;
+    uint16_t id = ntohs(header->id);
+    uint64_t hash;
+    if (questions_hash(&hash, header, dns_reply_len, c->namebuff, c->hash_key) != 0) {
+        logger(LOG_ERR, "Received an invalid response from the server");
+        return;
+    }
+    udp_request = lookup_request(c, id, hash);
+    if (udp_request == NULL) {
+        logger(LOG_DEBUG, "Received a reply that doesn't match any active query");
+        return;
+    }
+    size_t max_reply_size = DNS_MAX_PACKET_SIZE_UDP;
+    size_t max_len =
+        dns_reply_len + DNSCRYPT_MAX_PADDING + DNSCRYPT_REPLY_HEADER_SIZE;
+    if (max_len > max_reply_size)
+        max_len = max_reply_size;
+
+    if (udp_request->is_blocked) {
+        struct dns_header *p = (struct dns_header *) dns_reply;
+        SET_RCODE(p, REFUSED);
+    }
+    maybe_truncate(dns_reply, &dns_reply_len, udp_request->len);
+
+    if (udp_request->is_dnscrypted) {
+        if (dnscrypt_server_curve
+            (c, udp_request->cert, udp_request->client_nonce, udp_request->nmkey, dns_reply,
+             &dns_reply_len, max_len) != 0) {
+            logger(LOG_ERR, "Curving reply failed.");
+            return;
+        }
+    }
+
+    SendtoWithRetryCtx retry_ctx = {
+        .udp_request = udp_request,.handle =
+            udp_request->client_proxy_handle,.buffer =
+            dns_reply,.length = dns_reply_len,.flags = 0,.dest_addr =
+            (struct sockaddr *)&udp_request->client_sockaddr,.dest_len =
+            udp_request->client_sockaddr_len,.cb = udp_request_kill
+    };
+    sendto_with_retry(&retry_ctx);
+}
+
+int
+udp_listener_bind(struct context *c)
+{
+    // listen socket & bind
+    assert(c->udp_listener_handle == -1);
+
+    if ((c->udp_listener_handle =
+         socket(c->local_sockaddr.ss_family, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
+        logger(LOG_ERR, "Unable to create a socket (UDP)");
+        return -1;
+    }
+
+    udp_tune(c->udp_listener_handle);
+
+    evutil_make_socket_closeonexec(c->udp_listener_handle);
+    evutil_make_socket_nonblocking(c->udp_listener_handle);
+    if (bind
+        (c->udp_listener_handle, (struct sockaddr *)&c->local_sockaddr,
+         c->local_sockaddr_len) != 0) {
+        logger(LOG_ERR, "Unable to bind (UDP) [%s]",
+               evutil_socket_error_to_string(evutil_socket_geterror
+                                             (c->udp_listener_handle)));
+        evutil_closesocket(c->udp_listener_handle);
+        c->udp_listener_handle = -1;
+        return -1;
+    }
+
+    // resolver socket
+    assert(c->udp_resolver_handle == -1);
+    if ((c->udp_resolver_handle =
+         socket(c->resolver_sockaddr.ss_family, SOCK_DGRAM,
+                IPPROTO_UDP)) == -1) {
+        logger(LOG_ERR, "Unable to create a socket to the resolver");
+        evutil_closesocket(c->udp_resolver_handle);
+        c->udp_listener_handle = -1;
+    }
+    evutil_make_socket_closeonexec(c->udp_resolver_handle);
