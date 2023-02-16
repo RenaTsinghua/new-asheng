@@ -12,4 +12,7 @@ typedef struct UDPRequestStatus_ {
 } UDPRequestStatus;
 
 typedef struct UDPRequest_ {
-    RB_ENTRY(UDPRequest_
+    RB_ENTRY(UDPRequest_) queue;
+    struct context *context;
+    struct event *sendto_retry_timer;
+    struct even
