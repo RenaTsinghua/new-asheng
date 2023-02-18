@@ -15,4 +15,9 @@ typedef struct UDPRequest_ {
     RB_ENTRY(UDPRequest_) queue;
     struct context *context;
     struct event *sendto_retry_timer;
-    struct even
+    struct event *timeout_timer;
+    uint64_t hash;
+    uint16_t id;
+    uint16_t gen;
+    uint16_t len;
+    uint8_t client_nonce
