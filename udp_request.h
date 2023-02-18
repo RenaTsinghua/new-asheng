@@ -25,4 +25,7 @@ typedef struct UDPRequest_ {
     struct sockaddr_storage client_sockaddr;
     evutil_socket_t client_proxy_handle;
     ev_socklen_t client_sockaddr_len;
-    UDPR
+    UDPRequestStatus status;
+    unsigned char retries;
+    const struct cert_ *cert;
+    bool is
