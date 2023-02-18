@@ -22,4 +22,7 @@ typedef struct UDPRequest_ {
     uint16_t len;
     uint8_t client_nonce[crypto_box_HALF_NONCEBYTES];
     uint8_t nmkey[crypto_box_BEFORENMBYTES];
-    struct sockaddr_storag
+    struct sockaddr_storage client_sockaddr;
+    evutil_socket_t client_proxy_handle;
+    ev_socklen_t client_sockaddr_len;
+    UDPR
