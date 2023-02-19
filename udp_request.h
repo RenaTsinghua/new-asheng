@@ -28,4 +28,8 @@ typedef struct UDPRequest_ {
     UDPRequestStatus status;
     unsigned char retries;
     const struct cert_ *cert;
-    bool is
+    bool is_dnscrypted;
+    bool is_blocked;
+} UDPRequest;
+
+typedef TAILQ_HEAD(TCPRequestQueue_, TCPRequest_) TC
