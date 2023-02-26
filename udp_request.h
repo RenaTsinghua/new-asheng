@@ -37,4 +37,7 @@ typedef RB_HEAD(UDPRequestQueue_, UDPRequest_) UDPRequestQueue;
 
 int udp_listener_bind(struct context *c);
 int udp_listener_start(struct context *c);
-void udp_listener_stop(struct context 
+void udp_listener_stop(struct context *c);
+int udp_listener_kill_oldest_request(struct context *c);
+
+#endif
