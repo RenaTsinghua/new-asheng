@@ -32,4 +32,7 @@ typedef struct UDPRequest_ {
     bool is_blocked;
 } UDPRequest;
 
-typedef TAILQ_HEAD(TCPRequestQueue_, TCPRequest_) TC
+typedef TAILQ_HEAD(TCPRequestQueue_, TCPRequest_) TCPRequestQueue;
+typedef RB_HEAD(UDPRequestQueue_, UDPRequest_) UDPRequestQueue;
+
+int udp_list
